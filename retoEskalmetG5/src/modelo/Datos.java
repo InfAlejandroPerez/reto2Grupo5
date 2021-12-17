@@ -64,5 +64,4 @@ public class Datos implements java.io.Serializable {
 	public void setVelocidadViento(int velocidadViento) {
 		this.velocidadViento = velocidadViento;
 	}
-
 }
