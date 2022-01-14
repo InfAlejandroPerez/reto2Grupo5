@@ -60,7 +60,13 @@ public class jsonReader {
 						municipio.setDescripcion(entry.getValue().getAsString());
 					}
 					if (entry.getKey().equals("territory")) {
-						provincia.setNomProvincia(entry.getValue().getAsString());
+						if (entry.getValue().getAsString().contains(" ")) {
+							String formatCod1 = entry.getValue().getAsString().substring(0,
+									entry.getValue().getAsString().indexOf(" "));
+							provincia.setNomProvincia(formatCod1);
+						} else {
+							provincia.setNomProvincia(entry.getValue().getAsString());
+						}
 					}
 					if (entry.getKey().equals("territorycode")) {
 						if (entry.getValue().getAsString().contains(" ")) {
