@@ -5,7 +5,7 @@ import java.net.Socket;
 public class Cliente {
 
 	private final int PUERTO = 5000;
-	private final String IP = "192.168.56.1";
+	private final String IP = "10.5.7.11";
 
 	public void inicar() {
 

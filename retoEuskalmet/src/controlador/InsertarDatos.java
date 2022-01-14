@@ -21,7 +21,7 @@ public class InsertarDatos {
 		Municipios municipios = new Municipios(5, provincia, "Bizkaia", "Matalascanias");
 
 		// INSERTAMOS UN ESPACIO NATURAL
-		EspaciosNaturales espaciosNaturales = new EspaciosNaturales(10, "Okendo", "piscinas");
+		//EspaciosNaturales espaciosNaturales = new EspaciosNaturales(10, "Okendo", "piscinas");
 
 		Transaction tx;
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
@@ -32,7 +32,7 @@ public class InsertarDatos {
 
 			// Guardar objeto en la base de datos
 			s.save(municipios);
-			s.save(espaciosNaturales);
+			//s.save(espaciosNaturales);
 			// Actualizar información en la base de datos
 			tx.commit();
 		} finally {
