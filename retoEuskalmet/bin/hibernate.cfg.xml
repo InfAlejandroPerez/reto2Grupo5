@@ -11,11 +11,12 @@
         <property name="hibernate.search.autoregister_listeners">true</property>
         <property name="hibernate.validator.apply_to_ddl">false</property>
         <mapping resource="modelo/Usuarios.hbm.xml"/>
+        <mapping resource="modelo/DatosHorario.hbm.xml"/>
         <mapping resource="modelo/Provincias.hbm.xml"/>
-        <mapping resource="modelo/Datos.hbm.xml"/>
         <mapping resource="modelo/EspaciosNaturales.hbm.xml"/>
         <mapping resource="modelo/Municipios.hbm.xml"/>
         <mapping resource="modelo/Hashes.hbm.xml"/>
         <mapping resource="modelo/Estaciones.hbm.xml"/>
+        <mapping resource="modelo/DatosDiario.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

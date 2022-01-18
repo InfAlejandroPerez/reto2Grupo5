@@ -1,5 +1,5 @@
 package modelo;
-// Generated 13 ene 2022 19:09:12 by Hibernate Tools 5.5.7.Final
+// Generated 18 ene 2022 16:14:49 by Hibernate Tools 5.5.7.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,8 +13,9 @@ public class Municipios implements java.io.Serializable {
 	private Provincias provincias;
 	private String nombre;
 	private String descripcion;
-	private Set estacioneses = new HashSet(0);
 	private Set espaciosNaturaleses = new HashSet(0);
+	private Set espaciosNaturaleses_1 = new HashSet(0);
+	private Set estacioneses = new HashSet(0);
 	private Set usuarioses = new HashSet(0);
 
 	public Municipios() {
@@ -27,14 +28,15 @@ public class Municipios implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public Municipios(int codMunicipio, Provincias provincias, String nombre, String descripcion, Set estacioneses,
-			Set espaciosNaturaleses, Set usuarioses) {
+	public Municipios(int codMunicipio, Provincias provincias, String nombre, String descripcion,
+			Set espaciosNaturaleses, Set espaciosNaturaleses_1, Set estacioneses, Set usuarioses) {
 		this.codMunicipio = codMunicipio;
 		this.provincias = provincias;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.estacioneses = estacioneses;
 		this.espaciosNaturaleses = espaciosNaturaleses;
+		this.espaciosNaturaleses_1 = espaciosNaturaleses_1;
+		this.estacioneses = estacioneses;
 		this.usuarioses = usuarioses;
 	}
 
@@ -70,20 +72,28 @@ public class Municipios implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public Set getEstacioneses() {
-		return this.estacioneses;
-	}
-
-	public void setEstacioneses(Set estacioneses) {
-		this.estacioneses = estacioneses;
-	}
-
 	public Set getEspaciosNaturaleses() {
 		return this.espaciosNaturaleses;
 	}
 
 	public void setEspaciosNaturaleses(Set espaciosNaturaleses) {
 		this.espaciosNaturaleses = espaciosNaturaleses;
+	}
+
+	public Set getEspaciosNaturaleses_1() {
+		return this.espaciosNaturaleses_1;
+	}
+
+	public void setEspaciosNaturaleses_1(Set espaciosNaturaleses_1) {
+		this.espaciosNaturaleses_1 = espaciosNaturaleses_1;
+	}
+
+	public Set getEstacioneses() {
+		return this.estacioneses;
+	}
+
+	public void setEstacioneses(Set estacioneses) {
+		this.estacioneses = estacioneses;
 	}
 
 	public Set getUsuarioses() {

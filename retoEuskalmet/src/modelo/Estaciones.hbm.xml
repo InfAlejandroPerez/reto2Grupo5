@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 13 ene 2022 19:09:12 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18 ene 2022 16:14:49 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Estaciones" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="estaciones">
         <id name="codEstacion" type="int">
@@ -9,17 +9,26 @@
         <many-to-one class="modelo.Municipios" embed-xml="true" fetch="select" insert="true" name="municipios" not-found="exception" optimistic-lock="true" unique="false" update="true">
             <column name="CodMunicipio" not-null="true"/>
         </many-to-one>
+        <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
+            <column length="30" name="Nombre" not-null="true"/>
+        </property>
         <property generated="never" lazy="false" name="coordenadaX" optimistic-lock="true" type="double" unique="false">
             <column name="CoordenadaX" not-null="true" precision="22" scale="0"/>
         </property>
         <property generated="never" lazy="false" name="coordenadaY" optimistic-lock="true" type="double" unique="false">
             <column name="CoordenadaY" not-null="true" precision="22" scale="0"/>
         </property>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datoses" optimistic-lock="true" sort="unsorted" table="datos">
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datosDiarios" optimistic-lock="true" sort="unsorted" table="datos_diario">
             <key on-delete="noaction">
                 <column name="CodEstacion" not-null="true"/>
             </key>
-            <one-to-many class="modelo.Datos" embed-xml="true" not-found="exception"/>
+            <one-to-many class="modelo.DatosDiario" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datosHorarios" optimistic-lock="true" sort="unsorted" table="datos_horario">
+            <key on-delete="noaction">
+                <column name="CodEstacion" not-null="true"/>
+            </key>
+            <one-to-many class="modelo.DatosHorario" embed-xml="true" not-found="exception"/>
         </set>
     </class>
 </hibernate-mapping>

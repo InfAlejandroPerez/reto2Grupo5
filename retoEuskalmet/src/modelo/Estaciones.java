@@ -1,5 +1,5 @@
 package modelo;
-// Generated 13 ene 2022 19:09:12 by Hibernate Tools 5.5.7.Final
+// Generated 18 ene 2022 16:14:49 by Hibernate Tools 5.5.7.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,26 +11,32 @@ public class Estaciones implements java.io.Serializable {
 
 	private int codEstacion;
 	private Municipios municipios;
+	private String nombre;
 	private double coordenadaX;
 	private double coordenadaY;
-	private Set datoses = new HashSet(0);
+	private Set datosDiarios = new HashSet(0);
+	private Set datosHorarios = new HashSet(0);
 
 	public Estaciones() {
 	}
 
-	public Estaciones(int codEstacion, Municipios municipios, double coordenadaX, double coordenadaY) {
+	public Estaciones(int codEstacion, Municipios municipios, String nombre, double coordenadaX, double coordenadaY) {
 		this.codEstacion = codEstacion;
 		this.municipios = municipios;
+		this.nombre = nombre;
 		this.coordenadaX = coordenadaX;
 		this.coordenadaY = coordenadaY;
 	}
 
-	public Estaciones(int codEstacion, Municipios municipios, double coordenadaX, double coordenadaY, Set datoses) {
+	public Estaciones(int codEstacion, Municipios municipios, String nombre, double coordenadaX, double coordenadaY,
+			Set datosDiarios, Set datosHorarios) {
 		this.codEstacion = codEstacion;
 		this.municipios = municipios;
+		this.nombre = nombre;
 		this.coordenadaX = coordenadaX;
 		this.coordenadaY = coordenadaY;
-		this.datoses = datoses;
+		this.datosDiarios = datosDiarios;
+		this.datosHorarios = datosHorarios;
 	}
 
 	public int getCodEstacion() {
@@ -49,6 +55,14 @@ public class Estaciones implements java.io.Serializable {
 		this.municipios = municipios;
 	}
 
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
 	public double getCoordenadaX() {
 		return this.coordenadaX;
 	}
@@ -65,12 +79,20 @@ public class Estaciones implements java.io.Serializable {
 		this.coordenadaY = coordenadaY;
 	}
 
-	public Set getDatoses() {
-		return this.datoses;
+	public Set getDatosDiarios() {
+		return this.datosDiarios;
 	}
 
-	public void setDatoses(Set datoses) {
-		this.datoses = datoses;
+	public void setDatosDiarios(Set datosDiarios) {
+		this.datosDiarios = datosDiarios;
+	}
+
+	public Set getDatosHorarios() {
+		return this.datosHorarios;
+	}
+
+	public void setDatosHorarios(Set datosHorarios) {
+		this.datosHorarios = datosHorarios;
 	}
 
 }

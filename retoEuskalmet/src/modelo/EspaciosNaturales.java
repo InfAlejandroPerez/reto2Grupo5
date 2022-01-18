@@ -1,5 +1,5 @@
 package modelo;
-// Generated 13 ene 2022 19:09:12 by Hibernate Tools 5.5.7.Final
+// Generated 18 ene 2022 16:14:49 by Hibernate Tools 5.5.7.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +10,7 @@ import java.util.Set;
 public class EspaciosNaturales implements java.io.Serializable {
 
 	private int codEspacio;
+	private Municipios municipios;
 	private String nombre;
 	private String descripcion;
 	private Set municipioses = new HashSet(0);
@@ -18,14 +19,17 @@ public class EspaciosNaturales implements java.io.Serializable {
 	public EspaciosNaturales() {
 	}
 
-	public EspaciosNaturales(int codEspacio, String nombre, String descripcion) {
+	public EspaciosNaturales(int codEspacio, Municipios municipios, String nombre, String descripcion) {
 		this.codEspacio = codEspacio;
+		this.municipios = municipios;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 	}
 
-	public EspaciosNaturales(int codEspacio, String nombre, String descripcion, Set municipioses, Set usuarioses) {
+	public EspaciosNaturales(int codEspacio, Municipios municipios, String nombre, String descripcion, Set municipioses,
+			Set usuarioses) {
 		this.codEspacio = codEspacio;
+		this.municipios = municipios;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.municipioses = municipioses;
@@ -38,6 +42,14 @@ public class EspaciosNaturales implements java.io.Serializable {
 
 	public void setCodEspacio(int codEspacio) {
 		this.codEspacio = codEspacio;
+	}
+
+	public Municipios getMunicipios() {
+		return this.municipios;
+	}
+
+	public void setMunicipios(Municipios municipios) {
+		this.municipios = municipios;
 	}
 
 	public String getNombre() {

@@ -2,3 +2,5 @@
 /hibernateUtil/
 /modelo/
 /servidor_cliente/
+/hibernate.cfg.xml
+/hibernate.reveng.xml
