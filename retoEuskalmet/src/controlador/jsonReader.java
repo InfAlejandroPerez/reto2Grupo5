@@ -179,7 +179,7 @@ public class jsonReader {
 						System.out.println("Nombre Espacio: " + espacios.get(i).getNombre());
 						System.out.println("Cod. Espacio: " + espacios.get(i).getCodEspacio());
 						System.out.println("Descripcion: " + espacios.get(i).getDescripcion());
-						//System.out.println("Municipio: " + espacios.get(i).getMunicipios().getNombre());
+						System.out.println("Municipio: " + espacios.get(i).getMunicipios().getNombre());
 						System.out.println("--------------------------------");
 					}
 				}
@@ -230,28 +230,28 @@ public class jsonReader {
 			Provincias provincia = new Provincias();
 			provincia.setNomProvincia(espacios.get(i).getMunicipios().getProvincias().getNomProvincia());
 			provincia.setCodProvincia(espacios.get(i).getMunicipios().getProvincias().getCodProvincia());
-
+			
 			Municipios municipio = new Municipios();
 			municipio.setNombre(espacios.get(i).getMunicipios().getNombre());
 			municipio.setCodMunicipio(espacios.get(i).getMunicipios().getCodMunicipio());
-			municipio.setDescripcion(espacios.get(i).getMunicipios().getDescripcion());
+			
+			for (int j = 0; j < municipios.size(); j++) {
+				if (municipios.get(j).getCodMunicipio() == (municipio.getCodMunicipio())) {
+					municipio.setDescripcion(municipios.get(j).getDescripcion());
+		        }
+			}
+			if(municipio.getDescripcion() == null ) {
+            	municipio.setDescripcion("Un pueblo muy bonito por cierto.");
+            }
 			municipio.setProvincias(provincia);
 			
-			System.out.println("Nombre Municipio: " + municipio.getNombre());
-			System.out.println("Desc: " + municipio.getDescripcion());
-			System.out.println("Cod Municipio: " + municipio.getCodMunicipio());
-			System.out.println("Prov Municipio: " + municipio.getProvincias().getCodProvincia());
-			System.out.println("Prov Municipio: " + municipio.getProvincias().getNomProvincia());
-			
 
-			EspaciosNaturales espacio = new EspaciosNaturales(espacios.get(i).getCodEspacio(), municipio, espacios.get(i).getNombre(), espacios.get(i).getDescripcion());
-			
-			/*
-			 * espacio.setNombre(espacios.get(i).getNombre());
-			 * espacio.setCodEspacio(espacios.get(i).getCodEspacio());
-			 * espacio.setDescripcion(espacios.get(i).getDescripcion());
-			 * espacio.setMunicipios(municipio);
-			 */
+			EspaciosNaturales espacio = new EspaciosNaturales();
+			espacio.setNombre(espacios.get(i).getNombre());
+			espacio.setCodEspacio(espacios.get(i).getCodEspacio());
+			espacio.setDescripcion(espacios.get(i).getDescripcion());
+			espacio.setMunicipios(municipio);
+			 
 
 			Transaction tx;
 			SessionFactory sesion = HibernateUtil.getSessionFactory();
@@ -261,6 +261,7 @@ public class jsonReader {
 				tx = s.beginTransaction();
 
 				// Guardar objeto en la base de datos
+				s.saveOrUpdate(municipio);
 				s.saveOrUpdate(espacio);
 				// Actualizar información en la base de datos
 				tx.commit();
