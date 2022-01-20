@@ -10,6 +10,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import hibernateUtil.HibernateUtil;
+import modelo.DatosDiario;
+import modelo.Estaciones;
 import modelo.Municipios;
 import modelo.Usuarios;
 
@@ -21,7 +23,7 @@ public class Consultas {
 		ArrayList<String> Contraseña = new ArrayList<String>();
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "SELECT nombre  ,contraseña FROM Usuarios WHERE nombre ='" + nombre + "' AND contraseña='"
+		String hql = "select nombre,contraseña from Usuarios where nombre ='" + nombre + "' AND contraseña='"
 				+ contraseña + "'";
 		Query q = session.createQuery(hql);
 		Usuarios datos = (Usuarios) q.uniqueResult();
@@ -39,50 +41,93 @@ public class Consultas {
 		// session.close();
 
 	}
-//devuelve todos los municipios en base a la provincia elegida
-	public ArrayList<String> ConsultaMuncipios(String provincia) {
 
-		ArrayList<String> municipios = new ArrayList<String>();
+//devuelve todos los municipios en base a la provincia elegida
+	public static List<String> ListaMuncipios(String provincia) {
+
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "SELECT nombre FROM Municipios WHERE provincias='" + provincia + "'";
+		String hql = "select nombre from Municipios where codProvincia=(select codProvincia from Provincias WHERE nomProvincia='" + provincia + "')";
 		Query q = session.createQuery(hql);
-		List<Object> fila = q.list();
-		if (fila.isEmpty()) {
-			for (int i = 0; i < fila.size(); i++) {
-				municipios.add(fila.get(i).toString());
-			}
-		}
-		return municipios;
-	}
+		List<String> muni = q.list();		
+		
+			return (List<String>) muni;
 	
-//devuelve los datos del municipio elegido	
-	public Municipios Municipio(String nombreMunicipio) {
 		
+	}
+
+	// devuelve los datos del municipio elegido
+	public static Municipios ConsultaMunicipio(String nombreMunicipio) {
+
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "SELECT * FROM Municipios WHERE nombre='"+nombreMunicipio+"'";
+		String hql = "from Municipios where nombre='"+ nombreMunicipio + "'";
 		Query q = session.createQuery(hql);
-		Municipios muni = (Municipios)q.uniqueResult();
+		Municipios muni = (Municipios) q.uniqueResult();
+
 		
-		if(muni!=null) {
 			return muni;
+		
+		
+		
+
+	}
+
+	// Consulta para sacar lista de estaciones en base al nombre del municipio
+	// elegido
+	public static List<Estaciones> ConsultaEstacion(String nomMunicipio) {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Estaciones where codMunicipio=(select codMunicipio from Municipios where nombre='"+nomMunicipio+")" ;
+		Query q = session.createQuery(hql);
+		List<Estaciones> estaciones = q.list();
+		if (!estaciones.isEmpty()) {
+			return estaciones;
 		} else {
 			return null;
+			
 		}
-	
-		
 	}
-	public void ConsultaEstacion(String municipio) {
-	
+
+	// sacamos las propiedades de la calidad del aire en base al municipio
+
+	public List<DatosDiario> consultaDatosDiarios(Municipios municipio) {
+		int codMunicipio = municipio.getCodMunicipio();
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "SELECT * FROM Estaciones WHERE ";
+		String hql = "from DatosDiarios where codEstacion="
+				+ "(select codEstacion from Estaciones where codMunicipio="
+				+ "(select codMunicipio from Municipios where codMunicipio='"+codMunicipio+"'))";
+		Query q = session.createQuery(hql);
+		List<DatosDiario> datos = q.list();
 		
+		return datos;
 		
 	}
-	
-	
-	
-	
+	public static void main(String[] args) {
+//		List<String> muni = ListaMuncipios("Bizkaia");
+//		
+//		System.out.println(muni.get(0).toString());
+//		for(int i = 0 ; i < muni.size();i++) {
+//		System.out.println(muni.get(i));
+//		}
+	//****************************************************************
+	//Prueba de consulta estaciones en base al nombre del municipio	
+//	List <Estaciones> estacion = ConsultaEstacion("Bilbao");
+//		
+//		for (int i = 0 ;i<estacion.size();i++ ) {
+//				System.out.println(estacion.get(i).toString());
+//			
+//		}
+//	
+//****************************************************************
+// Prueba login Falta meter usuarios
+//		boolean loginCorrecto  = Login(); 
+//************************************************
+// Prueba municipio elegido		
+//		Municipios munis ; 
+//		munis=ConsultaMunicipio("Bilbao");
+//			System.out.println(munis.getCodMunicipio());
+		
+	}
 }
