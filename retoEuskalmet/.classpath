@@ -8,6 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hibernate"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MySQL"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/gson-2.6.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/MySQL Driver"/>
+	<classpathentry kind="lib" path="C:/Users/in2dam-b/Downloads/gson-2.6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

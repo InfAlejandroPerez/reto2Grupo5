@@ -17,22 +17,22 @@ import modelo.Usuarios;
 
 public class Consultas {
 
-	public boolean Login(String nombre, String contraseña) {
+	public boolean Login(String nombre, String contrasena) {
 
 		ArrayList<String> Nombre = new ArrayList<String>();
-		ArrayList<String> Contraseña = new ArrayList<String>();
+		ArrayList<String> Contrasena = new ArrayList<String>();
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "select nombre,contraseña from Usuarios where nombre ='" + nombre + "' AND contraseña='"
-				+ contraseña + "'";
+		String hql = "select nombre,contraseï¿½a from Usuarios where nombre ='" + nombre + "' AND contraseï¿½a='"
+				+ contrasena + "'";
 		Query q = session.createQuery(hql);
 		Usuarios datos = (Usuarios) q.uniqueResult();
-		// hay que cambiar la base de datos y poner el usuario y la contraseña como
+		// hay que cambiar la base de datos y poner el usuario y la contraseï¿½a como
 		// string
 		String n = Integer.toString(datos.getNombre());
 		String c = Integer.toString(datos.getContrasenia());
 
-		if (n.equals(nombre) && c.equals(contraseña)) {
+		if (n.equals(nombre) && c.equals(contrasena)) {
 			return true;
 		} else {
 			return false;
