@@ -2,7 +2,9 @@ package controlador;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ import com.google.gson.JsonParser;
 import hibernateUtil.HibernateUtil;
 import modelo.DatosDiario;
 import modelo.DatosDiarioId;
+import modelo.DatosHorario;
 import modelo.EspaciosNaturales;
 import modelo.Estaciones;
 import modelo.Municipios;
@@ -28,6 +31,8 @@ public class jsonReader {
 	public static List<Municipios> municipios = new ArrayList<Municipios>();
 	public static List<EspaciosNaturales> espacios = new ArrayList<EspaciosNaturales>();
 	public static List<Estaciones> estaciones = new ArrayList<Estaciones>();
+	public static List<DatosDiario> datosDiarios = new ArrayList<DatosDiario>();
+	public static List<DatosHorario> datosHorarios = new ArrayList<DatosHorario>();
 
 	public static void leerJsonMunicipios(String url) {
 		JsonParser parser = new JsonParser();
@@ -317,7 +322,7 @@ public class jsonReader {
 
 						if (entry.getKey().equals("Name")) {
 							String nombre = entry.getValue().getAsString();
-							nombre = capitalize((nombre.replaceAll("[^a-zA-Z0-9 ]", "").toLowerCase()));
+							nombre = capitalize((nombre.replaceAll("[^a-zA-Z0-9 -]", "").toLowerCase()));
 							estacion.setNombre(nombre);
 						}
 						if (entry.getKey().equals("Latitude")) {
@@ -448,10 +453,8 @@ public class jsonReader {
 
 	}
 
-	public static void leerJsonDatosDiarios() {
-		String data = MyJsonParser.leerURL(
-				"https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json",
-				2);
+	public static void leerJsonDatos(String enlace) {
+		String data = MyJsonParser.leerURL(enlace, 2);
 		JsonParser parser = new JsonParser();
 
 		try {
@@ -465,18 +468,26 @@ public class jsonReader {
 				Estaciones estacion = new Estaciones();
 				Municipios municipio = new Municipios();
 				Provincias provincia = new Provincias();
+				String nombreEstacion = "";
 
 				JsonElement entrada = iter.next();
 				JsonObject objeto = entrada.getAsJsonObject();
 				Iterator<Map.Entry<String, JsonElement>> iter2 = objeto.entrySet().iterator();
 
 				for (Map.Entry<String, JsonElement> entry : objeto.entrySet()) {
-
 					if (entry.getKey().equals("name")) {
 						String nombre = entry.getValue().getAsString();
-						nombre = capitalize((nombre.replaceAll("[^a-zA-Z0-9 ]", "").toLowerCase()));
+						nombre = capitalize((nombre.replaceAll("[_]", " ").toLowerCase()));
 						estacion.setNombre(nombre);
-						System.out.println(entry.getValue().getAsString());
+						nombreEstacion = nombre;
+						System.out.println(nombre);
+					}
+					if (entry.getKey().equals("url")) {
+						String url = entry.getValue().getAsString();
+						if (url.contains("datos_diarios")) {
+							leerJsonDatosDiarios(url, nombreEstacion);
+						}
+
 					}
 
 				}
@@ -489,18 +500,123 @@ public class jsonReader {
 
 	}
 
+	public static void leerJsonDatosDiarios(String enlace, String nombreEstacion) {
+		String data = MyJsonParser.leerURL(enlace, 1);
+		JsonParser parser = new JsonParser();
+
+		try {
+			JsonElement datos = parser.parse(data);
+
+			JsonArray array = datos.getAsJsonArray();
+			Iterator<JsonElement> iter = array.iterator();
+			while (iter.hasNext()) {
+				DatosDiario datosDiario = new DatosDiario();
+				DatosDiarioId datosDiarioId = new DatosDiarioId();
+				Estaciones estacion = new Estaciones();
+
+				JsonElement entrada = iter.next();
+				JsonObject objeto = entrada.getAsJsonObject();
+				Iterator<Map.Entry<String, JsonElement>> iter2 = objeto.entrySet().iterator();
+
+				for (Map.Entry<String, JsonElement> entry : objeto.entrySet()) {
+
+					String key = entry.getKey();
+
+					switch (key) {
+					case "Date":
+						String fecha = entry.getValue().getAsString();
+						SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+						Date date = formato.parse(fecha);
+						datosDiarioId.setFecha(date);
+						break;
+
+					case "COmgm3":
+						String COmgm3 = entry.getValue().getAsString();
+						datosDiario.setComgm3(COmgm3);
+						break;
+
+					case "CO8hmgm3":
+						String CO8hmgm3 = entry.getValue().getAsString();
+						datosDiario.setCo8hmgm3(CO8hmgm3);
+						break;
+
+					case "NOgm3":
+						String NOgm3 = entry.getValue().getAsString();
+						datosDiario.setNogm3(NOgm3);
+						break;
+
+					case "NO2gm3":
+						String NO2gm3 = entry.getValue().getAsString();
+						datosDiario.setNo2gm3(NO2gm3);
+						break;
+
+					case "NOXgm3":
+						String NOXgm3 = entry.getValue().getAsString();
+						datosDiario.setNoxgm3(NOXgm3);
+						break;
+
+					case "PM10gm3":
+						String PM10gm3 = entry.getValue().getAsString();
+						datosDiario.setPm10gm3(PM10gm3);
+						break;
+
+					case "PM25gm3":
+						String PM25gm3 = entry.getValue().getAsString();
+						datosDiario.setPm25gm3(PM25gm3);
+						break;
+
+					case "SO2gm3":
+						String SO2gm3 = entry.getValue().getAsString();
+						datosDiario.setSo2gm3(SO2gm3);
+						break;
+					}
+				}
+
+				for (int j = 0; j < estaciones.size(); j++) {
+					if (estaciones.get(j).getNombre().contains(nombreEstacion)) {
+						datosDiarioId.setCodEstacion(estaciones.get(j).getCodEstacion());
+						
+						estacion.setNombre(nombreEstacion);
+						estacion.setCodEstacion(estaciones.get(j).getCodEstacion());
+						estacion.setCoordenadaX(estaciones.get(j).getCoordenadaX());
+						estacion.setCoordenadaY(estaciones.get(j).getCoordenadaY());
+						estacion.setMunicipios(estaciones.get(j).getMunicipios());
+						datosDiario.setEstaciones(estacion);
+					}
+					datosDiario.setId(datosDiarioId);
+				}
+				datosDiarios.add(datosDiario);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(datosDiarios.size());
+		for (int i = 0; i < datosDiarios.size(); i++) {
+			System.out.println("Fecha: " + datosDiarios.get(i).getId().getFecha());
+			System.out.println("Cod. Estacion: " + datosDiarios.get(i).getId().getCodEstacion());
+			System.out.println("Comgm3: " + datosDiarios.get(i).getComgm3());
+			System.out.println("Nogm3: " + datosDiarios.get(i).getNogm3());
+			System.out.println("Estacion: " + datosDiarios.get(i).getEstaciones().getNombre());
+			System.out.println("--------------------------------");
+		}
+
+	}
+
 	public static void main(String[] args) {
 
 		leerJsonMunicipios("pueblos.json");
-		volcarMunicipios();
+		// volcarMunicipios();
 
 		leerJsonEspacios("espacios-naturales.json");
-		volcarEspaciosNaturales();
+		// volcarEspaciosNaturales();
 
 		leerJsonEstaciones("estaciones.json");
-		volcarEstaciones();
+		//volcarEstaciones();
 
-		// leerJsonDatosDiarios();
+		String url = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
+		leerJsonDatos(url);
 
 	}
 
