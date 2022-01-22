@@ -1,5 +1,6 @@
 package controlador;
 
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,22 +20,22 @@ public class Consultas {
 
 	public boolean Login(String nombre, String contrasena) {
 
-		ArrayList<String> Nombre = new ArrayList<String>();
-		ArrayList<String> Contrasena = new ArrayList<String>();
+		
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "select nombre,contrase�a from Usuarios where nombre ='" + nombre + "' AND contrase�a='"
+		String hql = "select nombre,contrasenia from Usuarios where nombre ='" + nombre + "' AND contrasenia='"
 				+ contrasena + "'";
 		Query q = session.createQuery(hql);
-		Usuarios datos = (Usuarios) q.uniqueResult();
+		 
 		// hay que cambiar la base de datos y poner el usuario y la contrase�a como
 		// string
-		String n = Integer.toString(datos.getNombre());
-		String c = Integer.toString(datos.getContrasenia());
+		
 
-		if (n.equals(nombre) && c.equals(contrasena)) {
+		if (q.getFetchSize()==0) {
+			//si el login no coincide con ningun usuario creado
 			return true;
 		} else {
+			//si el login coincide con un usuario ya registrado
 			return false;
 		}
 
@@ -104,6 +105,28 @@ public class Consultas {
 		return datos;
 		
 	}
+	
+	//Consulta de registro para saber si los 
+	//datos introducidos coinciden con alguien ya registrado
+	public boolean consultaRegistro(String nomUsuario, String contraseña) {
+		
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "Select nombre, contrasenia from Usuarios where nombre='"+nomUsuario+"' AND contrasenia='"+contraseña+"'";
+		Query q = session.createQuery(hql);
+		
+		if(q.getFetchSize()==0) {
+			// si no hay ningun usuario que coincida con el nombre y la contraseña 
+			return true;	
+		} else {
+			// este usuario coincide por lo que no se puede registrar
+			return false ; 
+		}
+		
+		
+	}
+	
+	
 	public static void main(String[] args) {
 //		List<String> muni = ListaMuncipios("Bizkaia");
 //		
