@@ -1,7 +1,9 @@
-package controlador;
+package lecturaFicheros;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Field;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +24,7 @@ import hibernateUtil.HibernateUtil;
 import modelo.DatosDiario;
 import modelo.DatosDiarioId;
 import modelo.DatosHorario;
+import modelo.DatosHorarioId;
 import modelo.EspaciosNaturales;
 import modelo.Estaciones;
 import modelo.Municipios;
@@ -33,6 +36,7 @@ public class jsonReader {
 	public static List<Estaciones> estaciones = new ArrayList<Estaciones>();
 	public static List<DatosDiario> datosDiarios = new ArrayList<DatosDiario>();
 	public static List<DatosHorario> datosHorarios = new ArrayList<DatosHorario>();
+	
 
 	public static void leerJsonMunicipios(String url) {
 		JsonParser parser = new JsonParser();
@@ -322,7 +326,7 @@ public class jsonReader {
 
 						if (entry.getKey().equals("Name")) {
 							String nombre = entry.getValue().getAsString();
-							nombre = capitalize((nombre.replaceAll("[^a-zA-Z0-9 -]", "").toLowerCase()));
+							nombre = capitalize(((nombre.replaceAll("[^a-zA-Z0-9 -]", "").replaceAll("[ñÑ]", "N")).toLowerCase()));
 							estacion.setNombre(nombre);
 						}
 						if (entry.getKey().equals("Latitude")) {
@@ -431,7 +435,7 @@ public class jsonReader {
 			estacion.setNombre(estaciones.get(i).getNombre());
 			estacion.setCodEstacion(estaciones.get(i).getCodEstacion());
 			estacion.setCoordenadaX(estaciones.get(i).getCoordenadaX());
-			estacion.setCoordenadaY(estaciones.get(i).getCoordenadaX());
+			estacion.setCoordenadaY(estaciones.get(i).getCoordenadaY());
 			estacion.setMunicipios(municipio);
 
 			Transaction tx;
@@ -480,12 +484,14 @@ public class jsonReader {
 						nombre = capitalize((nombre.replaceAll("[_]", " ").toLowerCase()));
 						estacion.setNombre(nombre);
 						nombreEstacion = nombre;
-						System.out.println(nombre);
 					}
 					if (entry.getKey().equals("url")) {
 						String url = entry.getValue().getAsString();
 						if (url.contains("datos_diarios")) {
 							leerJsonDatosDiarios(url, nombreEstacion);
+						}
+						if (url.contains("datos_indice")) {
+							leerJsonDatosHorario(url, nombreEstacion);
 						}
 
 					}
@@ -524,17 +530,18 @@ public class jsonReader {
 
 					switch (key) {
 					case "Date":
-						String fecha = entry.getValue().getAsString();
-						SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-						Date date = formato.parse(fecha);
-						datosDiarioId.setFecha(date);
+						DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+						String fechaAsString = entry.getValue().getAsString();
+						Date fecha = sourceFormat.parse(fechaAsString);
+
+						datosDiarioId.setFecha(fecha);
 						break;
 
 					case "COmgm3":
 						String COmgm3 = entry.getValue().getAsString();
 						datosDiario.setComgm3(COmgm3);
 						break;
-
+						
 					case "CO8hmgm3":
 						String CO8hmgm3 = entry.getValue().getAsString();
 						datosDiario.setCo8hmgm3(CO8hmgm3);
@@ -570,55 +577,304 @@ public class jsonReader {
 						datosDiario.setSo2gm3(SO2gm3);
 						break;
 					}
+
 				}
+				/*
+				 * if(datosDiario.getNogm3()==null) { datosDiario.setNogm3(null); }
+				 * if(datosDiario.getNo2gm3()==null) { datosDiario.setNo2gm3(null); }
+				 * if(datosDiario.getNoxgm3()==null) { datosDiario.setNoxgm3(null); }
+				 * if(datosDiario.getPm10gm3()==null) { datosDiario.setPm10gm3(null); }
+				 * if(datosDiario.getPm25gm3()==null) { datosDiario.setPm25gm3(null); }
+				 * if(datosDiario.getSo2gm3()==null) { datosDiario.setSo2gm3(null); }
+				 */
 
 				for (int j = 0; j < estaciones.size(); j++) {
 					if (estaciones.get(j).getNombre().contains(nombreEstacion)) {
 						datosDiarioId.setCodEstacion(estaciones.get(j).getCodEstacion());
-						
+
 						estacion.setNombre(nombreEstacion);
 						estacion.setCodEstacion(estaciones.get(j).getCodEstacion());
 						estacion.setCoordenadaX(estaciones.get(j).getCoordenadaX());
 						estacion.setCoordenadaY(estaciones.get(j).getCoordenadaY());
 						estacion.setMunicipios(estaciones.get(j).getMunicipios());
+
 						datosDiario.setEstaciones(estacion);
+						datosDiario.setId(datosDiarioId);
+						
+						
+						datosDiarios.add(datosDiario);
+
+					} else {
+
 					}
-					datosDiario.setId(datosDiarioId);
+
 				}
-				datosDiarios.add(datosDiario);
+
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		/*
+		 * System.out.println(datosDiarios.size()); for (int i = 0; i <
+		 * datosDiarios.size(); i++) { System.out.println("Fecha: " +
+		 * datosDiarios.get(i).getId().getFecha()); System.out.println("Cod. Estacion: "
+		 * + datosDiarios.get(i).getId().getCodEstacion());
+		 * System.out.println("Comgm3: " + datosDiarios.get(i).getComgm3());
+		 * System.out.println("Nogm3: " + datosDiarios.get(i).getNogm3());
+		 * System.out.println("Estacion: " +
+		 * datosDiarios.get(i).getEstaciones().getNombre());
+		 * System.out.println("--------------------------------"); }
+		 */
 
+	}
+
+	private static void volcarDatosDiarios() {
 		System.out.println(datosDiarios.size());
-		for (int i = 0; i < datosDiarios.size(); i++) {
-			System.out.println("Fecha: " + datosDiarios.get(i).getId().getFecha());
-			System.out.println("Cod. Estacion: " + datosDiarios.get(i).getId().getCodEstacion());
-			System.out.println("Comgm3: " + datosDiarios.get(i).getComgm3());
-			System.out.println("Nogm3: " + datosDiarios.get(i).getNogm3());
-			System.out.println("Estacion: " + datosDiarios.get(i).getEstaciones().getNombre());
-			System.out.println("--------------------------------");
+		int maximum = 0;
+		for (int i = 0; i < municipios.size(); i++) {
+			if (municipios.get(i).getCodMunicipio() > maximum) {
+				maximum = municipios.get(i).getCodMunicipio(); // new maximum
+			}
 		}
 
+		for (int i = 0; i < datosDiarios.size(); i++) {
+
+			// INSERTAR UNA ESTACI�N
+			Provincias provincia = new Provincias();
+			provincia.setNomProvincia(datosDiarios.get(i).getEstaciones().getMunicipios().getProvincias().getNomProvincia());
+			provincia.setCodProvincia(datosDiarios.get(i).getEstaciones().getMunicipios().getProvincias().getCodProvincia());
+
+			Municipios municipio = new Municipios();
+			municipio.setNombre(datosDiarios.get(i).getEstaciones().getMunicipios().getNombre());
+
+			for (int j = 0; j < municipios.size(); j++) {
+				if (municipios.get(j).getNombre().contains(municipio.getNombre())) {
+					municipio.setCodMunicipio(municipios.get(j).getCodMunicipio());
+					municipio.setDescripcion(municipios.get(j).getDescripcion());
+				}
+			}
+			municipio.setProvincias(provincia);
+			if (municipio.getDescripcion() == null) {
+				municipio.setDescripcion("Un pueblo muy bonito por cierto.");
+				maximum++;
+				municipio.setCodMunicipio(maximum);
+				municipios.add(municipio);
+
+			}
+
+			Estaciones estacion = new Estaciones();
+			estacion.setNombre(datosDiarios.get(i).getEstaciones().getNombre());
+			estacion.setCodEstacion(datosDiarios.get(i).getEstaciones().getCodEstacion());
+			estacion.setCoordenadaX(datosDiarios.get(i).getEstaciones().getCoordenadaX());
+			estacion.setCoordenadaY(datosDiarios.get(i).getEstaciones().getCoordenadaY());
+			estacion.setMunicipios(municipio);
+			
+			DatosDiarioId datosDiariosId = new DatosDiarioId();
+			datosDiariosId.setCodEstacion(estacion.getCodEstacion());
+			datosDiariosId.setFecha(datosDiarios.get(i).getId().getFecha());
+			
+			DatosDiario datosDiario = new DatosDiario();
+			datosDiario.setId(datosDiariosId);
+			datosDiario.setComgm3(datosDiarios.get(i).getComgm3());
+			datosDiario.setCo8hmgm3(datosDiarios.get(i).getCo8hmgm3());
+			datosDiario.setNogm3(datosDiarios.get(i).getNogm3());
+			datosDiario.setNo2gm3(datosDiarios.get(i).getNo2gm3());
+			datosDiario.setNoxgm3(datosDiarios.get(i).getNoxgm3());
+			datosDiario.setPm10gm3(datosDiarios.get(i).getPm10gm3());
+			datosDiario.setPm25gm3(datosDiarios.get(i).getPm25gm3());
+			datosDiario.setSo2gm3(datosDiarios.get(i).getSo2gm3());
+
+			Transaction tx;
+			SessionFactory sesion = HibernateUtil.getSessionFactory();
+			Session s = sesion.openSession();
+			try {
+
+				tx = s.beginTransaction();
+
+				// Guardar objeto en la base de datos
+				s.saveOrUpdate(estacion);
+				s.saveOrUpdate(datosDiario);
+				// Actualizar informaci�n en la base de datos
+				tx.commit();
+			} finally {
+				s.close();
+			}
+		}
+	}
+	public static void leerJsonDatosHorario(String enlace, String nombreEstacion) {
+		String data = MyJsonParser.leerURL(enlace, 1);
+		JsonParser parser = new JsonParser();
+
+		try {
+			JsonElement datos = parser.parse(data);
+
+			JsonArray array = datos.getAsJsonArray();
+			Iterator<JsonElement> iter = array.iterator();
+			while (iter.hasNext()) {
+				DatosHorario datosHorario = new DatosHorario();
+				DatosHorarioId datosHorarioId = new DatosHorarioId();
+				Estaciones estacion = new Estaciones();
+
+				JsonElement entrada = iter.next();
+				JsonObject objeto = entrada.getAsJsonObject();
+				Iterator<Map.Entry<String, JsonElement>> iter2 = objeto.entrySet().iterator();
+
+				for (Map.Entry<String, JsonElement> entry : objeto.entrySet()) {
+
+					String key = entry.getKey();
+
+					switch (key) {
+					case "Date":
+						DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+						String fechaAsString = entry.getValue().getAsString();
+						Date fecha = sourceFormat.parse(fechaAsString);
+
+						datosHorarioId.setFecha(fecha);
+						break;
+					
+					case "HourGMT":
+						DateFormat sourceTFormat = new SimpleDateFormat("HH:MM");
+						String horaAsString = entry.getValue().getAsString();
+						Date hora = sourceTFormat.parse(horaAsString);
+
+						datosHorarioId.setHora(hora);
+						break;
+
+					case "COmgm3":
+						String COmgm3 = entry.getValue().getAsString();
+						datosHorario.setComgm3(COmgm3);
+						break;
+						
+					case "CO8hmgm3":
+						String CO8hmgm3 = entry.getValue().getAsString();
+						datosHorario.setCo8hmgm3(CO8hmgm3);
+						break;
+
+					case "NOgm3":
+						String NOgm3 = entry.getValue().getAsString();
+						datosHorario.setNogm3(NOgm3);
+						break;
+
+					case "NO2":
+						String NO2 = entry.getValue().getAsString();
+						datosHorario.setNo2(NO2);
+						break;
+						
+					case "NO2ICA":
+						String NO2ICA = entry.getValue().getAsString();
+						datosHorario.setNo2ica(NO2ICA);
+						break;
+
+					case "NOXgm3":
+						String NOXgm3 = entry.getValue().getAsString();
+						datosHorario.setNoxgm3(NOXgm3);
+						break;
+
+					case "PM10":
+						String PM10 = entry.getValue().getAsString();
+						datosHorario.setPm10(PM10);
+						break;
+						
+					case "PM10ICA":
+						String PM10ICA = entry.getValue().getAsString();
+						datosHorario.setPm10ica(PM10ICA);
+						break;
+
+					case "PM25":
+						String PM25 = entry.getValue().getAsString();
+						datosHorario.setPm25(PM25);
+						break;
+						
+					case "PM25ICA":
+						String PM25ICA = entry.getValue().getAsString();
+						datosHorario.setPm25ica(PM25ICA);
+						break;
+
+					case "SO2":
+						String SO2 = entry.getValue().getAsString();
+						datosHorario.setSo2(SO2);
+						break;
+						
+					case "SO2ICA":
+						String SO2ICA = entry.getValue().getAsString();
+						datosHorario.setSo2ica(SO2ICA);
+						break;
+						
+					case "ICAEstacion":
+						String ICAEstacion = entry.getValue().getAsString();
+						datosHorario.setIcaestacion(ICAEstacion);
+						break;
+					}
+
+				}
+
+				for (int j = 0; j < estaciones.size(); j++) {
+					if (estaciones.get(j).getNombre().contains(nombreEstacion)) {
+						datosHorarioId.setCodEstacion(estaciones.get(j).getCodEstacion());
+
+						estacion.setNombre(nombreEstacion);
+						estacion.setCodEstacion(estaciones.get(j).getCodEstacion());
+						estacion.setCoordenadaX(estaciones.get(j).getCoordenadaX());
+						estacion.setCoordenadaY(estaciones.get(j).getCoordenadaY());
+						estacion.setMunicipios(estaciones.get(j).getMunicipios());
+
+						datosHorario.setEstaciones(estacion);
+						datosHorario.setId(datosHorarioId);
+						
+						
+						datosHorarios.add(datosHorario);
+
+					} else {
+
+					}
+
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		/*
+		 * System.out.println(datosDiarios.size()); for (int i = 0; i <
+		 * datosDiarios.size(); i++) { System.out.println("Fecha: " +
+		 * datosDiarios.get(i).getId().getFecha()); System.out.println("Cod. Estacion: "
+		 * + datosDiarios.get(i).getId().getCodEstacion());
+		 * System.out.println("Comgm3: " + datosDiarios.get(i).getComgm3());
+		 * System.out.println("Nogm3: " + datosDiarios.get(i).getNogm3());
+		 * System.out.println("Estacion: " +
+		 * datosDiarios.get(i).getEstaciones().getNombre());
+		 * System.out.println("--------------------------------"); }
+		 */
+
+	}
+	
+	private static void volcarDatosHorarios() {
+		
 	}
 
 	public static void main(String[] args) {
 
 		leerJsonMunicipios("pueblos.json");
-		// volcarMunicipios();
+		 volcarMunicipios();
 
 		leerJsonEspacios("espacios-naturales.json");
-		// volcarEspaciosNaturales();
+		 volcarEspaciosNaturales();
 
 		leerJsonEstaciones("estaciones.json");
-		//volcarEstaciones();
+		 volcarEstaciones();
 
 		String url = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
 		leerJsonDatos(url);
 
+		volcarDatosDiarios();
+		
+		volcarDatosHorarios();
+
 	}
+
+
 
 	public static String capitalize(String str) {
 		if (str == null || str.isEmpty()) {
@@ -626,6 +882,35 @@ public class jsonReader {
 		}
 
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
+	
+	private static Boolean objectHasProperty(Object obj, String propertyName){
+	    List<Field> properties = getAllFields(obj);
+	    for(Field field : properties){
+	        if(field.getName().equalsIgnoreCase(propertyName)){
+	        	
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+
+	private static List<Field> getAllFields(Object obj){
+	    List<Field> fields = new ArrayList<Field>();
+	    getAllFieldsRecursive(fields, obj.getClass());
+	    return fields;
+	}
+
+	private static List<Field> getAllFieldsRecursive(List<Field> fields, Class<?> type) {
+	    for (Field field: type.getDeclaredFields()) {
+	        fields.add(field);
+	    }
+
+	    if (type.getSuperclass() != null) {
+	        fields = getAllFieldsRecursive(fields, type.getSuperclass());
+	    }
+
+	    return fields;
 	}
 
 }

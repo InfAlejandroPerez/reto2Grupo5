@@ -1,4 +1,4 @@
-package controlador;
+package lecturaFicheros;
 
 import java.io.BufferedReader;
 import java.io.IOException;

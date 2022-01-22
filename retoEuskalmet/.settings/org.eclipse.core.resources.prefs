@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
-encoding//src/controlador/MyJsonParser.java=UTF-8
-encoding//src/controlador/jsonReader.java=UTF-8
+encoding//src/lecturaFicheros/MyJsonParser.java=UTF-8
+encoding//src/lecturaFicheros/jsonReader.java=UTF-8
 encoding/<project>=UTF-8
 encoding/espacios-naturales.json=UTF-8
 encoding/pueblos.json=UTF-8
