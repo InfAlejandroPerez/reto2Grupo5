@@ -78,12 +78,13 @@ public class Consultas {
 
 	// Consulta para sacar lista de estaciones en base al nombre del municipio
 	// elegido
-	public static List<Estaciones> ConsultaEstacion(String nomMunicipio) {
+	public static ArrayList<Estaciones> ConsultaEstacion(String nomMunicipio) {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from Estaciones where codMunicipio=(select codMunicipio from Municipios where nombre='"+nomMunicipio+")" ;
+		String hql = "from Estaciones where codMunicipio=(select codMunicipio from Municipios where nombre='"+nomMunicipio+"')" ;
 		Query q = session.createQuery(hql);
-		List<Estaciones> estaciones = q.list();
+		ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
+				estaciones = (ArrayList<Estaciones>) q.list();
 		if (!estaciones.isEmpty()) {
 			return estaciones;
 		} else {
