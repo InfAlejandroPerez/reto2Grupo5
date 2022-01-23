@@ -36,9 +36,6 @@ public class JsonReader {
 	public static List<Estaciones> estaciones = new ArrayList<Estaciones>();
 	public static List<DatosDiario> datosDiarios = new ArrayList<DatosDiario>();
 	public static List<DatosHorario> datosHorarios = new ArrayList<DatosHorario>();
-	
-
-	
 
 	public static void leerJsonDatos(String enlace) {
 		String data = MyJsonParser.leerURL(enlace, 2);
@@ -61,15 +58,16 @@ public class JsonReader {
 					if (entry.getKey().equals("name")) {
 						String nombre = entry.getValue().getAsString();
 						nombre = capitalize((nombre.replaceAll("[_]", " ").toLowerCase()));
-						
+
 						nombreEstacion = nombre;
 					}
 					if (entry.getKey().equals("url")) {
 						String url = entry.getValue().getAsString();
-						/*
-						 * if (url.contains("datos_diarios")) {
-						 * readerDatosDiarios.leerJsonDatosDiarios(url, nombreEstacion); }
-						 */
+
+						if (url.contains("datos_diarios")) {
+							readerDatosDiarios.leerJsonDatosDiarios(url, nombreEstacion);
+						}
+
 						if (url.contains("datos_indice")) {
 							readerDatosHorarios.leerJsonDatosHorario(url, nombreEstacion);
 						}
@@ -86,23 +84,20 @@ public class JsonReader {
 
 	}
 
-
 	public static void main(String[] args) {
 
 		readerMunicipios.leerJsonMunicipios("pueblos.json");
-		//readerMunicipios.volcarMunicipios();
+		readerMunicipios.volcarMunicipios();
 
 		readerEspacios.leerJsonEspacios("espacios-naturales.json");
-		//readerEspacios.volcarEspaciosNaturales();
+		readerEspacios.volcarEspaciosNaturales();
 
 		readerEstaciones.leerJsonEstaciones("estaciones.json");
-		//readerEstaciones.volcarEstaciones();
+		readerEstaciones.volcarEstaciones();
 
 		String url = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
 		leerJsonDatos(url);
 	}
-
-
 
 	public static String capitalize(String str) {
 		if (str == null || str.isEmpty()) {
@@ -111,34 +106,5 @@ public class JsonReader {
 
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
-	
-	private static Boolean objectHasProperty(Object obj, String propertyName){
-	    List<Field> properties = getAllFields(obj);
-	    for(Field field : properties){
-	        if(field.getName().equalsIgnoreCase(propertyName)){
-	        	
-	            return true;
-	        }
-	    }
-	    return false;
-	}
 
-	private static List<Field> getAllFields(Object obj){
-	    List<Field> fields = new ArrayList<Field>();
-	    getAllFieldsRecursive(fields, obj.getClass());
-	    return fields;
-	}
-
-	private static List<Field> getAllFieldsRecursive(List<Field> fields, Class<?> type) {
-	    for (Field field: type.getDeclaredFields()) {
-	        fields.add(field);
-	    }
-
-	    if (type.getSuperclass() != null) {
-	        fields = getAllFieldsRecursive(fields, type.getSuperclass());
-	    }
-
-	    return fields;
-	}
-	
 }

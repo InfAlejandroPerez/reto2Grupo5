@@ -167,17 +167,21 @@ public class readerDatosHorarios {
 					}
 
 				}
-				System.out.println(JsonReader.datosHorarios.size());
-				for (int i = 0; i < JsonReader.datosHorarios.size(); i++) {
-					System.out.println("Fecha: " + JsonReader.datosHorarios.get(i).getId().getFecha());
-					System.out.println("Hora: " + JsonReader.datosHorarios.get(i).getId().getHora());
-					System.out.println("Cod. Estacion: " + JsonReader.datosHorarios.get(i).getId().getCodEstacion());
-					System.out.println("Comgm3: " + JsonReader.datosHorarios.get(i).getComgm3());
-					System.out.println("Nogm3: " + JsonReader.datosHorarios.get(i).getNogm3());
-					System.out.println("PM25: " + JsonReader.datosHorarios.get(i).getPm25());
-					System.out.println("Estacion: " + JsonReader.datosHorarios.get(i).getEstaciones().getNombre());
-					System.out.println("--------------------------------");
-				}
+				/*
+				 * System.out.println(JsonReader.datosHorarios.size()); for (int i = 0; i <
+				 * JsonReader.datosHorarios.size(); i++) { System.out.println("Fecha: " +
+				 * JsonReader.datosHorarios.get(i).getId().getFecha());
+				 * System.out.println("Hora: " +
+				 * JsonReader.datosHorarios.get(i).getId().getHora());
+				 * System.out.println("Cod. Estacion: " +
+				 * JsonReader.datosHorarios.get(i).getId().getCodEstacion());
+				 * System.out.println("Comgm3: " + JsonReader.datosHorarios.get(i).getComgm3());
+				 * System.out.println("Nogm3: " + JsonReader.datosHorarios.get(i).getNogm3());
+				 * System.out.println("PM25: " + JsonReader.datosHorarios.get(i).getPm25());
+				 * System.out.println("Estacion: " +
+				 * JsonReader.datosHorarios.get(i).getEstaciones().getNombre());
+				 * System.out.println("--------------------------------"); }
+				 */
 				
 
 				volcarDatosHorarios();
@@ -191,7 +195,7 @@ public class readerDatosHorarios {
 	}
 
 	public static void volcarDatosHorarios() {
-		System.out.println(JsonReader.datosHorarios.size());
+		//System.out.println(JsonReader.datosHorarios.size());
 		int maximum = 0;
 		for (int i = 0; i < JsonReader.municipios.size(); i++) {
 			if (JsonReader.municipios.get(i).getCodMunicipio() > maximum) {

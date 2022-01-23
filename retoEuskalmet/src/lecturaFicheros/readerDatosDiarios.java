@@ -41,6 +41,15 @@ public class readerDatosDiarios {
 				JsonElement entrada = iter.next();
 				JsonObject objeto = entrada.getAsJsonObject();
 				Iterator<Map.Entry<String, JsonElement>> iter2 = objeto.entrySet().iterator();
+				
+				datosDiario.setComgm3(null);
+				datosDiario.setCo8hmgm3(null);
+				datosDiario.setNogm3(null);
+				datosDiario.setNo2gm3(null);
+				datosDiario.setNoxgm3(null);
+				datosDiario.setPm10gm3(null);
+				datosDiario.setPm25gm3(null);
+				datosDiario.setSo2gm3(null);
 
 				for (Map.Entry<String, JsonElement> entry : objeto.entrySet()) {
 
