@@ -26,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 import org.hibernate.mapping.List;
 
 import controlador.Consultas;
+import modelo.Estaciones;
 
 import java.net.Socket;
 import java.awt.Panel;
@@ -63,6 +64,15 @@ public class VentanaInicio extends JFrame {
 	private JButton btnSalir;
 	private JButton btnDesconectarse;
 	private JButton btnVolver;
+
+	private JLabel lblNombreMunicipio;
+	private JLabel lblInformacionMunicipioCalidadAire;
+
+	private JLabel lblMunicipio;
+
+	public JComboBox comboBoxMunicipio;
+
+	private String estacion;
 
 	/**
 	 * Launch the application.
@@ -253,13 +263,13 @@ public class VentanaInicio extends JFrame {
 			JButton btnResgistrar = new JButton("Registro");
 			btnResgistrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+
 					try {
 						System.out.println("click");
 						String usuario = textFieldUserRegistro.getText();
 						String pass = textFieldPassRegistro.getText();
 						String passRepetida = textFieldPassRepetidaRegistro.getText();
-								
+
 						salida.writeObject("1 |" + usuario + " | " + pass + " | " + passRepetida);
 						System.out.println(entrada.readObject());
 
@@ -272,7 +282,7 @@ public class VentanaInicio extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
+
 				}
 			});
 			btnResgistrar.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -298,30 +308,32 @@ public class VentanaInicio extends JFrame {
 			add(lblEligeUnaProvincia);
 
 			JComboBox comboBoxProvincia = new JComboBox();
-			comboBoxProvincia.setModel(new DefaultComboBoxModel(new String[] {"Bizkaia", "Guipuzkoa", "Araba/Álava"}));	
+			comboBoxProvincia.setModel(new DefaultComboBoxModel(new String[] { "Bizkaia", "Gipuzkoa", "Araba" }));
 			comboBoxProvincia.setBounds(68, 53, 161, 22);
 			add(comboBoxProvincia);
 
-			JLabel lblMunicipio = new JLabel("Elige un municipio:");
+			lblMunicipio = new JLabel("Elige un municipio:");
 			lblMunicipio.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblMunicipio.setBounds(68, 103, 161, 14);
 			add(lblMunicipio);
 
 			// ESTE LO TENEMOS QUE MODIFICAR
-			JComboBox comboBoxMunicipio = new JComboBox();
-			comboBoxMunicipio.addActionListener(new ActionListener() {
+			comboBoxMunicipio = new JComboBox();
+			comboBoxProvincia.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+
 					ArrayList<String> municipio = new ArrayList<String>();
-					
+
 					municipio = Consultas.ListaMuncipios(comboBoxProvincia.getSelectedItem().toString());
-					
+
+					comboBoxMunicipio.removeAllItems();
+
 					for (int i = 0; i < municipio.size(); i++) {
-						
+
 						comboBoxMunicipio.addItem(municipio.get(i));
-						
+
 					}
-					
+
 				}
 			});
 			comboBoxMunicipio.setBounds(68, 127, 161, 22);
@@ -330,9 +342,9 @@ public class VentanaInicio extends JFrame {
 			JButton btnCalidadAire = new JButton("Calidad del aire");
 			btnCalidadAire.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+
 					panelContenedorPrincipal.add(switchPanel(4));
-					
+
 				}
 			});
 			btnCalidadAire.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -342,9 +354,9 @@ public class VentanaInicio extends JFrame {
 			JButton btnEstaciones = new JButton("Estaciones");
 			btnEstaciones.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+
 					panelContenedorPrincipal.add(switchPanel(5));
-					
+
 				}
 			});
 			btnEstaciones.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -410,7 +422,7 @@ public class VentanaInicio extends JFrame {
 			panel_V4_CalidadAire.setLayout(null);
 
 			// ESTE LO TENEMOS QUE MODIFICAR
-			JLabel lblNombreMunicipio = new JLabel("Elorrieta");
+			lblNombreMunicipio = new JLabel(comboBoxMunicipio.getSelectedItem().toString());
 			lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblNombreMunicipio.setBounds(64, 25, 99, 37);
 			add(lblNombreMunicipio);
@@ -421,7 +433,7 @@ public class VentanaInicio extends JFrame {
 			add(lblCalidadAire);
 
 			// ESTE LO TENEMOS QUE MODIFICAR
-			JLabel lblInformacionMunicipioCalidadAire = new JLabel("");
+			lblInformacionMunicipioCalidadAire = new JLabel("");
 			lblInformacionMunicipioCalidadAire.setBounds(31, 134, 210, 241);
 			add(lblInformacionMunicipioCalidadAire);
 
@@ -437,19 +449,19 @@ public class VentanaInicio extends JFrame {
 			btnSalir.setBounds(10, 25, 33, 32);
 			add(btnSalir);
 
-			
 			btnDesconectarse = new JButton("");
-			btnDesconectarse.setIcon(new ImageIcon(V4_CalidadAire.class.getResource("/imagenes/botonDesconectarse.jpg")));
+			btnDesconectarse
+					.setIcon(new ImageIcon(V4_CalidadAire.class.getResource("/imagenes/botonDesconectarse.jpg")));
 			btnDesconectarse.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+
 					desconectarse();
 
 				}
 			});
 			btnDesconectarse.setBounds(239, 25, 33, 32);
 			add(btnDesconectarse);
-	
+
 			btnVolver = new JButton("VOLVER");
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -475,8 +487,8 @@ public class VentanaInicio extends JFrame {
 			panel_V5_Estaciones.setBounds(this.getBounds());
 			panel_V5_Estaciones.setLayout(null);
 
-			// ESTE LO TENEMOS QUE MODIFICAR
-			JLabel lblNombreMunicipioPorEstacion = new JLabel("Elorrieta");
+			// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
+			JLabel lblNombreMunicipioPorEstacion = new JLabel(comboBoxMunicipio.getSelectedItem().toString());
 			lblNombreMunicipioPorEstacion.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblNombreMunicipioPorEstacion.setBounds(88, 21, 99, 37);
 			add(lblNombreMunicipioPorEstacion);
@@ -486,8 +498,18 @@ public class VentanaInicio extends JFrame {
 			lblEstaciones.setBounds(71, 83, 149, 20);
 			add(lblEstaciones);
 
+		
+			 ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>(); estaciones =
+			 Consultas.ConsultaEstacion(comboBoxMunicipio.getSelectedItem().toString());
+			 
+			 for (int i = 0; i < estaciones.size(); i++) {
+			
+			 estacion = estacion + estaciones.get(i).getNombre().toLowerCase() + " \n ";
+			 
+			 }
+			 
 			// ESTE LO TENEMOS QUE MODIFICAR
-			JLabel lblInformacionMunicipioEstaciones = new JLabel("");
+			JLabel lblInformacionMunicipioEstaciones = new JLabel(estacion);
 			lblInformacionMunicipioEstaciones.setBounds(38, 130, 210, 259);
 			add(lblInformacionMunicipioEstaciones);
 
@@ -576,7 +598,8 @@ public class VentanaInicio extends JFrame {
 					desconectarse();
 				}
 			});
-			btnDesconectarse.setIcon(new ImageIcon(V6_MasInformacion.class.getResource("/imagenes/botonDesconectarse.jpg")));
+			btnDesconectarse
+					.setIcon(new ImageIcon(V6_MasInformacion.class.getResource("/imagenes/botonDesconectarse.jpg")));
 			btnDesconectarse.setBounds(239, 23, 33, 32);
 			add(btnDesconectarse);
 
@@ -616,7 +639,7 @@ public class VentanaInicio extends JFrame {
 	public void desconectarse() {
 
 		panelContenedorPrincipal.add(switchPanel(1));
-		
+
 	}
 
 	public void salir() {
