@@ -43,19 +43,21 @@ public class Consultas {
 
 	}
 
-//devuelve todos los municipios en base a la provincia elegida
-	public static List<String> ListaMuncipios(String provincia) {
+	//devuelve todos los municipios en base a la provincia elegida
+		public static ArrayList<String> ListaMuncipios(String provincia) {
 
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		Session session = sesion.openSession();
-		String hql = "select nombre from Municipios where codProvincia=(select codProvincia from Provincias WHERE nomProvincia='" + provincia + "')";
-		Query q = session.createQuery(hql);
-		List<String> muni = q.list();		
-		
-			return (List<String>) muni;
-	
-		
-	}
+	        SessionFactory sesion = HibernateUtil.getSessionFactory();
+	        Session session = sesion.openSession();
+	        String hql = "select nombre from Municipios where codProvincia=(select codProvincia from Provincias WHERE nomProvincia='" + provincia + "')";
+	        Query q = session.createQuery(hql);
+	        ArrayList<String> muni = new ArrayList<String>();
+	                muni=(ArrayList<String>) q.list();
+
+	            return (ArrayList<String>) muni;
+
+
+	    }
+
 
 	// devuelve los datos del municipio elegido
 	public static Municipios ConsultaMunicipio(String nombreMunicipio) {
