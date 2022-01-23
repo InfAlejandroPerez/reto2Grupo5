@@ -1,6 +1,7 @@
-package vista;
+package cliente;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -9,7 +10,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,12 +23,22 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import vista2.V1_Login;
-import vista2.V2_Registro;
-import vista2.V3_MenuMunicipio;
-import vista2.V4_CalidadAire;
-import vista2.V5_Estaciones;
-import vista2.V6_MasInformacion;
+import org.hibernate.mapping.List;
+
+import controlador.Consultas;
+
+import java.net.Socket;
+import java.awt.Panel;
+import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import vista.V1_Login;
+import vista.V2_Registro;
+import vista.V3_MenuMunicipio;
+import vista.V4_CalidadAire;
+import vista.V5_Estaciones;
+import vista.V6_MasInformacion;
 
 public class VentanaInicio extends JFrame {
 
@@ -73,10 +87,10 @@ public class VentanaInicio extends JFrame {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 401, 511);
-		panelContenedorPrincipal = new JPanel();
+		panelContenedorPrincipal = new JPanel(new CardLayout());
 		panelContenedorPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelContenedorPrincipal.setLayout(new BorderLayout(0, 0));
 		setContentPane(panelContenedorPrincipal);
-		panelContenedorPrincipal.setLayout(null);
 
 		iniciar();
 
@@ -239,7 +253,26 @@ public class VentanaInicio extends JFrame {
 			JButton btnResgistrar = new JButton("Registro");
 			btnResgistrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					
+					try {
+						System.out.println("click");
+						String usuario = textFieldUserRegistro.getText();
+						String pass = textFieldPassRegistro.getText();
+						String passRepetida = textFieldPassRepetidaRegistro.getText();
+								
+						salida.writeObject("1 |" + usuario + " | " + pass + " | " + passRepetida);
+						System.out.println(entrada.readObject());
 
+						panelContenedorPrincipal.add(switchPanel(1));
+
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 				}
 			});
 			btnResgistrar.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -265,6 +298,7 @@ public class VentanaInicio extends JFrame {
 			add(lblEligeUnaProvincia);
 
 			JComboBox comboBoxProvincia = new JComboBox();
+			comboBoxProvincia.setModel(new DefaultComboBoxModel(new String[] {"Bizkaia", "Guipuzkoa", "Araba/Álava"}));	
 			comboBoxProvincia.setBounds(68, 53, 161, 22);
 			add(comboBoxProvincia);
 
@@ -277,7 +311,17 @@ public class VentanaInicio extends JFrame {
 			JComboBox comboBoxMunicipio = new JComboBox();
 			comboBoxMunicipio.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					
+					ArrayList<String> municipio = new ArrayList<String>();
+					
+					municipio = Consultas.ListaMuncipios(comboBoxProvincia.getSelectedItem().toString());
+					
+					for (int i = 0; i < municipio.size(); i++) {
+						
+						comboBoxMunicipio.addItem(municipio.get(i));
+						
+					}
+					
 				}
 			});
 			comboBoxMunicipio.setBounds(68, 127, 161, 22);
@@ -286,7 +330,9 @@ public class VentanaInicio extends JFrame {
 			JButton btnCalidadAire = new JButton("Calidad del aire");
 			btnCalidadAire.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					
+					panelContenedorPrincipal.add(switchPanel(4));
+					
 				}
 			});
 			btnCalidadAire.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -296,7 +342,9 @@ public class VentanaInicio extends JFrame {
 			JButton btnEstaciones = new JButton("Estaciones");
 			btnEstaciones.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					
+					panelContenedorPrincipal.add(switchPanel(5));
+					
 				}
 			});
 			btnEstaciones.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -311,12 +359,13 @@ public class VentanaInicio extends JFrame {
 			});
 			btnPlayas.setFont(new Font("Tahoma", Font.BOLD, 16));
 			btnPlayas.setBounds(58, 317, 187, 40);
+			btnPlayas.setEnabled(false);
 			add(btnPlayas);
 
 			JButton btnMasInformacion = new JButton("Mas Informaci\u00F3n");
 			btnMasInformacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					panelContenedorPrincipal.add(switchPanel(6));
 				}
 			});
 			btnMasInformacion.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -327,8 +376,7 @@ public class VentanaInicio extends JFrame {
 			btnDesconectarse.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
-					desconectarse();
-
+					panelContenedorPrincipal.add(switchPanel(1));
 				}
 			});
 			btnDesconectarse
@@ -389,19 +437,19 @@ public class VentanaInicio extends JFrame {
 			btnSalir.setBounds(10, 25, 33, 32);
 			add(btnSalir);
 
+			
 			btnDesconectarse = new JButton("");
+			btnDesconectarse.setIcon(new ImageIcon(V4_CalidadAire.class.getResource("/imagenes/botonDesconectarse.jpg")));
 			btnDesconectarse.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					
 					desconectarse();
 
 				}
 			});
-			btnDesconectarse
-					.setIcon(new ImageIcon(V4_CalidadAire.class.getResource("/imagenes/botonDesconectarse.jpg")));
 			btnDesconectarse.setBounds(239, 25, 33, 32);
 			add(btnDesconectarse);
-
+	
 			btnVolver = new JButton("VOLVER");
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -528,8 +576,7 @@ public class VentanaInicio extends JFrame {
 					desconectarse();
 				}
 			});
-			btnDesconectarse
-					.setIcon(new ImageIcon(V6_MasInformacion.class.getResource("/imagenes/botonDesconectarse.jpg")));
+			btnDesconectarse.setIcon(new ImageIcon(V6_MasInformacion.class.getResource("/imagenes/botonDesconectarse.jpg")));
 			btnDesconectarse.setBounds(239, 23, 33, 32);
 			add(btnDesconectarse);
 
@@ -569,7 +616,7 @@ public class VentanaInicio extends JFrame {
 	public void desconectarse() {
 
 		panelContenedorPrincipal.add(switchPanel(1));
-
+		
 	}
 
 	public void salir() {
