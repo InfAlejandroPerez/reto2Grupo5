@@ -1,4 +1,4 @@
-package vista2;
+package vista;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;

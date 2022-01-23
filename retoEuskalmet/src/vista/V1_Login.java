@@ -1,4 +1,4 @@
-package vista2;
+package vista;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

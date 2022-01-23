@@ -1,4 +1,4 @@
-package vista;
+package cliente;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
