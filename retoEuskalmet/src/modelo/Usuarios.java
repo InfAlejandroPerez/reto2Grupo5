@@ -1,5 +1,5 @@
 package modelo;
-// Generated 18 ene 2022 17:47:49 by Hibernate Tools 5.5.7.Final
+// Generated 23 ene 2022 19:06:22 by Hibernate Tools 5.5.7.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,21 +10,21 @@ import java.util.Set;
 public class Usuarios implements java.io.Serializable {
 
 	private int codUsuario;
-	private int nombre;
-	private int contrasenia;
+	private String nombre;
+	private String contrasenia;
 	private Set municipioses = new HashSet(0);
 	private Set espaciosNaturaleses = new HashSet(0);
 
 	public Usuarios() {
 	}
 
-	public Usuarios(int codUsuario, int nombre, int contrasenia) {
+	public Usuarios(int codUsuario, String nombre, String contrasenia) {
 		this.codUsuario = codUsuario;
 		this.nombre = nombre;
 		this.contrasenia = contrasenia;
 	}
 
-	public Usuarios(int codUsuario, int nombre, int contrasenia, Set municipioses, Set espaciosNaturaleses) {
+	public Usuarios(int codUsuario, String nombre, String contrasenia, Set municipioses, Set espaciosNaturaleses) {
 		this.codUsuario = codUsuario;
 		this.nombre = nombre;
 		this.contrasenia = contrasenia;
@@ -40,19 +40,19 @@ public class Usuarios implements java.io.Serializable {
 		this.codUsuario = codUsuario;
 	}
 
-	public int getNombre() {
+	public String getNombre() {
 		return this.nombre;
 	}
 
-	public void setNombre(int nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public int getContrasenia() {
+	public String getContrasenia() {
 		return this.contrasenia;
 	}
 
-	public void setContrasenia(int contrasenia) {
+	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
 

@@ -1,59 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 18 ene 2022 17:47:49 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
-    <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.DatosHorario" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="datos_horario">
-        <composite-id class="modelo.DatosHorarioId" mapped="false" name="id" unsaved-value="undefined">
-            <key-property name="codEstacion" type="int">
-                <column name="CodEstacion"/>
-            </key-property>
-            <key-property name="fecha" type="date">
-                <column length="10" name="Fecha"/>
-            </key-property>
-            <key-property name="hora" type="time">
-                <column length="8" name="Hora"/>
-            </key-property>
-        </composite-id>
-        <many-to-one class="modelo.Estaciones" embed-xml="true" fetch="select" insert="false" name="estaciones" not-found="exception" optimistic-lock="true" unique="false" update="false">
-            <column name="CodEstacion" not-null="true"/>
-        </many-to-one>
-        <property generated="never" lazy="false" name="comgm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="COmgm3" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="co8hmgm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="CO8hmgm3" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="nogm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="NOgm3" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="no2" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="NO2" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="no2ica" optimistic-lock="true" type="string" unique="false">
-            <column length="30" name="NO2ICA" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="noxgm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="NOXgm3" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="pm10" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="PM10" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="pm10ica" optimistic-lock="true" type="string" unique="false">
-            <column length="30" name="PM10ICA" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="pm25" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="PM25" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="pm25ica" optimistic-lock="true" type="string" unique="false">
-            <column length="30" name="PM25ICA" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="so2" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="SO2" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="so2ica" optimistic-lock="true" type="string" unique="false">
-            <column length="30" name="SO2ICA" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="icaestacion" optimistic-lock="true" type="string" unique="false">
-            <column length="30" name="ICAEstacion" not-null="true"/>
-        </property>
-    </class>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 23 ene 2022 19:06:22 by Hibernate Tools 5.5.7.Final -->
+<hibernate-mapping>
+ <class catalog="euskalmet" name="modelo.DatosHorario"
+  optimistic-lock="none" table="datos_horario">
+  <composite-id class="modelo.DatosHorarioId" mapped="false" name="id" unsaved-value="undefined">
+   <key-property name="codEstacion" type="int">
+    <column name="CodEstacion"/>
+   </key-property>
+   <key-property name="fecha" type="date">
+    <column length="10" name="Fecha"/>
+   </key-property>
+   <key-property name="hora" type="time">
+    <column length="8" name="Hora"/>
+   </key-property>
+  </composite-id>
+  <many-to-one class="modelo.Estaciones" fetch="select" insert="false"
+   name="estaciones" update="false">
+   <column name="CodEstacion" not-null="true"/>
+  </many-to-one>
+  <property generated="never" lazy="false" name="comgm3" type="string">
+   <column length="30" name="COmgm3"/>
+  </property>
+  <property generated="never" lazy="false" name="co8hmgm3" type="string">
+   <column length="30" name="CO8hmgm3"/>
+  </property>
+  <property generated="never" lazy="false" name="nogm3" type="string">
+   <column length="30" name="NOgm3"/>
+  </property>
+  <property generated="never" lazy="false" name="no2" type="string">
+   <column length="30" name="NO2"/>
+  </property>
+  <property generated="never" lazy="false" name="no2ica" type="string">
+   <column length="30" name="NO2ICA"/>
+  </property>
+  <property generated="never" lazy="false" name="noxgm3" type="string">
+   <column length="30" name="NOXgm3"/>
+  </property>
+  <property generated="never" lazy="false" name="pm10" type="string">
+   <column length="30" name="PM10"/>
+  </property>
+  <property generated="never" lazy="false" name="pm10ica" type="string">
+   <column length="30" name="PM10ICA"/>
+  </property>
+  <property generated="never" lazy="false" name="pm25" type="string">
+   <column length="30" name="PM25" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="pm25ica" type="string">
+   <column length="30" name="PM25ICA"/>
+  </property>
+  <property generated="never" lazy="false" name="so2" type="string">
+   <column length="30" name="SO2"/>
+  </property>
+  <property generated="never" lazy="false" name="so2ica" type="string">
+   <column length="30" name="SO2ICA"/>
+  </property>
+  <property generated="never" lazy="false" name="icaestacion" type="string">
+   <column length="30" name="ICAEstacion"/>
+  </property>
+ </class>
 </hibernate-mapping>
