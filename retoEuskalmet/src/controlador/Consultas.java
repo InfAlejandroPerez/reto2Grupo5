@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import hibernateUtil.HibernateUtil;
+import lecturaFicheros.JsonReader;
 import modelo.DatosDiario;
 import modelo.Estaciones;
 import modelo.Municipios;
@@ -20,6 +21,9 @@ import modelo.Usuarios;
 public class Consultas {
 
 	static int contador;
+	int maxId;
+	public ArrayList<Usuarios> usuarios = new ArrayList<Usuarios>();
+	
 
 	public static boolean Login(String nombre, String contrasena) {
 
@@ -31,13 +35,14 @@ public class Consultas {
 
 		// hay que cambiar la base de datos y poner el usuario y la contrase�a como
 		// string
-
-		if (q.getFirstResult() != 0) {
-			// si el login no coincide con ningun usuario creado
-			return false;
+		List list = q.list();
+		
+		session.close();
+		if ((list != null) && (list.size() > 0)) {
+			return true;
 		} else {
 			// si el login coincide con un usuario ya registrado
-			return true;
+			return false;
 		}
 
 		// session.close();
@@ -46,20 +51,19 @@ public class Consultas {
 	
 	public static boolean checkLogin(String userName, String userPassword){
 		System.out.println("In Check login");
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session s = sesion.openSession();
 		boolean userFound = false;
 		//Query using Hibernate Query Language
-		String SQL_QUERY =" from Usuarios as u where u.nombre=? and u.contrasenia=?";
-		Query query = session.createQuery(SQL_QUERY);
-		query.setParameter(0,userName);
-		query.setParameter(1,userPassword);
+		String SQL_QUERY =" from Usuarios as u where u.nombre='"+userName +"' and u.contrasenia='"+userPassword+"'";
+		Query query = s.createQuery(SQL_QUERY);
 		List list = query.list();
 
 		if ((list != null) && (list.size() > 0)) {
 			userFound= true;
 		}
 
-		session.close();
+		s.close();
 		return userFound;              
    }
 
@@ -70,10 +74,11 @@ public class Consultas {
 		Session session = sesion.openSession();
 		String hql = "select nombre from Municipios where codProvincia=(select codProvincia from Provincias WHERE nomProvincia='"
 				+ provincia + "')";
+		System.out.println(hql);
 		Query q = session.createQuery(hql);
 		ArrayList<String> muni = new ArrayList<String>();
 		muni = (ArrayList<String>) q.list();
-
+		session.close();
 		return (ArrayList<String>) muni;
 
 	}
@@ -86,9 +91,10 @@ public class Consultas {
 		String hql = "from Municipios where nombre='" + nombreMunicipio + "'";
 		Query q = session.createQuery(hql);
 		Municipios muni = (Municipios) q.uniqueResult();
-
+		
+		session.close();
 		return muni;
-
+		
 	}
 
 	// Consulta para sacar lista de estaciones en base al nombre del municipio
@@ -101,6 +107,7 @@ public class Consultas {
 		Query q = session.createQuery(hql);
 		ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
 		estaciones = (ArrayList<Estaciones>) q.list();
+		session.close();
 		if (!estaciones.isEmpty()) {
 			return estaciones;
 		} else {
@@ -120,7 +127,7 @@ public class Consultas {
 		Query q = session.createQuery(hql);
 		ArrayList<DatosDiario> datos = new ArrayList<DatosDiario>();
 		datos = (ArrayList<DatosDiario>) q.list();
-
+		session.close();
 		return datos;
 
 	}
@@ -148,10 +155,12 @@ public class Consultas {
 	public static void insertarDatosRegistro(String nomUsuario, String contraseña) {
 
 
+		
 		// INSERTAR UN MUNICIPIO
 		Usuarios usuario = new Usuarios();
 		usuario.setNombre(nomUsuario);
 		usuario.setContrasenia(contraseña);
+		usuario.setCodUsuario(ConsultaMaxId());
 
 
 
@@ -172,6 +181,28 @@ public class Consultas {
 		}
 	}
 
+
+
+public static int ConsultaMaxId() {
+
+	SessionFactory sesion = HibernateUtil.getSessionFactory();
+	Session session = sesion.openSession();
+	String hql = "select id from Usuarios";
+	Query q = session.createQuery(hql);
+	
+	ArrayList<Integer> ids = new ArrayList<Integer>();
+	ids = (ArrayList<Integer>) q.list();
+	int maxId = 0;
+	
+	for (int j = 0; j < ids.size(); j++) {
+		if (ids.get(j).intValue() > maxId) {
+			maxId = ids.get(j).intValue();
+		}
+	}
+	session.close();
+	return maxId+1;
+
+}
 }
 
 //	public static void main(String[] args) {

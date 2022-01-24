@@ -191,7 +191,8 @@ public class VentanaInicio extends JFrame {
 						String pass = textFieldPass.getText();
 
 						boolean comprobar;
-						comprobar = Consultas.checkLogin(usuario, pass);
+						comprobar = Consultas.Login(usuario, pass);
+						
 
 						if (comprobar = true) {
 
@@ -297,7 +298,7 @@ public class VentanaInicio extends JFrame {
 						String passRepetida = textFieldPassRepetidaRegistro.getText();
 
 						Consultas.insertarDatosRegistro(usuario, passRepetida);
-						panelContenedorPrincipal.add(switchPanel(1));
+						
 
 						/*
 						 * boolean comprobarRegistro; comprobarRegistro =
@@ -316,8 +317,11 @@ public class VentanaInicio extends JFrame {
 						 * }
 						 */
 
-						//salida.writeObject("1 |" + usuario + " | " + pass + " | " + passRepetida);
+						salida.writeObject("1 | " + usuario + " | " + pass + " | " + passRepetida);
 						System.out.println(entrada.readObject());
+						
+						panelContenedorPrincipal.add(switchPanel(1));
+					//show
 
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -366,15 +370,18 @@ public class VentanaInicio extends JFrame {
 			comboBoxProvincia.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
-					ArrayList<String> municipio = new ArrayList<String>();
-
-					municipio = Consultas.ListaMuncipios(comboBoxProvincia.getSelectedItem().toString());
+					ArrayList<String> muni = new ArrayList<String>();
+					
+					System.out.println("Mensaje recibido: " + comboBoxProvincia.getSelectedItem().toString());
+					
+					muni = Consultas.ListaMuncipios(comboBoxProvincia.getSelectedItem().toString());
+					
 
 					comboBoxMunicipio.removeAllItems();
+					
+					for (int i = 0; i < muni.size(); i++) {
 
-					for (int i = 0; i < municipio.size(); i++) {
-
-						comboBoxMunicipio.addItem(municipio.get(i));
+						comboBoxMunicipio.addItem(muni.get(i));
 
 					}
 

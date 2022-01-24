@@ -67,8 +67,8 @@ public class Servidor {
 	}
 
 	private void accion(String[] mensaje) throws IOException {
-		switch (Integer.valueOf(mensaje[0])) {
-		case 1:
+		switch (String.valueOf(mensaje[0])) {
+		case "1":
 			if (mensaje[1].equals("admin")) {
 				salida.writeObject("Bienvenido " + mensaje[1]);
 			} else
