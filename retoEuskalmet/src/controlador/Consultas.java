@@ -32,7 +32,7 @@ public class Consultas {
 		// hay que cambiar la base de datos y poner el usuario y la contrase�a como
 		// string
 
-		if (q.getFetchSize() == 0) {
+		if (q.getFirstResult() != 0) {
 			// si el login no coincide con ningun usuario creado
 			return false;
 		} else {
@@ -43,6 +43,25 @@ public class Consultas {
 		// session.close();
 
 	}
+	
+	public static boolean checkLogin(String userName, String userPassword){
+		System.out.println("In Check login");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		boolean userFound = false;
+		//Query using Hibernate Query Language
+		String SQL_QUERY =" from Usuarios as u where u.nombre=? and u.contrasenia=?";
+		Query query = session.createQuery(SQL_QUERY);
+		query.setParameter(0,userName);
+		query.setParameter(1,userPassword);
+		List list = query.list();
+
+		if ((list != null) && (list.size() > 0)) {
+			userFound= true;
+		}
+
+		session.close();
+		return userFound;              
+   }
 
 	// devuelve todos los municipios en base a la provincia elegida
 	public static ArrayList<String> ListaMuncipios(String provincia) {
@@ -96,7 +115,7 @@ public class Consultas {
 		int codMunicipio = municipio.getCodMunicipio();
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from DatosDiarios where codEstacion=" + "(select codEstacion from Estaciones where codMunicipio="
+		String hql = "from Datos_Diario where codEstacion=" + "(select codEstacion from Estaciones where codMunicipio="
 				+ "(select codMunicipio from Municipios where codMunicipio='" + codMunicipio + "'))";
 		Query q = session.createQuery(hql);
 		ArrayList<DatosDiario> datos = new ArrayList<DatosDiario>();
@@ -128,12 +147,12 @@ public class Consultas {
 
 	public static void insertarDatosRegistro(String nomUsuario, String contraseña) {
 
-		contador++;
+
 		// INSERTAR UN MUNICIPIO
 		Usuarios usuario = new Usuarios();
 		usuario.setNombre(nomUsuario);
 		usuario.setContrasenia(contraseña);
-		usuario.setCodUsuario(contador);
+
 
 
 		Transaction tx;

@@ -72,7 +72,7 @@ public class Servidor {
 			if (mensaje[1].equals("admin")) {
 				salida.writeObject("Bienvenido " + mensaje[1]);
 			} else
-				salida.writeObject("Usuario no encontrado");
+				//salida.writeObject("Usuario no encontrado");
 			break;
 
 		default:

@@ -191,7 +191,7 @@ public class VentanaInicio extends JFrame {
 						String pass = textFieldPass.getText();
 
 						boolean comprobar;
-						comprobar = Consultas.Login(usuario, pass);
+						comprobar = Consultas.checkLogin(usuario, pass);
 
 						if (comprobar = true) {
 
@@ -316,7 +316,7 @@ public class VentanaInicio extends JFrame {
 						 * }
 						 */
 
-						salida.writeObject("1 |" + usuario + " | " + pass + " | " + passRepetida);
+						//salida.writeObject("1 |" + usuario + " | " + pass + " | " + passRepetida);
 						System.out.println(entrada.readObject());
 
 					} catch (IOException e1) {
