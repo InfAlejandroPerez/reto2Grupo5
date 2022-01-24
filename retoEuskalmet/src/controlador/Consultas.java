@@ -1,6 +1,5 @@
 package controlador;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,70 +8,67 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import hibernateUtil.HibernateUtil;
 import modelo.DatosDiario;
 import modelo.Estaciones;
 import modelo.Municipios;
+import modelo.Provincias;
 import modelo.Usuarios;
 
 public class Consultas {
 
-	public boolean Login(String nombre, String contrasena) {
+	static int contador;
 
-		
+	public static boolean Login(String nombre, String contrasena) {
+
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
 		String hql = "select nombre,contrasenia from Usuarios where nombre ='" + nombre + "' AND contrasenia='"
 				+ contrasena + "'";
 		Query q = session.createQuery(hql);
-		 
+
 		// hay que cambiar la base de datos y poner el usuario y la contrase�a como
 		// string
-		
 
-		if (q.getFetchSize()==0) {
-			//si el login no coincide con ningun usuario creado
-			return true;
-		} else {
-			//si el login coincide con un usuario ya registrado
+		if (q.getFetchSize() == 0) {
+			// si el login no coincide con ningun usuario creado
 			return false;
+		} else {
+			// si el login coincide con un usuario ya registrado
+			return true;
 		}
 
 		// session.close();
 
 	}
 
-	//devuelve todos los municipios en base a la provincia elegida
-		public static ArrayList<String> ListaMuncipios(String provincia) {
+	// devuelve todos los municipios en base a la provincia elegida
+	public static ArrayList<String> ListaMuncipios(String provincia) {
 
-	        SessionFactory sesion = HibernateUtil.getSessionFactory();
-	        Session session = sesion.openSession();
-	        String hql = "select nombre from Municipios where codProvincia=(select codProvincia from Provincias WHERE nomProvincia='" + provincia + "')";
-	        Query q = session.createQuery(hql);
-	        ArrayList<String> muni = new ArrayList<String>();
-	                muni=(ArrayList<String>) q.list();
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "select nombre from Municipios where codProvincia=(select codProvincia from Provincias WHERE nomProvincia='"
+				+ provincia + "')";
+		Query q = session.createQuery(hql);
+		ArrayList<String> muni = new ArrayList<String>();
+		muni = (ArrayList<String>) q.list();
 
-	            return (ArrayList<String>) muni;
+		return (ArrayList<String>) muni;
 
-
-	    }
-
+	}
 
 	// devuelve los datos del municipio elegido
 	public static Municipios ConsultaMunicipio(String nombreMunicipio) {
 
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from Municipios where nombre='"+ nombreMunicipio + "'";
+		String hql = "from Municipios where nombre='" + nombreMunicipio + "'";
 		Query q = session.createQuery(hql);
 		Municipios muni = (Municipios) q.uniqueResult();
 
-		
-			return muni;
-		
-		
-		
+		return muni;
 
 	}
 
@@ -81,64 +77,93 @@ public class Consultas {
 	public static ArrayList<Estaciones> ConsultaEstacion(String nomMunicipio) {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from Estaciones where codMunicipio=(select codMunicipio from Municipios where nombre='"+nomMunicipio+"')" ;
+		String hql = "from Estaciones where codMunicipio=(select codMunicipio from Municipios where nombre='"
+				+ nomMunicipio + "')";
 		Query q = session.createQuery(hql);
 		ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
-				estaciones = (ArrayList<Estaciones>) q.list();
+		estaciones = (ArrayList<Estaciones>) q.list();
 		if (!estaciones.isEmpty()) {
 			return estaciones;
 		} else {
 			return null;
-			
+
 		}
 	}
 
 	// sacamos las propiedades de la calidad del aire en base al municipio
 
-	public List<DatosDiario> consultaDatosDiarios(Municipios municipio) {
+	public static ArrayList<DatosDiario> consultaDatosDiarios(Municipios municipio) {
 		int codMunicipio = municipio.getCodMunicipio();
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from DatosDiarios where codEstacion="
-				+ "(select codEstacion from Estaciones where codMunicipio="
-				+ "(select codMunicipio from Municipios where codMunicipio='"+codMunicipio+"'))";
+		String hql = "from DatosDiarios where codEstacion=" + "(select codEstacion from Estaciones where codMunicipio="
+				+ "(select codMunicipio from Municipios where codMunicipio='" + codMunicipio + "'))";
 		Query q = session.createQuery(hql);
-		List<DatosDiario> datos = q.list();
-		
+		ArrayList<DatosDiario> datos = new ArrayList<DatosDiario>();
+		datos = (ArrayList<DatosDiario>) q.list();
+
 		return datos;
-		
+
 	}
-	
-	//Consulta de registro para saber si los 
-	//datos introducidos coinciden con alguien ya registrado
-	public boolean consultaRegistro(String nomUsuario, String contraseña) {
-		
+
+	// Consulta de registro para saber si los
+	// datos introducidos coinciden con alguien ya registrado
+	public static boolean consultaRegistro(String nomUsuario, String contraseña) {
+
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "Select nombre, contrasenia from Usuarios where nombre='"+nomUsuario+"' AND contrasenia='"+contraseña+"'";
+		String hql = "select nombre, contrasenia from Usuarios where nombre='" + nomUsuario + "' AND contrasenia='"
+				+ contraseña + "'";
 		Query q = session.createQuery(hql);
-		
-		if(q.getFetchSize()==0) {
-			// si no hay ningun usuario que coincida con el nombre y la contraseña 
-			return true;	
+		session.close();
+		if (q.getFetchSize() == 0) {
+			// si no hay ningun usuario que coincida con el nombre y la contraseña
+			return true;
 		} else {
 			// este usuario coincide por lo que no se puede registrar
-			return false ; 
+			return false;
 		}
 		
-		
 	}
-	
-	
-	public static void main(String[] args) {
+
+	public static void insertarDatosRegistro(String nomUsuario, String contraseña) {
+
+		contador++;
+		// INSERTAR UN MUNICIPIO
+		Usuarios usuario = new Usuarios();
+		usuario.setNombre(nomUsuario);
+		usuario.setContrasenia(contraseña);
+		usuario.setCodUsuario(contador);
+
+
+		Transaction tx;
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session s = sesion.openSession();
+		try {
+
+			tx = s.beginTransaction();
+
+			// Guardar objeto en la base de datos
+			s.save(usuario);
+			// s.save(espaciosNaturales);
+			// Actualizar informaci�n en la base de datos
+			tx.commit();
+		} finally {
+			s.close();
+		}
+	}
+
+}
+
+//	public static void main(String[] args) {
 //		List<String> muni = ListaMuncipios("Bizkaia");
 //		
 //		System.out.println(muni.get(0).toString());
 //		for(int i = 0 ; i < muni.size();i++) {
 //		System.out.println(muni.get(i));
 //		}
-	//****************************************************************
-	//Prueba de consulta estaciones en base al nombre del municipio	
+		// ****************************************************************
+		// Prueba de consulta estaciones en base al nombre del municipio
 //	List <Estaciones> estacion = ConsultaEstacion("Bilbao");
 //		
 //		for (int i = 0 ;i<estacion.size();i++ ) {
@@ -154,6 +179,6 @@ public class Consultas {
 //		Municipios munis ; 
 //		munis=ConsultaMunicipio("Bilbao");
 //			System.out.println(munis.getCodMunicipio());
-		
-	}
-}
+
+	
+
