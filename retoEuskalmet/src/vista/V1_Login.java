@@ -19,6 +19,7 @@ public class V1_Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldUser;
 	private JTextField textFieldPass;
+	private JLabel lblMensaje;
 
 	/**
 	 * Create the frame.
@@ -78,5 +79,11 @@ public class V1_Login extends JFrame {
 		textFieldPass.setBounds(165, 168, 121, 20);
 		textFieldPass.setColumns(10);
 		contentPane.add(textFieldPass);
+		
+		lblMensaje = new JLabel("");
+		lblMensaje.setVisible(false);
+		lblMensaje.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblMensaje.setBounds(26, 361, 300, 34);
+		contentPane.add(lblMensaje);
 	}
 }

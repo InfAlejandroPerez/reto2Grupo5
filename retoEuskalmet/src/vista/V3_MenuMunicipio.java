@@ -64,6 +64,7 @@ public class V3_MenuMunicipio extends JPanel {
 		add(btnEstaciones);
 		
 		JButton btnPlayas = new JButton("Espacios naturales");
+		btnPlayas.setVisible(false);
 		btnPlayas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -75,6 +76,7 @@ public class V3_MenuMunicipio extends JPanel {
 		add(btnPlayas);
 		
 		JButton btnMasInformacin = new JButton("Mas Informaci\u00F3n");
+		btnMasInformacin.setVisible(false);
 		btnMasInformacin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				

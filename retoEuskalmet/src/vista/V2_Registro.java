@@ -62,6 +62,12 @@ public class V2_Registro extends JPanel {
 		btnResgistro.setBounds(115, 251, 112, 23);
 		add(btnResgistro);
 		
+		JLabel lblMensajeRegistro = new JLabel("");
+		lblMensajeRegistro.setVisible(false);
+		lblMensajeRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblMensajeRegistro.setBounds(10, 386, 348, 30);
+		add(lblMensajeRegistro);
+		
 	}
 		
 }
