@@ -26,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 import org.hibernate.mapping.List;
 
 import controlador.Consultas;
+import modelo.DatosDiario;
 import modelo.Estaciones;
 
 import java.net.Socket;
@@ -47,11 +48,13 @@ public class VentanaInicio extends JFrame {
 	private JPanel panelContenedorPrincipal;
 	private JTextField textFieldUser;
 	private JTextField textFieldPass;
+	private JLabel lblMensaje;
 
 	// REGISTRO
 	private JTextField textFieldUserRegistro;
 	private JTextField textFieldPassRegistro;
 	private JTextField textFieldPassRepetidaRegistro;
+	private JLabel lblMensajeRegistro;
 
 	// CLIENTE
 	private final int PUERTO = 5000;
@@ -172,6 +175,12 @@ public class VentanaInicio extends JFrame {
 			textFieldPass.setColumns(10);
 			panel_V1_Login.add(textFieldPass);
 
+			lblMensaje = new JLabel("");
+			lblMensaje.setVisible(false);
+			lblMensaje.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblMensaje.setBounds(26, 361, 300, 34);
+			panel_V1_Login.add(lblMensaje);
+
 			// Boton Login
 			JButton btnLogin = new JButton("Login");
 			btnLogin.addActionListener(new ActionListener() {
@@ -181,10 +190,21 @@ public class VentanaInicio extends JFrame {
 						String usuario = textFieldUser.getText();
 						String pass = textFieldPass.getText();
 
+						boolean comprobar;
+						comprobar = Consultas.Login(usuario, pass);
+
+						if (comprobar = true) {
+
+							panelContenedorPrincipal.add(switchPanel(3));
+
+						} else {
+
+							lblMensaje.setText("Usuario y contraseña incorrectos");
+							lblMensaje.setVisible(true);
+						}
+
 						salida.writeObject("1/" + usuario + "/" + pass);
 						System.out.println(entrada.readObject());
-
-						panelContenedorPrincipal.add(switchPanel(3));
 
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -260,6 +280,12 @@ public class VentanaInicio extends JFrame {
 			textFieldPassRepetidaRegistro.setBounds(223, 183, 115, 20);
 			add(textFieldPassRepetidaRegistro);
 
+			lblMensajeRegistro = new JLabel("");
+			lblMensajeRegistro.setVisible(false);
+			lblMensajeRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblMensajeRegistro.setBounds(10, 386, 348, 30);
+			add(lblMensajeRegistro);
+
 			JButton btnResgistrar = new JButton("Registro");
 			btnResgistrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -270,10 +296,28 @@ public class VentanaInicio extends JFrame {
 						String pass = textFieldPassRegistro.getText();
 						String passRepetida = textFieldPassRepetidaRegistro.getText();
 
+						Consultas.insertarDatosRegistro(usuario, passRepetida);
+						panelContenedorPrincipal.add(switchPanel(1));
+
+						/*
+						 * boolean comprobarRegistro; comprobarRegistro =
+						 * Consultas.consultaRegistro(usuario, passRepetida); if(comprobarRegistro=true)
+						 * {
+						 * 
+						 * Consultas.insertarDatosRegistro(usuario, passRepetida);
+						 * panelContenedorPrincipal.add(switchPanel(1));
+						 * 
+						 * }else {
+						 * 
+						 * lblMensajeRegistro.
+						 * setText("El usuario y la contraseña introducidos ya existen");
+						 * lblMensajeRegistro.setVisible(true);
+						 * 
+						 * }
+						 */
+
 						salida.writeObject("1 |" + usuario + " | " + pass + " | " + passRepetida);
 						System.out.println(entrada.readObject());
-
-						panelContenedorPrincipal.add(switchPanel(1));
 
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -364,6 +408,7 @@ public class VentanaInicio extends JFrame {
 			add(btnEstaciones);
 
 			JButton btnPlayas = new JButton("Espacios naturales");
+			btnPlayas.setVisible(false);
 			btnPlayas.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
@@ -371,10 +416,11 @@ public class VentanaInicio extends JFrame {
 			});
 			btnPlayas.setFont(new Font("Tahoma", Font.BOLD, 16));
 			btnPlayas.setBounds(58, 317, 187, 40);
-			btnPlayas.setEnabled(false);
+			btnPlayas.setEnabled(true);
 			add(btnPlayas);
 
 			JButton btnMasInformacion = new JButton("Mas Informaci\u00F3n");
+			btnMasInformacion.setVisible(false);
 			btnMasInformacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					panelContenedorPrincipal.add(switchPanel(6));
@@ -385,6 +431,7 @@ public class VentanaInicio extends JFrame {
 			add(btnMasInformacion);
 
 			btnDesconectarse = new JButton("");
+			btnDesconectarse.setVisible(false);
 			btnDesconectarse.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
@@ -432,8 +479,13 @@ public class VentanaInicio extends JFrame {
 			lblCalidadAire.setBounds(53, 87, 149, 20);
 			add(lblCalidadAire);
 
-			// ESTE LO TENEMOS QUE MODIFICAR
-			lblInformacionMunicipioCalidadAire = new JLabel("");
+			ArrayList<DatosDiario> datosDiarios = new ArrayList<DatosDiario>();
+			datosDiarios = Consultas.consultaDatosDiarios(Consultas.ConsultaMunicipio(comboBoxMunicipio.getSelectedItem().toString()));
+			String calidadAire;
+			calidadAire = datosDiarios.get(0).toString();
+
+			// ESTAMOS MOSTRANDO
+			lblInformacionMunicipioCalidadAire = new JLabel(calidadAire);
 			lblInformacionMunicipioCalidadAire.setBounds(31, 134, 210, 241);
 			add(lblInformacionMunicipioCalidadAire);
 
@@ -450,8 +502,8 @@ public class VentanaInicio extends JFrame {
 			add(btnSalir);
 
 			btnDesconectarse = new JButton("");
-			btnDesconectarse
-					.setIcon(new ImageIcon(V4_CalidadAire.class.getResource("/imagenes/botonDesconectarse.jpg")));
+			btnDesconectarse.setVisible(false);
+			btnDesconectarse.setIcon(new ImageIcon(V4_CalidadAire.class.getResource("/imagenes/botonDesconectarse.jpg")));
 			btnDesconectarse.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
@@ -498,16 +550,15 @@ public class VentanaInicio extends JFrame {
 			lblEstaciones.setBounds(71, 83, 149, 20);
 			add(lblEstaciones);
 
-		
-			 ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>(); estaciones =
-			 Consultas.ConsultaEstacion(comboBoxMunicipio.getSelectedItem().toString());
-			 
-			 for (int i = 0; i < estaciones.size(); i++) {
-			
-			 estacion = estacion + estaciones.get(i).getNombre().toLowerCase() + " \n ";
-			 
-			 }
-			 
+			ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
+			estaciones = Consultas.ConsultaEstacion(comboBoxMunicipio.getSelectedItem().toString());
+
+			for (int i = 0; i < estaciones.size(); i++) {
+
+				estacion = estacion + estaciones.get(i).getNombre().toLowerCase() + " \n ";
+
+			}
+
 			// ESTE LO TENEMOS QUE MODIFICAR
 			JLabel lblInformacionMunicipioEstaciones = new JLabel(estacion);
 			lblInformacionMunicipioEstaciones.setBounds(38, 130, 210, 259);
@@ -526,6 +577,7 @@ public class VentanaInicio extends JFrame {
 			add(btnSalir);
 
 			JButton btnDesconectarse = new JButton("");
+			btnDesconectarse.setVisible(false);
 			btnDesconectarse.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
@@ -533,8 +585,7 @@ public class VentanaInicio extends JFrame {
 
 				}
 			});
-			btnDesconectarse
-					.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
+			btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
 			btnDesconectarse.setBounds(239, 21, 33, 32);
 			add(btnDesconectarse);
 
