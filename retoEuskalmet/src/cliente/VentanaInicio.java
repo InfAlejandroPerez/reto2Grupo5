@@ -468,7 +468,7 @@ public class VentanaInicio extends JFrame {
 			panel_V4_CalidadAire.setBounds(this.getBounds());
 			panel_V4_CalidadAire.setLayout(null);
 
-			// ESTE LO TENEMOS QUE MODIFICAR
+			// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
 			lblNombreMunicipio = new JLabel(comboBoxMunicipio.getSelectedItem().toString());
 			lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblNombreMunicipio.setBounds(64, 25, 99, 37);
@@ -484,8 +484,9 @@ public class VentanaInicio extends JFrame {
 			String calidadAire;
 			calidadAire = datosDiarios.get(0).toString();
 
-			// ESTAMOS MOSTRANDO
+			// AÑADIMOS LOS DATOS DIARIOS EN BASE A MUNICIPIOS QUE ESTÁN EN LA VARIABLE calidadAire DENTRO DEL LABEL
 			lblInformacionMunicipioCalidadAire = new JLabel(calidadAire);
+			lblInformacionMunicipioCalidadAire.setFont(new Font("Tahoma", Font.BOLD, 13));
 			lblInformacionMunicipioCalidadAire.setBounds(31, 134, 210, 241);
 			add(lblInformacionMunicipioCalidadAire);
 
@@ -541,7 +542,7 @@ public class VentanaInicio extends JFrame {
 
 			// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
 			JLabel lblNombreMunicipioPorEstacion = new JLabel(comboBoxMunicipio.getSelectedItem().toString());
-			lblNombreMunicipioPorEstacion.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblNombreMunicipioPorEstacion.setFont(new Font("Tahoma", Font.BOLD, 16));			
 			lblNombreMunicipioPorEstacion.setBounds(88, 21, 99, 37);
 			add(lblNombreMunicipioPorEstacion);
 
@@ -559,8 +560,9 @@ public class VentanaInicio extends JFrame {
 
 			}
 
-			// ESTE LO TENEMOS QUE MODIFICAR
+			// AÑADIMOS LAS ESTACIONES EN BASE A MUNICIPIOS QUE ESTÁN EN LA VARIABLE estacion DENTRO DEL LABEL
 			JLabel lblInformacionMunicipioEstaciones = new JLabel(estacion);
+			lblInformacionMunicipioEstaciones.setFont(new Font("Tahoma", Font.BOLD, 13));
 			lblInformacionMunicipioEstaciones.setBounds(38, 130, 210, 259);
 			add(lblInformacionMunicipioEstaciones);
 
