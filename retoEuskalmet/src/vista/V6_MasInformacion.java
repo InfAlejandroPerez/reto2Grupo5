@@ -18,7 +18,7 @@ public class V6_MasInformacion extends JPanel {
 		
 		JLabel lblMunicipio = new JLabel("Municipio");
 		lblMunicipio.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblMunicipio.setBounds(86, 23, 86, 31);
+		lblMunicipio.setBounds(98, 24, 128, 31);
 		add(lblMunicipio);
 		
 		JLabel lblDatosVarios = new JLabel("Datos varios:");
@@ -27,7 +27,7 @@ public class V6_MasInformacion extends JPanel {
 		add(lblDatosVarios);
 		
 		JLabel lblMasInformacion = new JLabel(".");
-		lblMasInformacion.setBounds(43, 135, 200, 221);
+		lblMasInformacion.setBounds(10, 131, 260, 235);
 		add(lblMasInformacion);
 		
 		JButton btnSalir = new JButton("");

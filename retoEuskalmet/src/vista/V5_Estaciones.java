@@ -18,7 +18,7 @@ public class V5_Estaciones extends JPanel {
 		
 		JLabel lblNombreMunicipio = new JLabel("Elorrieta");
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNombreMunicipio.setBounds(88, 21, 99, 37);
+		lblNombreMunicipio.setBounds(71, 21, 149, 37);
 		add(lblNombreMunicipio);
 		
 		JLabel lblEstaciones = new JLabel("Estaciones:");
@@ -27,7 +27,7 @@ public class V5_Estaciones extends JPanel {
 		add(lblEstaciones);
 		
 		JLabel lblInformacionMunicipioEstaciones = new JLabel("");
-		lblInformacionMunicipioEstaciones.setBounds(38, 130, 210, 259);
+		lblInformacionMunicipioEstaciones.setBounds(10, 114, 262, 275);
 		add(lblInformacionMunicipioEstaciones);
 		
 		JButton btnSalir = new JButton("");
