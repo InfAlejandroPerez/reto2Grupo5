@@ -44,16 +44,16 @@ public class V1_Login extends JFrame {
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 16));
 		contentPane.add(btnLogin);
 
-		JButton btnResgistro = new JButton("Registro");
-		btnResgistro.addActionListener(new ActionListener() {
+		JButton btnRegistro = new JButton("Registro");
+		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				
 			}
 		});
-		btnResgistro.setBounds(103, 267, 112, 23);
-		btnResgistro.setFont(new Font("Tahoma", Font.BOLD, 16));
-		contentPane.add(btnResgistro);
+		btnRegistro.setBounds(103, 267, 112, 23);
+		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
+		contentPane.add(btnRegistro);
 
 		JLabel lblPass = new JLabel("Contrase\u00F1a");
 		lblPass.setBounds(53, 166, 112, 21);
