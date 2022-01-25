@@ -27,38 +27,51 @@ public class V_Login extends JPanel {
 	private JTextField textFieldUser;
 	private JLabel lblMensaje;
 	private JPasswordField passwordField;
+	
+	
 
 	/**
 	 * Create the panel.
 	 */
 	public V_Login() {
-		setBounds(0, 0, 500, 300);
+		setBounds(0, 0, 700, 500);
 
 		// Boton Login
 		JButton btnLogin = new JButton("Login");
-		/*
-		 * btnLogin.addActionListener(new ActionListener() { public void
-		 * actionPerformed(ActionEvent e) { try { System.out.println("click"); String
-		 * usuario = textFieldUser.getText(); String pass = passwordField.getText();
-		 * 
-		 * boolean comprobar; comprobar = Consultas.Login(usuario, pass);
-		 * 
-		 * if (comprobar = true) {
-		 * 
-		 * VentanaInicio3.panelContenedorPrincipal.add();
-		 * 
-		 * } else {
-		 * 
-		 * lblMensaje.setText("Usuario y contraseña incorrectos");
-		 * lblMensaje.setVisible(true); }
-		 * 
-		 * //VentanaInicio3.salida.writeObject("1/" + usuario + "/" + pass);
-		 * //System.out.println(entrada.readObject());
-		 * 
-		 * } catch (IOException e1) { // TODO Auto-generated catch block
-		 * e1.printStackTrace(); } catch (ClassNotFoundException e1) { // TODO
-		 * Auto-generated catch block e1.printStackTrace(); } } });
-		 */
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String usuario = textFieldUser.getText();
+					String pass = passwordField.getText();
+
+					boolean comprobar;
+					comprobar = Consultas.Login(usuario, pass);
+
+					if (comprobar == true) {
+						
+
+						VentanaInicio3.switchPanel(3);
+						
+						//VentanaInicio3.setPreferredSize(500, 300);
+
+					} else {
+
+						lblMensaje.setText("Usuario y contraseña incorrectos");
+						lblMensaje.setVisible(true);
+					}
+
+					VentanaInicio3.salida.writeObject("1/" + usuario + "/" + pass);
+					System.out.println(VentanaInicio3.entrada.readObject());
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		setLayout(null);
 		btnLogin.setBounds(180, 179, 115, 29);
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -84,7 +97,11 @@ public class V_Login extends JPanel {
 		JButton btnRegistro = new JButton("Registro");
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
+				System.out.println("a");
+				
+				VentanaInicio3.switchPanel(2);
+				
 			}
 		});
 		btnRegistro.setBounds(180, 219, 115, 29);
@@ -106,5 +123,7 @@ public class V_Login extends JPanel {
 		passwordField.setBounds(230, 135, 144, 20);
 		add(passwordField);
 
+		setLocation(0, 0);
+        setLayout(null);
 	}
 }

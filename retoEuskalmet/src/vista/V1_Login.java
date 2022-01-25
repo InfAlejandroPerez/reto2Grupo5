@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import cliente.VentanaInicio3;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -26,6 +29,9 @@ public class V1_Login extends JFrame {
 	 */
 	public V1_Login() {
 
+		VentanaInicio3 ventanaInicio3 = new VentanaInicio3();
+		ventanaInicio3.setTitle("Login");
+        
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 352, 473);
 		contentPane = new JPanel();

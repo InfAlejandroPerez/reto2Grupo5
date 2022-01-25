@@ -13,19 +13,18 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import vista.V_Login;
+import vista.V_Registro;
 
 public class VentanaInicio3 extends JFrame {
 	
 	public static JPanel panelContenedorPrincipal;
-
-	private JPanel contentPane;
 	
 	// CLIENTE
 	public final int PUERTO = 5000;
 	public final String IP = "localhost";
 	public Socket cliente = null;
-	public ObjectInputStream entrada = null;
-	public ObjectOutputStream salida = null;
+	public static ObjectInputStream entrada = null;
+	public static ObjectOutputStream salida = null;
 
 	/**
 	 * Launch the application.
@@ -55,20 +54,18 @@ public class VentanaInicio3 extends JFrame {
 		setContentPane(panelContenedorPrincipal);
 
 
-		panelContenedorPrincipal.add(switchPanel(1));
+		switchPanel(1);
 	}
 	
-	public JPanel switchPanel(int num) {
-		System.out.println("a");
+	public static void switchPanel(int num) {
 		JPanel panel = new JPanel();
 
+		// Estas 4 lineas son imprescindibles para poner mas de un JPanel encima de un
+		// JFrame
 		panelContenedorPrincipal.removeAll();
 		panelContenedorPrincipal.invalidate();
 		panelContenedorPrincipal.validate();
 		panelContenedorPrincipal.repaint();
-
-		// Estas 4 lineas son imprescindibles para poner mas de un JPanel encima de un
-		// JFrame
 
 		// Hacemos un switch para ir metiendo todos los panel
 		switch (num) {
@@ -78,12 +75,22 @@ public class VentanaInicio3 extends JFrame {
 			V_Login panel1 = new V_Login();
 			
 			panel = panel1;
-			setTitle("Login");
-	        setBounds(panel.getBounds());
+
+			
+	        
+			break;
+		
+		case 2:
+			V_Registro panel2 = new V_Registro();
+			
+			panel = panel2;
+
+
 			break;
 			
 		}
-		return panel;
+		panelContenedorPrincipal.add(panel);
+		
 	}
 
 }
