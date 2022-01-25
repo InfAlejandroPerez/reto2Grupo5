@@ -1,4 +1,4 @@
-package vista;
+package vista2;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -8,27 +8,28 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class V5_Estaciones extends JPanel {
-
+public class V4_CalidadAire extends JPanel {
+	
+		
 	/**
 	 * Create the panel.
 	 */
-	public V5_Estaciones() {
+	public V4_CalidadAire() {
 		setLayout(null);
 		
 		JLabel lblNombreMunicipio = new JLabel("Elorrieta");
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNombreMunicipio.setBounds(71, 21, 149, 37);
+		lblNombreMunicipio.setBounds(73, 25, 145, 37);
 		add(lblNombreMunicipio);
 		
-		JLabel lblEstaciones = new JLabel("Estaciones:");
-		lblEstaciones.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblEstaciones.setBounds(71, 83, 149, 20);
-		add(lblEstaciones);
+		JLabel lblCalidadAire = new JLabel("Calidad del aire:");
+		lblCalidadAire.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblCalidadAire.setBounds(53, 87, 149, 20);
+		add(lblCalidadAire);
 		
-		JLabel lblInformacionMunicipioEstaciones = new JLabel("");
-		lblInformacionMunicipioEstaciones.setBounds(10, 114, 262, 275);
-		add(lblInformacionMunicipioEstaciones);
+		JLabel lblInformacionMunicipioCalidadAire = new JLabel("");
+		lblInformacionMunicipioCalidadAire.setBounds(10, 134, 262, 241);
+		add(lblInformacionMunicipioCalidadAire);
 		
 		JButton btnSalir = new JButton("");
 		btnSalir.addActionListener(new ActionListener() {
@@ -36,8 +37,8 @@ public class V5_Estaciones extends JPanel {
 				
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
-		btnSalir.setBounds(10, 21, 33, 32);
+		btnSalir.setIcon(new ImageIcon(V4_CalidadAire.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setBounds(10, 25, 33, 32);
 		add(btnSalir);
 		
 		JButton btnDesconectarse = new JButton("");
@@ -46,8 +47,8 @@ public class V5_Estaciones extends JPanel {
 				
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
-		btnDesconectarse.setBounds(239, 21, 33, 32);
+		btnDesconectarse.setIcon(new ImageIcon(V4_CalidadAire.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setBounds(239, 25, 33, 32);
 		add(btnDesconectarse);
 		
 		JButton btnVolver = new JButton("VOLVER");
@@ -57,7 +58,7 @@ public class V5_Estaciones extends JPanel {
 			}
 		});
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnVolver.setBounds(84, 414, 118, 36);
+		btnVolver.setBounds(84, 404, 118, 36);
 		add(btnVolver);
 
 	}

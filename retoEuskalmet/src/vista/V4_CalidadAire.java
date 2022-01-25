@@ -19,7 +19,7 @@ public class V4_CalidadAire extends JPanel {
 		
 		JLabel lblNombreMunicipio = new JLabel("Elorrieta");
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNombreMunicipio.setBounds(64, 25, 99, 37);
+		lblNombreMunicipio.setBounds(73, 25, 145, 37);
 		add(lblNombreMunicipio);
 		
 		JLabel lblCalidadAire = new JLabel("Calidad del aire:");
@@ -28,7 +28,7 @@ public class V4_CalidadAire extends JPanel {
 		add(lblCalidadAire);
 		
 		JLabel lblInformacionMunicipioCalidadAire = new JLabel("");
-		lblInformacionMunicipioCalidadAire.setBounds(31, 134, 210, 241);
+		lblInformacionMunicipioCalidadAire.setBounds(10, 134, 262, 241);
 		add(lblInformacionMunicipioCalidadAire);
 		
 		JButton btnSalir = new JButton("");

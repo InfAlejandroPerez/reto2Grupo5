@@ -1,4 +1,4 @@
-package vista;
+package vista2;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -6,9 +6,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import cliente.VentanaInicio3;
-
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -19,20 +16,30 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
 public class V1_Login extends JFrame {
-
+	
+	public static enum enumAcciones{
+		LOGIN,
+		REGISTRO	
+	}
+	
 	private JPanel contentPane;
+	
+	private JLabel lblUser;
+	private JLabel lblPass;
+	private JLabel lblNewLabel;
+	
 	private JTextField textFieldUser;
 	private JLabel lblMensaje;
 	private JPasswordField passwordField;
-
+	
+	private JButton btnLogin;
+	private JButton btnRegistro;
+	
 	/**
 	 * Create the frame.
 	 */
 	public V1_Login() {
 
-		VentanaInicio3 ventanaInicio3 = new VentanaInicio3();
-		ventanaInicio3.setTitle("Login");
-        
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 352, 473);
 		contentPane = new JPanel();
@@ -40,7 +47,7 @@ public class V1_Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JButton btnLogin = new JButton("Login");
+		btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -51,7 +58,7 @@ public class V1_Login extends JFrame {
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 16));
 		contentPane.add(btnLogin);
 
-		JButton btnRegistro = new JButton("Registro");
+		btnRegistro = new JButton("Registro");
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -62,17 +69,17 @@ public class V1_Login extends JFrame {
 		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
 		contentPane.add(btnRegistro);
 
-		JLabel lblPass = new JLabel("Contrase\u00F1a");
+		lblPass = new JLabel("Contrase\u00F1a");
 		lblPass.setBounds(53, 166, 112, 21);
 		lblPass.setFont(new Font("Tahoma", Font.BOLD, 16));
 		contentPane.add(lblPass);
 
-		JLabel lblUser = new JLabel("Usuario");
+		lblUser = new JLabel("Usuario");
 		lblUser.setBounds(53, 140, 86, 21);
 		lblUser.setFont(new Font("Tahoma", Font.BOLD, 16));
 		contentPane.add(lblUser);
 
-		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(25, 30, 273, 62);
 		lblNewLabel.setIcon(new ImageIcon(V1_Login.class.getResource("/Imagenes/euskalmet.jpg")));
 		contentPane.add(lblNewLabel);
@@ -91,5 +98,79 @@ public class V1_Login extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(165, 168, 121, 20);
 		contentPane.add(passwordField);
+		
+		
+	}
+
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	public void setContentPane(JPanel contentPane) {
+		this.contentPane = contentPane;
+	}
+
+	public JLabel getLblUser() {
+		return lblUser;
+	}
+
+	public void setLblUser(JLabel lblUser) {
+		this.lblUser = lblUser;
+	}
+
+	public JLabel getLblPass() {
+		return lblPass;
+	}
+
+	public void setLblPass(JLabel lblPass) {
+		this.lblPass = lblPass;
+	}
+
+	public JLabel getLblNewLabel() {
+		return lblNewLabel;
+	}
+
+	public void setLblNewLabel(JLabel lblNewLabel) {
+		this.lblNewLabel = lblNewLabel;
+	}
+
+	public JTextField getTextFieldUser() {
+		return textFieldUser;
+	}
+
+	public void setTextFieldUser(JTextField textFieldUser) {
+		this.textFieldUser = textFieldUser;
+	}
+
+	public JLabel getLblMensaje() {
+		return lblMensaje;
+	}
+
+	public void setLblMensaje(JLabel lblMensaje) {
+		this.lblMensaje = lblMensaje;
+	}
+
+	public JPasswordField getPasswordField() {
+		return passwordField;
+	}
+
+	public void setPasswordField(JPasswordField passwordField) {
+		this.passwordField = passwordField;
+	}
+
+	public JButton getBtnLogin() {
+		return btnLogin;
+	}
+
+	public void setBtnLogin(JButton btnLogin) {
+		this.btnLogin = btnLogin;
+	}
+
+	public JButton getBtnRegistro() {
+		return btnRegistro;
+	}
+
+	public void setBtnRegistro(JButton btnRegistro) {
+		this.btnRegistro = btnRegistro;
 	}
 }
