@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import java.awt.Rectangle;
 import javax.swing.JPasswordField;
 import java.awt.Component;
+import java.awt.SystemColor;
 
 public class V_Login extends JPanel {
 
@@ -34,7 +35,8 @@ public class V_Login extends JPanel {
 	 * Create the panel.
 	 */
 	public V_Login() {
-		setBounds(0, 0, 700, 500);
+		setBackground(SystemColor.textInactiveText);
+		setBounds(0, 0, 700, 460);
 
 		// Boton Login
 		JButton btnLogin = new JButton("Login");
@@ -73,43 +75,31 @@ public class V_Login extends JPanel {
 			}
 		});
 		setLayout(null);
-		btnLogin.setBounds(180, 179, 115, 29);
+		btnLogin.setBounds(295, 348, 115, 29);
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 16));
 		add(btnLogin);
 
 		JLabel lblPass = new JLabel("Contrase\u00F1a");
-		lblPass.setBounds(101, 133, 93, 20);
+		lblPass.setForeground(Color.WHITE);
+		lblPass.setBounds(222, 278, 93, 20);
 		lblPass.setFont(new Font("Tahoma", Font.BOLD, 16));
 		add(lblPass);
 
 		JLabel lblUser = new JLabel("Usuario");
-		lblUser.setBounds(101, 102, 62, 20);
+		lblUser.setForeground(Color.WHITE);
+		lblUser.setBounds(222, 247, 62, 20);
 		lblUser.setFont(new Font("Tahoma", Font.BOLD, 16));
 		add(lblUser);
 
 		JLabel lblNewLabel = new JLabel("", SwingConstants.CENTER);
 		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblNewLabel.setBounds(101, 11, 273, 62);
+		lblNewLabel.setBounds(221, 122, 273, 62);
 		lblNewLabel.setIcon(new ImageIcon(V1_Login.class.getResource("/Imagenes/euskalmet.jpg")));
 		add(lblNewLabel);
 
-		JButton btnRegistro = new JButton("Registro");
-		btnRegistro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				System.out.println("a");
-				
-				VentanaInicio3.switchPanel(2);
-				
-			}
-		});
-		btnRegistro.setBounds(180, 219, 115, 29);
-		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
-		add(btnRegistro);
-
 		textFieldUser = new JTextField();
-		textFieldUser.setBounds(230, 104, 144, 20);
+		textFieldUser.setBounds(351, 249, 144, 20);
 		textFieldUser.setColumns(10);
 		add(textFieldUser);
 
@@ -120,8 +110,32 @@ public class V_Login extends JPanel {
 		add(lblMensaje);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(230, 135, 144, 20);
+		passwordField.setBounds(351, 280, 144, 20);
 		add(passwordField);
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setOpaque(true);
+		lblNewLabel_1.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1.setBounds(0, 0, 66, 461);
+		add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_2 = new JLabel("");
+		lblNewLabel_1_2.setOpaque(true);
+		lblNewLabel_1_2.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1_2.setBounds(634, 0, 66, 500);
+		add(lblNewLabel_1_2);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("");
+		lblNewLabel_1_1.setOpaque(true);
+		lblNewLabel_1_1.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1_1.setBounds(70, 0, 568, 66);
+		add(lblNewLabel_1_1);
+		
+		JLabel lblNewLabel_1_1_1 = new JLabel("");
+		lblNewLabel_1_1_1.setOpaque(true);
+		lblNewLabel_1_1_1.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1_1_1.setBounds(66, 395, 564, 66);
+		add(lblNewLabel_1_1_1);
 
 		setLocation(0, 0);
         setLayout(null);

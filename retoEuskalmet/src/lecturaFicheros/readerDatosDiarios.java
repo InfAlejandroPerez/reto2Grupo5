@@ -110,6 +110,8 @@ public class readerDatosDiarios {
 				for (int j = 0; j < JsonReader.estaciones.size(); j++) {
 					if (JsonReader.estaciones.get(j).getNombre().contains(nombreEstacion)) {
 						datosDiarioId.setCodEstacion(JsonReader.estaciones.get(j).getCodEstacion());
+						
+						System.out.println(datosDiarioId.getCodEstacion());
 
 						estacion.setNombre(nombreEstacion);
 						estacion.setCodEstacion(JsonReader.estaciones.get(j).getCodEstacion());

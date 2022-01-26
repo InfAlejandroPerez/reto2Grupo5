@@ -487,7 +487,7 @@ public class VentanaInicio extends JFrame {
 			add(lblCalidadAire);
 
 			ArrayList<DatosDiario> datosDiarios = new ArrayList<DatosDiario>();
-			datosDiarios = Consultas.consultaDatosDiarios(Consultas.ConsultaMunicipio(comboBoxMunicipio.getSelectedItem().toString()));
+			//datosDiarios = Consultas.consultaDatosDiarios(Consultas.ConsultaMunicipio(comboBoxMunicipio.getSelectedItem().toString()));
 			String calidadAire;
 			calidadAire = datosDiarios.get(0).toString();
 

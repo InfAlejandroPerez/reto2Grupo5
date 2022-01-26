@@ -138,37 +138,45 @@ public class Consultas {
 
 	// sacamos las propiedades de la calidad del aire en base al municipio
 
-	public static ArrayList<DatosDiario> consultaDatosDiarios(Municipios municipio) {
-		int codMunicipio = municipio.getCodMunicipio();
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		Session session = sesion.openSession();
-		String hql = "from Datos_Diario where codEstacion=" + "(select codEstacion from Estaciones where codMunicipio="
-				+ "(select codMunicipio from Municipios where codMunicipio='" + codMunicipio + "'))";
-		Query q = session.createQuery(hql);
-		ArrayList<DatosDiario> datos = new ArrayList<DatosDiario>();
-		datos = (ArrayList<DatosDiario>) q.list();
-		session.close();
-		return datos;
-
-	}
+	/*
+	 * public static ArrayList<DatosDiario> consultaDatosDiarios(String
+	 * nombreEstacion) { SessionFactory sesion = HibernateUtil.getSessionFactory();
+	 * Session session = sesion.openSession(); String hql =
+	 * "from DatosDiario where codEstacion=" +
+	 * "(select codEstacion from Estaciones where nombre='"+ nombreEstacion +
+	 * "') and fecha ='2021-12-31'";
+	 * 
+	 * Query q = session.createQuery(hql); DatosDiario datos = new DatosDiario();
+	 * datos = (DatosDiario) q.uniqueResult(); session.close(); if
+	 * (!datos.isEmpty()) { return datos; } else { return null;
+	 * 
+	 * } }
+	 */
 
 	// Consulta de registro para saber si los
 	// datos introducidos coinciden con alguien ya registrado
-	public static boolean consultaRegistro(String nomUsuario, String contraseña) {
+	public static boolean consultaRegistro(String nomUsuario, String contrasenia) {
 
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
 		String hql = "select nombre, contrasenia from Usuarios where nombre='" + nomUsuario + "' AND contrasenia='"
-				+ contraseña + "'";
+				+ contrasenia + "'";
 		Query q = session.createQuery(hql);
 		session.close();
-		if (q.getFetchSize() == 0) {
-			// si no hay ningun usuario que coincida con el nombre y la contraseña
+		
+		List list = q.list();
+
+		if ((list != null) && (list.size() == 0)) {
 			return true;
-		} else {
-			// este usuario coincide por lo que no se puede registrar
+		}else {
 			return false;
 		}
+		
+		/*
+		 * if (q.getFetchSize() == 0) { // si no hay ningun usuario que coincida con el
+		 * nombre y la contraseña return true; } else { // este usuario coincide por lo
+		 * que no se puede registrar return false; }
+		 */
 
 	}
 

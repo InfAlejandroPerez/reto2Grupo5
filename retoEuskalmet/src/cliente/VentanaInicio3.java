@@ -12,7 +12,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import vista.V_CalidadAireEstacion;
+import vista.V_Estaciones;
 import vista.V_Login;
+import vista.V_MenuMunicipio;
 import vista.V_Registro;
 
 public class VentanaInicio3 extends JFrame {
@@ -23,8 +26,8 @@ public class VentanaInicio3 extends JFrame {
 	public final int PUERTO = 5000;
 	public final String IP = "localhost";
 	public Socket cliente = null;
-	public static ObjectInputStream entrada = null;
-	public static ObjectOutputStream salida = null;
+	public static ObjectInputStream entrada;
+	public static ObjectOutputStream salida;
 
 	/**
 	 * Launch the application.
@@ -46,10 +49,11 @@ public class VentanaInicio3 extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaInicio3() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
 		panelContenedorPrincipal = new JPanel(new CardLayout());
-		panelContenedorPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelContenedorPrincipal.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panelContenedorPrincipal.setLayout(new BorderLayout(0, 0));
 		setContentPane(panelContenedorPrincipal);
 
@@ -84,6 +88,30 @@ public class VentanaInicio3 extends JFrame {
 			V_Registro panel2 = new V_Registro();
 			
 			panel = panel2;
+
+
+			break;
+			
+		case 3:
+			V_MenuMunicipio panel3 = new V_MenuMunicipio();
+			
+			panel = panel3;
+
+
+			break;
+			
+		case 4:
+			V_Estaciones panel4 = new V_Estaciones();
+			
+			panel = panel4;
+
+
+			break;
+			
+		case 5:
+			V_CalidadAireEstacion panel5 = new V_CalidadAireEstacion();
+			
+			panel = panel5;
 
 
 			break;
