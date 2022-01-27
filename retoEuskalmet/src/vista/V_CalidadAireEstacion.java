@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -37,27 +38,28 @@ public class V_CalidadAireEstacion extends JPanel {
 	 */
 	public V_CalidadAireEstacion() {
 		
-		//Consultas.consultaDatosDiarios(V_Estaciones.list.getSelectedValue().toString());
+		datosDiario = Consultas.consultaDatosDiarios(V_Estaciones.list.getSelectedValue().toString());
 		
-		System.out.println(datosDiario.size());
+		System.out.println(V_Estaciones.list.getSelectedValue().toString());
 		
 		for (int i = 0; i < datosDiario.size(); i++) {
-			cOmgm3 = datosDiario.get(i).getComgm3();
-			cO8hmgm3 = datosDiario.get(i).getCo8hmgm3();
-			nOgm3 = datosDiario.get(i).getNogm3();
-			nO2gm3 = datosDiario.get(i).getNo2gm3();
-			nOXgm3 = datosDiario.get(i).getNoxgm3();
-			pM10gm3 = datosDiario.get(i).getPm10gm3();
-			pM25gm3 = datosDiario.get(i).getPm25gm3();
-			sO2gm3 = datosDiario.get(i).getSo2gm3();
+			cOmgm3 = Optional.ofNullable(datosDiario.get(i).getComgm3()).orElse("--");
+			cO8hmgm3 = Optional.ofNullable(datosDiario.get(i).getCo8hmgm3()).orElse("--");
+			nOgm3 = Optional.ofNullable(datosDiario.get(i).getNogm3()).orElse("--");
+			nO2gm3 = Optional.ofNullable(datosDiario.get(i).getNo2gm3()).orElse("--");
+			nOXgm3 = Optional.ofNullable(datosDiario.get(i).getNoxgm3()).orElse("--");
+			pM10gm3 = Optional.ofNullable(datosDiario.get(i).getPm10gm3()).orElse("--");
+			pM25gm3 = Optional.ofNullable(datosDiario.get(i).getPm25gm3()).orElse("--");
+			sO2gm3 = Optional.ofNullable(datosDiario.get(i).getSo2gm3()).orElse("--");
 		}
 		
 		setBackground(SystemColor.textInactiveText);
 		setBounds(0, 0, 700, 460);
 		setLayout(null);
 		
+		
 		// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
-		JLabel lblNombreMunicipio = new JLabel(V_MenuMunicipio.comboBoxMunicipio.getSelectedItem().toString());
+		JLabel lblNombreMunicipio = new JLabel(V_Estaciones.list.getSelectedValue().toString());
 		lblNombreMunicipio.setForeground(Color.WHITE);
 		lblNombreMunicipio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 24));

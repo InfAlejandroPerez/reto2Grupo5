@@ -118,7 +118,8 @@ public class Consultas {
 		}
 	}
 
-	// Consulta para sacar lista de espacios naturales en base al nombre del municipio
+	// Consulta para sacar lista de espacios naturales en base al nombre del
+	// municipio
 	// elegido
 	public static ArrayList<EspaciosNaturales> ConsultaEspaciosNaturales(String nomMunicipio) {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
@@ -138,20 +139,24 @@ public class Consultas {
 
 	// sacamos las propiedades de la calidad del aire en base al municipio
 
-	/*
-	 * public static ArrayList<DatosDiario> consultaDatosDiarios(String
-	 * nombreEstacion) { SessionFactory sesion = HibernateUtil.getSessionFactory();
-	 * Session session = sesion.openSession(); String hql =
-	 * "from DatosDiario where codEstacion=" +
-	 * "(select codEstacion from Estaciones where nombre='"+ nombreEstacion +
-	 * "') and fecha ='2021-12-31'";
-	 * 
-	 * Query q = session.createQuery(hql); DatosDiario datos = new DatosDiario();
-	 * datos = (DatosDiario) q.uniqueResult(); session.close(); if
-	 * (!datos.isEmpty()) { return datos; } else { return null;
-	 * 
-	 * } }
-	 */
+	public static ArrayList<DatosDiario> consultaDatosDiarios(String nombreEstacion) {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from DatosDiario where codEstacion=" + "(select codEstacion from Estaciones where nombre='"+nombreEstacion.trim()+"') and fecha = '2021-12-31'";
+System.out.println(hql);
+		Query q = session.createQuery(hql);
+		ArrayList<DatosDiario> datos = new ArrayList<DatosDiario>();
+		datos = (ArrayList<DatosDiario>) q.list();
+		session.close();
+		if (!datos.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<DatosDiario>) datos;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
+	}
 
 	// Consulta de registro para saber si los
 	// datos introducidos coinciden con alguien ya registrado
@@ -163,15 +168,15 @@ public class Consultas {
 				+ contrasenia + "'";
 		Query q = session.createQuery(hql);
 		session.close();
-		
+
 		List list = q.list();
 
 		if ((list != null) && (list.size() == 0)) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
-		
+
 		/*
 		 * if (q.getFetchSize() == 0) { // si no hay ningun usuario que coincida con el
 		 * nombre y la contraseña return true; } else { // este usuario coincide por lo

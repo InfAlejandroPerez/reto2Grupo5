@@ -62,7 +62,7 @@ public class V_Login extends JPanel {
 						lblMensaje.setVisible(true);
 					}
 
-					VentanaInicio3.salida.writeObject("1/" + usuario + "/" + pass);
+					//VentanaInicio3.salida.writeObject("1/" + usuario + "/" + pass);
 					System.out.println(VentanaInicio3.entrada.readObject());
 
 				} catch (IOException e1) {
@@ -99,6 +99,7 @@ public class V_Login extends JPanel {
 		add(lblNewLabel);
 
 		textFieldUser = new JTextField();
+		textFieldUser.setText("unai");
 		textFieldUser.setBounds(351, 249, 144, 20);
 		textFieldUser.setColumns(10);
 		add(textFieldUser);
@@ -110,6 +111,7 @@ public class V_Login extends JPanel {
 		add(lblMensaje);
 
 		passwordField = new JPasswordField();
+		passwordField.setText("unai");
 		passwordField.setBounds(351, 280, 144, 20);
 		add(passwordField);
 		
