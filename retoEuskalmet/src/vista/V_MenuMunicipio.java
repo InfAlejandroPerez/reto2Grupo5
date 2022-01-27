@@ -84,7 +84,9 @@ public class V_MenuMunicipio extends JPanel {
 		JButton btnEstaciones = new JButton("Ver sus estaciones");
 		btnEstaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
+				V_Estaciones.municipio = comboBoxMunicipio.getSelectedItem().toString();
+				
 				VentanaInicio3.switchPanel(4);
 
 			}
@@ -97,7 +99,7 @@ public class V_MenuMunicipio extends JPanel {
 		btnPlayas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				VentanaInicio3.switchPanel(6);
 			}
 		});
 		btnPlayas.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -137,13 +139,13 @@ public class V_MenuMunicipio extends JPanel {
 		JLabel lblNewLabel_1_1 = new JLabel("");
 		lblNewLabel_1_1.setOpaque(true);
 		lblNewLabel_1_1.setBackground(Color.DARK_GRAY);
-		lblNewLabel_1_1.setBounds(70, 0, 568, 66);
+		lblNewLabel_1_1.setBounds(66, 0, 572, 66);
 		add(lblNewLabel_1_1);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("");
 		lblNewLabel_1_1_1.setOpaque(true);
 		lblNewLabel_1_1_1.setBackground(Color.DARK_GRAY);
-		lblNewLabel_1_1_1.setBounds(66, 395, 564, 66);
+		lblNewLabel_1_1_1.setBounds(66, 395, 572, 66);
 		add(lblNewLabel_1_1_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("");

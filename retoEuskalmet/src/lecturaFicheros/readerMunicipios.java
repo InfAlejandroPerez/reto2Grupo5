@@ -54,7 +54,7 @@ public class readerMunicipios {
 							}
 						}
 						if (entry.getKey().equals("turismDescription")) {
-							municipio.setDescripcion(entry.getValue().getAsString());
+							municipio.setDescripcion(entry.getValue().getAsString().replace("<p>", "").replace("</p>", "").replace("<strong>", "").replace("</strong>", ""));
 						}
 						if (entry.getKey().equals("territory")) {
 							if (entry.getValue().getAsString().contains(" ")) {

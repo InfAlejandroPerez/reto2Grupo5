@@ -13,15 +13,18 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import vista.V_CalidadAireEstacion;
+import vista.V_Espacios;
 import vista.V_Estaciones;
+import vista.V_InfoEspacio;
+import vista.V_InfoMunicipio;
 import vista.V_Login;
 import vista.V_MenuMunicipio;
 import vista.V_Registro;
 
 public class VentanaInicio3 extends JFrame {
-	
+
 	public static JPanel panelContenedorPrincipal;
-	
+
 	// CLIENTE
 	public final int PUERTO = 5000;
 	public final String IP = "localhost";
@@ -57,10 +60,9 @@ public class VentanaInicio3 extends JFrame {
 		panelContenedorPrincipal.setLayout(new BorderLayout(0, 0));
 		setContentPane(panelContenedorPrincipal);
 
-
 		switchPanel(1);
 	}
-	
+
 	public static void switchPanel(int num) {
 		JPanel panel = new JPanel();
 
@@ -116,9 +118,32 @@ public class VentanaInicio3 extends JFrame {
 
 			break;
 			
-		}
-		panelContenedorPrincipal.add(panel);
+		case 6:
+			V_Espacios panel6 = new V_Espacios();
+			
+			panel = panel6;
+	
+	
+			break;
+			
+		case 7:
+			V_InfoEspacio panel7 = new V_InfoEspacio();
+			
+			panel = panel7;
+	
+	
+			break;
+			
+		case 8:
+			V_InfoMunicipio panel8 = new V_InfoMunicipio();
+			
+			panel = panel8;
+	
+	
+			break;
 		
-	}
+	}panelContenedorPrincipal.add(panel);
+
+}
 
 }

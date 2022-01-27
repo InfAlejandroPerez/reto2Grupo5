@@ -54,7 +54,7 @@ public class readerEspacios {
 							espacio.setNombre(entry.getValue().getAsString());
 						}
 						if (entry.getKey().equals("turismDescription")) {
-							espacio.setDescripcion(entry.getValue().getAsString());
+							espacio.setDescripcion(entry.getValue().getAsString().replace("<p>", "").replace("</p>", "").replace("<strong>", "").replace("</strong>", ""));
 						}
 						if (entry.getKey().equals("municipality")) {
 							if (entry.getValue().getAsString().contains("*")) {

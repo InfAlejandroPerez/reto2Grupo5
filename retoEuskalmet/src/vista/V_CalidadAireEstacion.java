@@ -31,16 +31,20 @@ public class V_CalidadAireEstacion extends JPanel {
 	
 	public ArrayList<DatosDiario> datosDiario = new ArrayList<DatosDiario>();
 	
-	public String cOmgm3, cO8hmgm3, nOgm3, nO2gm3, nOXgm3, pM10gm3, pM25gm3, sO2gm3; 
+	public String cOmgm3, cO8hmgm3, nOgm3, nO2gm3, nOXgm3, pM10gm3, pM25gm3, sO2gm3;
+	
+	public static String estacion;
 
 	/**
 	 * Create the panel.
 	 */
 	public V_CalidadAireEstacion() {
+		//estacion = Optional.ofNullable(V_Estaciones.list.getSelectedValue().toString()).orElse(V_InfoMunicipio.list.getSelectedValue().toString());
 		
-		datosDiario = Consultas.consultaDatosDiarios(V_Estaciones.list.getSelectedValue().toString());
 		
-		System.out.println(V_Estaciones.list.getSelectedValue().toString());
+		datosDiario = Consultas.consultaDatosDiarios(estacion);
+		
+		//System.out.println(V_Estaciones.list.getSelectedValue().toString());
 		
 		for (int i = 0; i < datosDiario.size(); i++) {
 			cOmgm3 = Optional.ofNullable(datosDiario.get(i).getComgm3()).orElse("--");
@@ -59,18 +63,18 @@ public class V_CalidadAireEstacion extends JPanel {
 		
 		
 		// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
-		JLabel lblNombreMunicipio = new JLabel(V_Estaciones.list.getSelectedValue().toString());
+		JLabel lblNombreMunicipio = new JLabel(estacion);
 		lblNombreMunicipio.setForeground(Color.WHITE);
 		lblNombreMunicipio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblNombreMunicipio.setBounds(250, 83, 202, 37);
 		add(lblNombreMunicipio);
 		
-		JLabel lblCalidad = new JLabel("CALIDAD");
+		JLabel lblCalidad = new JLabel("CALIDAD DEL AIRE");
 		lblCalidad.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCalidad.setForeground(Color.WHITE);
-		lblCalidad.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblCalidad.setBounds(95, 129, 94, 20);
+		lblCalidad.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblCalidad.setBounds(95, 129, 141, 20);
 		add(lblCalidad);
 		
 		JButton btnSalir = new JButton("");
@@ -96,8 +100,9 @@ public class V_CalidadAireEstacion extends JPanel {
 		JButton btnVolver = new JButton("VOLVER");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				volverMenuMunicipio();
+				
+				
+				volverMenu();
 
 			}
 		});
@@ -120,13 +125,13 @@ public class V_CalidadAireEstacion extends JPanel {
 		JLabel lblNewLabel_1_1 = new JLabel("");
 		lblNewLabel_1_1.setOpaque(true);
 		lblNewLabel_1_1.setBackground(Color.DARK_GRAY);
-		lblNewLabel_1_1.setBounds(70, 0, 568, 66);
+		lblNewLabel_1_1.setBounds(66, 0, 572, 66);
 		add(lblNewLabel_1_1);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("");
 		lblNewLabel_1_1_1.setOpaque(true);
 		lblNewLabel_1_1_1.setBackground(Color.DARK_GRAY);
-		lblNewLabel_1_1_1.setBounds(66, 395, 564, 66);
+		lblNewLabel_1_1_1.setBounds(66, 395, 572, 66);
 		add(lblNewLabel_1_1_1);
 		
 		JSeparator separator = new JSeparator();
@@ -254,9 +259,9 @@ public class V_CalidadAireEstacion extends JPanel {
 		add(lblNewLabel);
 		
 	}
-	public void volverMenuMunicipio() {
+	public void volverMenu() {
 
-		VentanaInicio3.switchPanel(4);
+		VentanaInicio3.switchPanel(3);
 
 	}
 

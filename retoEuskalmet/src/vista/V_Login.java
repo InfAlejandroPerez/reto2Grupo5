@@ -130,13 +130,13 @@ public class V_Login extends JPanel {
 		JLabel lblNewLabel_1_1 = new JLabel("");
 		lblNewLabel_1_1.setOpaque(true);
 		lblNewLabel_1_1.setBackground(Color.DARK_GRAY);
-		lblNewLabel_1_1.setBounds(70, 0, 568, 66);
+		lblNewLabel_1_1.setBounds(66, 0, 572, 66);
 		add(lblNewLabel_1_1);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("");
 		lblNewLabel_1_1_1.setOpaque(true);
 		lblNewLabel_1_1_1.setBackground(Color.DARK_GRAY);
-		lblNewLabel_1_1_1.setBounds(66, 395, 564, 66);
+		lblNewLabel_1_1_1.setBounds(66, 395, 572, 66);
 		add(lblNewLabel_1_1_1);
 
 		setLocation(0, 0);

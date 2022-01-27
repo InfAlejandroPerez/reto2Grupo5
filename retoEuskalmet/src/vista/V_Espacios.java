@@ -12,10 +12,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import cliente.VentanaInicio3;
 import controlador.Consultas;
+import modelo.EspaciosNaturales;
 import modelo.Estaciones;
 
 import java.awt.SystemColor;
@@ -27,32 +29,23 @@ import javax.swing.DefaultListModel;
 
 import java.awt.Cursor;
 
-public class V_Estaciones extends JPanel {
+public class V_Espacios extends JPanel {
 
-	public ArrayList<Estaciones> estacionesMunicipio = new ArrayList<Estaciones>();
+	public ArrayList<EspaciosNaturales> espacios = new ArrayList<EspaciosNaturales>();
 	public static JList list;
-	
-	public static String municipio;
 	/**
 	 * Create the panel.
 	 */
-	public V_Estaciones() {
+	public V_Espacios() {
 		setBackground(SystemColor.textInactiveText);
 		setBounds(0, 0, 700, 460);
 		setLayout(null);
 		
-		// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
-		JLabel lblNombreMunicipio = new JLabel(municipio);
-		lblNombreMunicipio.setForeground(Color.WHITE);
-		lblNombreMunicipio.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 24));
-		lblNombreMunicipio.setBounds(250, 83, 202, 37);
-		add(lblNombreMunicipio);
-		
-		JLabel lblEstaciones = new JLabel("Estaciones:");
+		JLabel lblEstaciones = new JLabel("Espacios Naturales");
+		lblEstaciones.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEstaciones.setForeground(Color.WHITE);
-		lblEstaciones.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblEstaciones.setBounds(71, 100, 149, 20);
+		lblEstaciones.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblEstaciones.setBounds(394, 77, 207, 43);
 		add(lblEstaciones);
 		
 		JButton btnSalir = new JButton("");
@@ -112,41 +105,44 @@ public class V_Estaciones extends JPanel {
 		add(lblNewLabel_1_1_1);
 		
 		DefaultListModel model = new DefaultListModel();
-		estacionesMunicipio = Consultas.ConsultaEstacion(municipio);
+		espacios = Consultas.ConsultaEspaciosNaturales();
 
-		for (int i = 0; i < estacionesMunicipio.size(); i++) {
-			model.addElement(estacionesMunicipio.get(i).getNombre()+"\n");
+		for (int i = 0; i < espacios.size(); i++) {
+			model.addElement(espacios.get(i).getNombre()+"\n");
 		}
 
 
 		
 		list = new JList();
+		list.setVisibleRowCount(0);
+		list.setValueIsAdjusting(true);
 		list.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		list.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		list.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		list.setModel(model);
 		list.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBackground(SystemColor.controlHighlight);
-		list.setBounds(100, 131, 240, 240);
+		list.setBackground(SystemColor.control);
+		list.setBounds(85, 67, 261, 328);
 		list.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
-		        JList list = (JList)evt.getSource();
+		        JList list_ = (JList)evt.getSource();
 		        if (evt.getClickCount() == 2) {
 		        	
-		        	V_CalidadAireEstacion.estacion = list.getSelectedValue().toString();
-		        	verInfoEstacion();
+		        	V_InfoEspacio.lblNombreEspacio.setText(list.getSelectedValue().toString());
+		        	verInfoEspacio();
 		        	
 		        	
 		        }
 		    }
 		});
-		add(list);
+
+	    add(list);
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon(V_Espacios.class.getResource("/imagenes/Imagenes/estacion.png")));
-		lblNewLabel.setBounds(361, 131, 250, 240);
+		lblNewLabel.setIcon(new ImageIcon(V_Espacios.class.getResource("/imagenes/Imagenes/espacio.png")));
+		lblNewLabel.setBounds(361, 131, 256, 256);
 		add(lblNewLabel);
 	}
 	
@@ -156,7 +152,7 @@ public class V_Estaciones extends JPanel {
 
 	}
 	
-	public void verInfoEstacion() {
-		VentanaInicio3.switchPanel(5);
+	public void verInfoEspacio() {
+		VentanaInicio3.switchPanel(7);
 	}
 }
