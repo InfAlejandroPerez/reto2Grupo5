@@ -125,7 +125,7 @@ public class V_Estaciones extends JPanel {
 		list.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBackground(SystemColor.controlHighlight);
-		list.setBounds(115, 127, 481, 257);
+		list.setBounds(115, 149, 481, 235);
 		list.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
 		        JList list = (JList)evt.getSource();
@@ -138,6 +138,13 @@ public class V_Estaciones extends JPanel {
 		    }
 		});
 		add(list);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNewLabel.setIcon(new ImageIcon(V_CalidadAireEstacion.class.getResource("/imagenes/Imagenes/estacion2.png")));
+		lblNewLabel.setBounds(520, 70, 75, 75);
+		add(lblNewLabel);
 	}
 	
 	public void volverMenuMunicipio() {

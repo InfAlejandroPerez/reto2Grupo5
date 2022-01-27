@@ -246,6 +246,13 @@ public class V_CalidadAireEstacion extends JPanel {
 		lblRes8.setBounds(482, 348, 94, 20);
 		add(lblRes8);
 		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNewLabel.setIcon(new ImageIcon(V_CalidadAireEstacion.class.getResource("/imagenes/Imagenes/polucion2.png")));
+		lblNewLabel.setBounds(520, 70, 75, 75);
+		add(lblNewLabel);
+		
 	}
 	public void volverMenuMunicipio() {
 

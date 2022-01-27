@@ -18,6 +18,7 @@ import cliente.VentanaInicio3;
 
 import java.awt.Color;
 import java.awt.SystemColor;
+import javax.swing.SwingConstants;
 
 public class V_MenuMunicipio extends JPanel {
 
@@ -32,14 +33,15 @@ public class V_MenuMunicipio extends JPanel {
 		setLayout(null);
 		
 		JLabel lblEligeUnaProvincia = new JLabel("Elige una provincia:");
+		lblEligeUnaProvincia.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEligeUnaProvincia.setForeground(Color.WHITE);
 		lblEligeUnaProvincia.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEligeUnaProvincia.setBounds(263, 107, 161, 14);
+		lblEligeUnaProvincia.setBounds(119, 110, 185, 14);
 		add(lblEligeUnaProvincia);
 		
 		JComboBox comboBoxProvincia = new JComboBox();
 		comboBoxProvincia.setModel(new DefaultComboBoxModel(new String[] { "Bizkaia", "Gipuzkoa", "Araba" }));
-		comboBoxProvincia.setBounds(263, 133, 161, 22);
+		comboBoxProvincia.setBounds(119, 136, 185, 22);
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -63,9 +65,10 @@ public class V_MenuMunicipio extends JPanel {
 		add(comboBoxProvincia);
 		
 		JLabel lblNewLabel = new JLabel("Elige un municipio:");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel.setBounds(263, 183, 161, 14);
+		lblNewLabel.setBounds(119, 180, 185, 14);
 		add(lblNewLabel);
 		
 		comboBoxMunicipio = new JComboBox();
@@ -75,10 +78,10 @@ public class V_MenuMunicipio extends JPanel {
 				
 			}
 		});
-		comboBoxMunicipio.setBounds(263, 207, 161, 22);
+		comboBoxMunicipio.setBounds(119, 204, 185, 22);
 		add(comboBoxMunicipio);
 		
-		JButton btnEstaciones = new JButton("Estaciones");
+		JButton btnEstaciones = new JButton("Ver sus estaciones");
 		btnEstaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -86,8 +89,8 @@ public class V_MenuMunicipio extends JPanel {
 
 			}
 		});
-		btnEstaciones.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnEstaciones.setBounds(252, 259, 187, 40);
+		btnEstaciones.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnEstaciones.setBounds(135, 237, 153, 32);
 		add(btnEstaciones);
 		
 		JButton btnPlayas = new JButton("Espacios naturales");
@@ -98,7 +101,7 @@ public class V_MenuMunicipio extends JPanel {
 			}
 		});
 		btnPlayas.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnPlayas.setBounds(252, 325, 187, 40);
+		btnPlayas.setBounds(119, 321, 185, 40);
 		add(btnPlayas);
 		
 		JButton btnDesconectarse = new JButton("");
@@ -142,6 +145,18 @@ public class V_MenuMunicipio extends JPanel {
 		lblNewLabel_1_1_1.setBackground(Color.DARK_GRAY);
 		lblNewLabel_1_1_1.setBounds(66, 395, 564, 66);
 		add(lblNewLabel_1_1_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setIconTextGap(1);
+		lblNewLabel_2.setBounds(352, 88, 235, 280);
+		lblNewLabel_2.setIcon(new ImageIcon(V_MenuMunicipio.class.getResource("/imagenes/Imagenes/polucionCO2.png")));
+		add(lblNewLabel_2);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(105, 292, 211, 2);
+		add(separator);
 
 	}
 }
