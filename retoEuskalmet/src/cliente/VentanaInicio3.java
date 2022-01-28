@@ -20,6 +20,7 @@ import vista.V_InfoMunicipio;
 import vista.V_Login;
 import vista.V_MenuMunicipio;
 import vista.V_Registro;
+import vista.V_TopMunicipios;
 
 public class VentanaInicio3 extends JFrame {
 
@@ -138,6 +139,14 @@ public class VentanaInicio3 extends JFrame {
 			V_InfoMunicipio panel8 = new V_InfoMunicipio();
 			
 			panel = panel8;
+	
+	
+			break;
+			
+		case 9:
+			V_TopMunicipios panel9 = new V_TopMunicipios();
+			
+			panel = panel9;
 	
 	
 			break;

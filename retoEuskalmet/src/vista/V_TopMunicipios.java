@@ -1,52 +1,51 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 import cliente.VentanaInicio3;
 import controlador.Consultas;
-import modelo.EspaciosNaturales;
-import modelo.Estaciones;
-
-import java.awt.SystemColor;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.MatteBorder;
+import modelo.Municipios;
 import javax.swing.AbstractListModel;
-import javax.swing.DefaultListModel;
+import javax.swing.JSeparator;
 
-import java.awt.Cursor;
+public class V_TopMunicipios extends JPanel {
 
-public class V_Espacios extends JPanel {
-
-	public ArrayList<EspaciosNaturales> espacios = new ArrayList<EspaciosNaturales>();
+	public ArrayList<Municipios> topMunicipios = new ArrayList<Municipios>();
+	
 	public static JList list;
 	/**
 	 * Create the panel.
 	 */
-	public V_Espacios() {
+	public V_TopMunicipios() {
 		setBackground(SystemColor.textInactiveText);
 		setBounds(0, 0, 700, 460);
 		setLayout(null);
 		
-		JLabel lblEstaciones = new JLabel("Espacios Naturales");
-		lblEstaciones.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEstaciones.setForeground(Color.WHITE);
-		lblEstaciones.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblEstaciones.setBounds(394, 77, 207, 43);
-		add(lblEstaciones);
+		
+		JLabel lblTop = new JLabel("TOP");
+		lblTop.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTop.setForeground(Color.WHITE);
+		lblTop.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lblTop.setBounds(78, 100, 66, 20);
+		add(lblTop);
 		
 		JButton btnSalir = new JButton("");
 		btnSalir.addActionListener(new ActionListener() {
@@ -105,55 +104,77 @@ public class V_Espacios extends JPanel {
 		add(lblNewLabel_1_1_1);
 		
 		DefaultListModel model = new DefaultListModel();
-		espacios = Consultas.ConsultaEspaciosNaturales();
+		topMunicipios = Consultas.ConsultaTopMunis();
 
-		for (int i = 0; i < espacios.size(); i++) {
-			model.addElement(espacios.get(i).getNombre()+"\n");
+		for (int i = 0; i < topMunicipios.size(); i++) {
+			model.addElement((i+1)+". "+topMunicipios.get(i).getNombre()+"\n");
 		}
 
 
 		
 		list = new JList();
-		list.setVisibleRowCount(0);
-		list.setValueIsAdjusting(true);
+		list.setForeground(Color.WHITE);
+		list.setBackground(SystemColor.textInactiveText);
 		list.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		list.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		list.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		list.setModel(model);
-		list.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
+		list.setBorder(null);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBackground(SystemColor.control);
-		list.setBounds(85, 67, 261, 328);
+		list.setBounds(89, 210, 252, 146);
 		list.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
-		        JList list_ = (JList)evt.getSource();
+		        JList list = (JList)evt.getSource();
 		        if (evt.getClickCount() == 2) {
 		        	
-		        	
-		        	verInfoEspacio();
+		        	//V_CalidadAireEstacion.estacion = list.getSelectedValue().toString();
+		        	//verInfoEstacion();
 		        	
 		        	
 		        }
 		    }
 		});
-
-	    add(list);
+		add(list);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon(V_Espacios.class.getResource("/imagenes/Imagenes/espacio.png")));
-		lblNewLabel.setBounds(361, 131, 256, 256);
+		lblNewLabel.setIcon(new ImageIcon(V_TopMunicipios.class.getResource("/imagenes/Imagenes/top2.png")));
+		lblNewLabel.setBounds(356, 100, 256, 256);
 		add(lblNewLabel);
+		
+		JLabel lbl5 = new JLabel("5");
+		lbl5.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl5.setForeground(Color.WHITE);
+		lbl5.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lbl5.setBounds(88, 128, 22, 20);
+		add(lbl5);
+		
+		JLabel lblMunicipios = new JLabel("MUNICIPIOS");
+		lblMunicipios.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMunicipios.setForeground(Color.WHITE);
+		lblMunicipios.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lblMunicipios.setBounds(85, 154, 156, 20);
+		add(lblMunicipios);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(78, 123, 66, 3);
+		add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(78, 149, 110, 3);
+		add(separator_1);
+		
+		JSeparator separator_1_1 = new JSeparator();
+		separator_1_1.setBounds(78, 176, 170, 3);
+		add(separator_1_1);
+		
+		JButton btnPorProvincia = new JButton("Por Provincia");
+		btnPorProvincia.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnPorProvincia.setBounds(471, 363, 141, 29);
+		add(btnPorProvincia);
 	}
 	
 	public void volverMenuMunicipio() {
 
 		VentanaInicio3.switchPanel(3);
 
-	}
-	
-	public void verInfoEspacio() {
-		V_InfoEspacio.lblNombreEspacio.setText(list.getSelectedValue().toString());
-		VentanaInicio3.switchPanel(7);
 	}
 }

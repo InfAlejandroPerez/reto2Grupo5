@@ -68,10 +68,9 @@ public class JsonReader {
 							readerDatosDiarios.leerJsonDatosDiarios(url, nombreEstacion);
 						}
 
-						/*
-						 * if (url.contains("datos_indice")) {
-						 * readerDatosHorarios.leerJsonDatosHorario(url, nombreEstacion); }
-						 */
+						if (url.contains("datos_indice")) {
+							readerDatosHorarios.leerJsonDatosHorario(url, nombreEstacion);
+						}
 
 					}
 

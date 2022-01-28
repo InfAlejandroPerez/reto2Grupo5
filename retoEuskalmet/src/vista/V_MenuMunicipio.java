@@ -31,6 +31,10 @@ public class V_MenuMunicipio extends JPanel {
 		setBackground(SystemColor.textInactiveText);
 		setBounds(0, 0, 700, 460);
 		setLayout(null);
+		JLabel lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3.setIcon(new ImageIcon(V_MenuMunicipio.class.getResource("/imagenes/Imagenes/new.png")));
+		lblNewLabel_3.setBounds(525, 302, 32, 32);
+		add(lblNewLabel_3);
 		
 		JLabel lblEligeUnaProvincia = new JLabel("Elige una provincia:");
 		lblEligeUnaProvincia.setHorizontalAlignment(SwingConstants.CENTER);
@@ -152,13 +156,26 @@ public class V_MenuMunicipio extends JPanel {
 		lblNewLabel_2.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setIconTextGap(1);
-		lblNewLabel_2.setBounds(352, 88, 235, 280);
+		lblNewLabel_2.setBounds(358, 71, 235, 233);
 		lblNewLabel_2.setIcon(new ImageIcon(V_MenuMunicipio.class.getResource("/imagenes/Imagenes/polucionCO2.png")));
 		add(lblNewLabel_2);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(105, 292, 211, 2);
 		add(separator);
+		
+		JButton btntopMunicipios = new JButton("<html>TOP    5\r\nMunicipios<html>");
+		btntopMunicipios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaInicio3.switchPanel(9);
+			}
+		});
+		btntopMunicipios.setHorizontalAlignment(SwingConstants.RIGHT);
+		btntopMunicipios.setVerticalAlignment(SwingConstants.TOP);
+		btntopMunicipios.setHorizontalTextPosition(SwingConstants.CENTER);
+		btntopMunicipios.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btntopMunicipios.setBounds(435, 314, 89, 47);
+		add(btntopMunicipios);
 
 	}
 }

@@ -75,7 +75,7 @@ public class V_InfoMunicipio extends JPanel {
 		}
 		
 
-		datosHorario = Consultas.consultaDatosHorarios(V_Espacios.list.getSelectedValue().toString());
+		datosHorario = Consultas.consultaDatosHorarios();
 		for (int i = 0; i < datosHorario.size(); i++) {
 
 			NO2ICA = Optional.ofNullable(datosHorario.get(i).getNo2ica()).orElse("--").replaceAll("\\ / .*", "");
@@ -91,11 +91,11 @@ public class V_InfoMunicipio extends JPanel {
 		setLayout(null);
 
 		// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
-		JLabel lblNombreMunicipio = new JLabel(nombreMunicipio);
+		JLabel lblNombreMunicipio = new JLabel("");
 		lblNombreMunicipio.setForeground(Color.WHITE);
 		lblNombreMunicipio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 24));
-		lblNombreMunicipio.setBounds(213, 81, 281, 37);
+		lblNombreMunicipio.setBounds(174, 81, 320, 37);
 		add(lblNombreMunicipio);
 
 		JLabel lblCalidad = new JLabel("INFORMACIÓN");

@@ -200,13 +200,13 @@ public class Consultas {
 	
 	// sacamos las propiedades de la calidad del aire en base al municipio del espacio
 	
-	public static ArrayList<DatosHorario> consultaDatosHorarios(String nombreEstacion) {
+	public static ArrayList<DatosHorario> consultaDatosHorarios() {
 		int random=(int)Math.floor(Math.random()*(11-1+1)+1);
 		System.out.println(random);
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from DatosHorario where codEstacion="+ random +" and fecha = '2021-12-31' and hora='00:00:00'";
-System.out.println(hql);
+		String hql = "from DatosHorario where codEstacion=1 and fecha = '2021-12-31' and hora='00:00:00'";
+		System.out.println(hql);
 		Query q = session.createQuery(hql);
 		ArrayList<DatosHorario> datos = new ArrayList<DatosHorario>();
 		datos = (ArrayList<DatosHorario>) q.list();
@@ -345,6 +345,89 @@ System.out.println(hql);
 		session.close();
 		return maxId + 1;
 
+	}
+	
+	//Consulta top municipios
+	public static ArrayList<Municipios> ConsultaTopMunis() {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Municipios order by rand() ";
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		q.setMaxResults(5);
+		ArrayList<Municipios> datos = new ArrayList<Municipios>();
+		datos = (ArrayList<Municipios>) q.list();
+		session.close();
+		if (!datos.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<Municipios>) datos;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
+	}
+	//Consulta top municipios Bizkaia
+	public static ArrayList<Municipios> ConsultaTopMunisBizkaia() {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Municipios where CodProvincia = 48 order by rand() ";
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		q.setMaxResults(5);
+		ArrayList<Municipios> datos = new ArrayList<Municipios>();
+		datos = (ArrayList<Municipios>) q.list();
+		session.close();
+		if (!datos.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<Municipios>) datos;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
+	}
+	
+	//Consulta top municipios Gipuzkuoa
+	public static ArrayList<Municipios> ConsultaTopMunisGipuzkoa() {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Municipios where CodProvincia = 20 order by rand() ";
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		q.setMaxResults(5);
+		ArrayList<Municipios> datos = new ArrayList<Municipios>();
+		datos = (ArrayList<Municipios>) q.list();
+		session.close();
+		if (!datos.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<Municipios>) datos;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
+	}
+	
+	//Consulta top municipios Araba
+	public static ArrayList<Municipios> ConsultaTopMunisAraba() {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Municipios where CodProvincia = 1 order by rand() ";
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		q.setMaxResults(5);
+		ArrayList<Municipios> datos = new ArrayList<Municipios>();
+		datos = (ArrayList<Municipios>) q.list();
+		session.close();
+		if (!datos.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<Municipios>) datos;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
 	}
 }
 

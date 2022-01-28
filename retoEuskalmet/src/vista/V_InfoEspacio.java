@@ -50,7 +50,7 @@ public class V_InfoEspacio extends JPanel {
 	public ArrayList<Municipios> municipio = new ArrayList<Municipios>();
 	public ArrayList<EspaciosNaturales> espacio = new ArrayList<EspaciosNaturales>();
 
-	public String nombreEspacio;
+	public static String nombreEspacio;
 	public static String nombreMunicipio;
 	public String descripcion;
 	public String NO2ICA;
@@ -59,7 +59,7 @@ public class V_InfoEspacio extends JPanel {
 	public String SO2ICA;
 	public String ICAEstacion;
 	
-	public static JLabel lblNombreEspacio = new JLabel();
+	public static JLabel lblNombreEspacio = new JLabel(nombreEspacio);
 
 	/**
 	 * Create the panel.
@@ -79,7 +79,7 @@ public class V_InfoEspacio extends JPanel {
 		}
 		
 
-		datosHorario = Consultas.consultaDatosHorarios(lblNombreEspacio.getText());
+		datosHorario = Consultas.consultaDatosHorarios();
 		for (int i = 0; i < datosHorario.size(); i++) {
 
 			NO2ICA = Optional.ofNullable(datosHorario.get(i).getNo2ica()).orElse("--").replaceAll("\\ / .*", "");
