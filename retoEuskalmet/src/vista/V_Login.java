@@ -5,19 +5,24 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
+import cliente.VentanaMain;
+import servidor.Consultas;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Rectangle;
 import javax.swing.JPasswordField;
 import java.awt.Component;
@@ -29,6 +34,14 @@ public class V_Login extends JPanel {
 	private JLabel lblMensaje;
 	private JPasswordField passwordField;
 	
+	private ObjectInputStream entrada = null;
+	private ObjectOutputStream salida = null;
+	
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
+	
+	VentanaMain ventanaMain;
 	
 
 	/**
@@ -44,17 +57,27 @@ public class V_Login extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String usuario = textFieldUser.getText();
-					String pass = passwordField.getText();
-
-					boolean comprobar;
-					comprobar = Consultas.Login(usuario, pass);
-
-					if (comprobar == true) {
+					String pass = new String (passwordField.getPassword());
+					
+					
+					if (usuario.equals("") || pass.equals("")) {
+						JOptionPane.showMessageDialog(null, "Usuario no encontrado", "Mensaje",
+								JOptionPane.WARNING_MESSAGE);
+					} else {
+					
+						iniciar();
 						
+						String operacionParams = "login~"+usuario+","+pass;
+						salida.writeObject(operacionParams);
+						salida.flush();
 
-						VentanaInicio3.switchPanel(3);
-						
-						//VentanaInicio3.setPreferredSize(500, 300);
+						boolean response = (boolean) entrada.readObject();
+
+						cliente.close();
+
+					if (response == true) {
+
+						verMenu();
 
 					} else {
 
@@ -63,8 +86,8 @@ public class V_Login extends JPanel {
 					}
 
 					//VentanaInicio3.salida.writeObject("1/" + usuario + "/" + pass);
-					System.out.println(VentanaInicio3.entrada.readObject());
-
+					//System.out.println(VentanaMain.entrada.readObject());
+					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -95,7 +118,7 @@ public class V_Login extends JPanel {
 		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNewLabel.setBounds(221, 122, 273, 62);
-		lblNewLabel.setIcon(new ImageIcon(V1_Login.class.getResource("/Imagenes/euskalmet.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(V_Login.class.getResource("/Imagenes/euskalmet.jpg")));
 		add(lblNewLabel);
 
 		textFieldUser = new JTextField();
@@ -142,4 +165,24 @@ public class V_Login extends JPanel {
 		setLocation(0, 0);
         setLayout(null);
 	}
+	
+	public void verMenu() {
+		ventanaMain.switchPanel(3);
+	}
+	
+	public void iniciar() {
+
+		try {
+
+			cliente = new Socket(IP, PUERTO);
+			System.out.println("Conexión establecida con el servidor");
+			salida = new ObjectOutputStream(cliente.getOutputStream());
+			entrada = new ObjectInputStream(cliente.getInputStream());
+
+		} catch (Exception e) {
+
+		}
+
+	}
+	
 }

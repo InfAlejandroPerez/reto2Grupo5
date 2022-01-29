@@ -1,4 +1,4 @@
-package controlador;
+package servidor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,37 +28,13 @@ public class Consultas {
 	int maxId;
 	public ArrayList<Usuarios> usuarios = new ArrayList<Usuarios>();
 
-	public static boolean Login(String nombre, String contrasena) {
-
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		Session session = sesion.openSession();
-		String hql = "select nombre,contrasenia from Usuarios where nombre ='" + nombre + "' AND contrasenia='"
-				+ contrasena + "'";
-		Query q = session.createQuery(hql);
-
-		// hay que cambiar la base de datos y poner el usuario y la contrase�a como
-		// string
-		List list = q.list();
-
-		session.close();
-		if ((list != null) && (list.size() > 0)) {
-			return true;
-		} else {
-			// si el login coincide con un usuario ya registrado
-			return false;
-		}
-
-		// session.close();
-
-	}
-
 	public static boolean checkLogin(String userName, String userPassword) {
 		System.out.println("In Check login");
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session s = sesion.openSession();
 		boolean userFound = false;
 		// Query using Hibernate Query Language
-		String SQL_QUERY = " from Usuarios as u where u.nombre='" + userName + "' and u.contrasenia='" + userPassword
+		String SQL_QUERY = " from Usuarios as u where u.nombre='" + userName.trim() + "' and u.contrasenia='" + userPassword.trim()
 				+ "'";
 		Query query = s.createQuery(SQL_QUERY);
 		List list = query.list();
@@ -70,9 +46,25 @@ public class Consultas {
 		s.close();
 		return userFound;
 	}
+	
+	// devuelve todas las provincias
+	public static ArrayList<String> getProvincias() {
+
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = " from Provincias";
+		System.out.println(hql);
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		ArrayList<String> provincias = new ArrayList<String>();
+		provincias = (ArrayList<String>) q.list();
+		session.close();
+		return (ArrayList<String>) provincias;
+
+	}
 
 	// devuelve todos los municipios en base a la provincia elegida
-	public static ArrayList<String> ListaMuncipios(String provincia) {
+	public static ArrayList<String> getListaMuncipios(String provincia) {
 
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
@@ -81,15 +73,15 @@ public class Consultas {
 		System.out.println(hql);
 		System.out.println(hql);
 		Query q = session.createQuery(hql);
-		ArrayList<String> muni = new ArrayList<String>();
-		muni = (ArrayList<String>) q.list();
+		ArrayList<String> municipios = new ArrayList<String>();
+		municipios = (ArrayList<String>) q.list();
 		session.close();
-		return (ArrayList<String>) muni;
+		return (ArrayList<String>) municipios;
 
 	}
 
 	// devuelve los datos del municipio elegido
-	public static Municipios ConsultaMunicipio(String nombreMunicipio) {
+	public static Municipios getMunicipio(String nombreMunicipio) {
 
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
@@ -105,7 +97,7 @@ public class Consultas {
 
 	// Consulta para sacar lista de estaciones en base al nombre del municipio
 	// elegido
-	public static ArrayList<Estaciones> ConsultaEstacion(String nomMunicipio) {
+	public static ArrayList<Estaciones> getEstacionesMunicipio(String nomMunicipio) {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
 		String hql = "from Estaciones where codMunicipio=(select codMunicipio from Municipios where nombre='"
@@ -122,13 +114,14 @@ public class Consultas {
 
 		}
 	}
-	
+
 	// Consulta para sacar lista de estaciones en base al nombre del municipio
 	// elegido
-	public static ArrayList<EspaciosNaturales> ConsultaEspaciosNaturalesMunicipio(String nomMunicipio) {
+	public static ArrayList<EspaciosNaturales> getEspaciosNaturalesMunicipio(String nomMunicipio) {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from EspaciosNaturales where codMunicipio=(select codMunicipio from Municipios where nombre='"+ nomMunicipio.trim() + "')";
+		String hql = "from EspaciosNaturales where codMunicipio=(select codMunicipio from Municipios where nombre='"
+				+ nomMunicipio.trim() + "')";
 		Query q = session.createQuery(hql);
 		System.out.println(hql);
 		ArrayList<EspaciosNaturales> espacios = new ArrayList<EspaciosNaturales>();
@@ -142,10 +135,8 @@ public class Consultas {
 		}
 	}
 
-	// Consulta para sacar lista de espacios naturales en base al nombre del
-	// municipio
-	// elegido
-	public static ArrayList<EspaciosNaturales> ConsultaEspaciosNaturales() {
+	// Consulta para sacar lista de espacios naturales
+	public static ArrayList<EspaciosNaturales> getEspaciosNaturales() {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
 		String hql = "from EspaciosNaturales";
@@ -159,12 +150,12 @@ public class Consultas {
 
 		}
 	}
-	
+
 	// Consulta para sacar los datos de un espacio natural según su nombre
-	public static ArrayList<EspaciosNaturales> ConsultaDatosEspacioNatural(String nombreEspacio) {
+	public static ArrayList<EspaciosNaturales> getDatosEspacioNatural(String nombreEspacio) {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from EspaciosNaturales where nombre ='"+nombreEspacio.trim()+"'";
+		String hql = "from EspaciosNaturales where nombre ='" + nombreEspacio.trim() + "'";
 		System.out.println(hql);
 		Query q = session.createQuery(hql);
 		ArrayList<EspaciosNaturales> espaciosNaturales = new ArrayList<EspaciosNaturales>();
@@ -179,10 +170,11 @@ public class Consultas {
 
 	// sacamos las propiedades de la calidad del aire en base al municipio
 
-	public static ArrayList<DatosDiario> consultaDatosDiarios(String nombreEstacion) {
+	public static ArrayList<DatosDiario> getDatosDiariosEstacion(String nombreEstacion) {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from DatosDiario where codEstacion=" + "(select codEstacion from Estaciones where nombre='"+nombreEstacion.trim()+"') and fecha = '2021-12-31'";
+		String hql = "from DatosDiario where codEstacion=" + "(select codEstacion from Estaciones where nombre='"
+				+ nombreEstacion.trim() + "') and fecha = '2021-12-31'";
 		System.out.println(hql);
 		Query q = session.createQuery(hql);
 		ArrayList<DatosDiario> datos = new ArrayList<DatosDiario>();
@@ -197,11 +189,12 @@ public class Consultas {
 
 		}
 	}
-	
-	// sacamos las propiedades de la calidad del aire en base al municipio del espacio
-	
-	public static ArrayList<DatosHorario> consultaDatosHorarios() {
-		int random=(int)Math.floor(Math.random()*(11-1+1)+1);
+
+	// sacamos las propiedades de la calidad del aire en base al municipio del
+	// espacio
+
+	public static ArrayList<DatosHorario> getDatosHorarios() {
+		int random = (int) Math.floor(Math.random() * (11 - 1 + 1) + 1);
 		System.out.println(random);
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
@@ -220,13 +213,13 @@ public class Consultas {
 
 		}
 	}
-	
+
 	// devuelve los datos del municipio de un espacio
-	public static ArrayList<Municipios> ConsultaMunicipioEspacio(String nombreEspacio) {
+	public static ArrayList<Municipios> getMunicipioOfEspacio(String nombreEspacio) {
 		int codMunicipio = 0;
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from EspaciosNaturales esp where nombre = '"+nombreEspacio.trim()+"'";
+		String hql = "from EspaciosNaturales esp where nombre = '" + nombreEspacio.trim() + "'";
 		System.out.println(hql);
 		Query q = session.createQuery(hql);
 		ArrayList<EspaciosNaturales> espaciosNaturales = (ArrayList<EspaciosNaturales>) q.list();
@@ -237,13 +230,33 @@ public class Consultas {
 		}
 		SessionFactory sesion2 = HibernateUtil.getSessionFactory();
 		Session session2 = sesion.openSession();
-		String hql2 = "from Municipios where codMunicipio="+codMunicipio+"";
+		String hql2 = "from Municipios where codMunicipio=" + codMunicipio + "";
 		System.out.println(hql2);
 		Query q2 = session2.createQuery(hql2);
 		ArrayList<Municipios> muni = (ArrayList<Municipios>) q2.list();
 		session2.close();
-		
-		
+
+		if (!muni.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<Municipios>) muni;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
+	}
+
+	// devuelve los datos del municipio de un espacio
+	public static ArrayList<Municipios> getMunicipioFromEspacio(String nombreEspacio) {
+
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Municipios where Municipios.codMunicipio=(select EspaciosNaturales.CodMunicipio from EspaciosNaturales e where nombre = '"
+				+ nombreEspacio.trim() + "')";
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		ArrayList<Municipios> muni = (ArrayList<Municipios>) q.list();
+		session.close();
 		if (!muni.isEmpty()) {
 			System.out.println("algo");
 			return (ArrayList<Municipios>) muni;
@@ -254,19 +267,82 @@ public class Consultas {
 		}
 	}
 	
-	// devuelve los datos del municipio de un espacio
-	public static ArrayList<Municipios> ConsultaCodMunicipioEspacio(String nombreEspacio) {
-
+	//Consulta top municipios
+	public static ArrayList<Municipios> getTopMunicipios() {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
-		String hql = "from Municipios m where Municipios.codMunicipio=(select EspaciosNaturales.CodMunicipio from EspaciosNaturales e where nombre = '"+nombreEspacio.trim()+"')";
+		String hql = "from Municipios order by rand() ";
 		System.out.println(hql);
 		Query q = session.createQuery(hql);
-		ArrayList<Municipios> muni = (ArrayList<Municipios>) q.list();
+		q.setMaxResults(5);
+		ArrayList<Municipios> datos = new ArrayList<Municipios>();
+		datos = (ArrayList<Municipios>) q.list();
 		session.close();
-		if (!muni.isEmpty()) {
+		if (!datos.isEmpty()) {
 			System.out.println("algo");
-			return (ArrayList<Municipios>) muni;
+			return (ArrayList<Municipios>) datos;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
+	}
+	//Consulta top municipios Bizkaia
+	public static ArrayList<Municipios> getTopMunicipiosBizkaia() {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Municipios where CodProvincia = 48 order by rand() ";
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		q.setMaxResults(5);
+		ArrayList<Municipios> datos = new ArrayList<Municipios>();
+		datos = (ArrayList<Municipios>) q.list();
+		session.close();
+		if (!datos.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<Municipios>) datos;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
+	}
+	
+	//Consulta top municipios Gipuzkuoa
+	public static ArrayList<Municipios> getTopMunicipiosGipuzkoa() {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Municipios where CodProvincia = 20 order by rand() ";
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		q.setMaxResults(5);
+		ArrayList<Municipios> datos = new ArrayList<Municipios>();
+		datos = (ArrayList<Municipios>) q.list();
+		session.close();
+		if (!datos.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<Municipios>) datos;
+		} else {
+			System.out.println("nada");
+			return null;
+
+		}
+	}
+	
+	//Consulta top municipios Araba
+	public static ArrayList<Municipios> getTopMunicipiosAraba() {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "from Municipios where CodProvincia = 1 order by rand() ";
+		System.out.println(hql);
+		Query q = session.createQuery(hql);
+		q.setMaxResults(5);
+		ArrayList<Municipios> datos = new ArrayList<Municipios>();
+		datos = (ArrayList<Municipios>) q.list();
+		session.close();
+		if (!datos.isEmpty()) {
+			System.out.println("algo");
+			return (ArrayList<Municipios>) datos;
 		} else {
 			System.out.println("nada");
 			return null;
@@ -346,89 +422,7 @@ public class Consultas {
 		return maxId + 1;
 
 	}
-	
-	//Consulta top municipios
-	public static ArrayList<Municipios> ConsultaTopMunis() {
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		Session session = sesion.openSession();
-		String hql = "from Municipios order by rand() ";
-		System.out.println(hql);
-		Query q = session.createQuery(hql);
-		q.setMaxResults(5);
-		ArrayList<Municipios> datos = new ArrayList<Municipios>();
-		datos = (ArrayList<Municipios>) q.list();
-		session.close();
-		if (!datos.isEmpty()) {
-			System.out.println("algo");
-			return (ArrayList<Municipios>) datos;
-		} else {
-			System.out.println("nada");
-			return null;
 
-		}
-	}
-	//Consulta top municipios Bizkaia
-	public static ArrayList<Municipios> ConsultaTopMunisBizkaia() {
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		Session session = sesion.openSession();
-		String hql = "from Municipios where CodProvincia = 48 order by rand() ";
-		System.out.println(hql);
-		Query q = session.createQuery(hql);
-		q.setMaxResults(5);
-		ArrayList<Municipios> datos = new ArrayList<Municipios>();
-		datos = (ArrayList<Municipios>) q.list();
-		session.close();
-		if (!datos.isEmpty()) {
-			System.out.println("algo");
-			return (ArrayList<Municipios>) datos;
-		} else {
-			System.out.println("nada");
-			return null;
-
-		}
-	}
-	
-	//Consulta top municipios Gipuzkuoa
-	public static ArrayList<Municipios> ConsultaTopMunisGipuzkoa() {
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		Session session = sesion.openSession();
-		String hql = "from Municipios where CodProvincia = 20 order by rand() ";
-		System.out.println(hql);
-		Query q = session.createQuery(hql);
-		q.setMaxResults(5);
-		ArrayList<Municipios> datos = new ArrayList<Municipios>();
-		datos = (ArrayList<Municipios>) q.list();
-		session.close();
-		if (!datos.isEmpty()) {
-			System.out.println("algo");
-			return (ArrayList<Municipios>) datos;
-		} else {
-			System.out.println("nada");
-			return null;
-
-		}
-	}
-	
-	//Consulta top municipios Araba
-	public static ArrayList<Municipios> ConsultaTopMunisAraba() {
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		Session session = sesion.openSession();
-		String hql = "from Municipios where CodProvincia = 1 order by rand() ";
-		System.out.println(hql);
-		Query q = session.createQuery(hql);
-		q.setMaxResults(5);
-		ArrayList<Municipios> datos = new ArrayList<Municipios>();
-		datos = (ArrayList<Municipios>) q.list();
-		session.close();
-		if (!datos.isEmpty()) {
-			System.out.println("algo");
-			return (ArrayList<Municipios>) datos;
-		} else {
-			System.out.println("nada");
-			return null;
-
-		}
-	}
 }
 
 //	public static void main(String[] args) {

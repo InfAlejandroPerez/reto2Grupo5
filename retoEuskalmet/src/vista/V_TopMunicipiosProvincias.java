@@ -20,9 +20,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
+import cliente.VentanaMain;
 import modelo.Municipios;
+import servidor.Consultas;
+
 import javax.swing.AbstractListModel;
 import javax.swing.JSeparator;
 import javax.swing.border.BevelBorder;
@@ -56,7 +57,7 @@ public class V_TopMunicipiosProvincias extends JPanel {
 				
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setIcon(new ImageIcon(V_TopMunicipiosProvincias.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(78, 11, 33, 32);
 		add(btnSalir);
 		
@@ -66,7 +67,7 @@ public class V_TopMunicipiosProvincias extends JPanel {
 				
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setIcon(new ImageIcon(V_TopMunicipiosProvincias.class.getResource("/imagenes/botonDesconectarse.jpg")));
 		btnDesconectarse.setBounds(591, 11, 33, 32);
 		add(btnDesconectarse);
 		
@@ -107,7 +108,7 @@ public class V_TopMunicipiosProvincias extends JPanel {
 		add(lblNewLabel_1_1_1);
 		
 		DefaultListModel model = new DefaultListModel();
-		topMunicipiosB = Consultas.ConsultaTopMunisBizkaia();
+		topMunicipiosB = Consultas.getTopMunicipiosBizkaia();
 
 		for (int i = 0; i < topMunicipiosB.size(); i++) {
 			model.addElement((i+1)+". "+topMunicipiosB.get(i).getNombre()+"\n");
@@ -165,7 +166,7 @@ public class V_TopMunicipiosProvincias extends JPanel {
 		add(separator_1_1);
 		
 		DefaultListModel model2 = new DefaultListModel();
-		topMunicipiosG = Consultas.ConsultaTopMunisGipuzkoa();
+		topMunicipiosG = Consultas.getTopMunicipiosGipuzkoa();
 
 		for (int i = 0; i < topMunicipiosG.size(); i++) {
 			model2.addElement((i+1)+". "+topMunicipiosG.get(i).getNombre()+"\n");
@@ -182,7 +183,7 @@ public class V_TopMunicipiosProvincias extends JPanel {
 		add(list2);
 		
 		DefaultListModel model3 = new DefaultListModel();
-		topMunicipiosA = Consultas.ConsultaTopMunisAraba();
+		topMunicipiosA = Consultas.getTopMunicipiosAraba();
 
 		for (int i = 0; i < topMunicipiosA.size(); i++) {
 			model3.addElement((i+1)+". "+topMunicipiosA.get(i).getNombre()+"\n");
@@ -267,7 +268,7 @@ public class V_TopMunicipiosProvincias extends JPanel {
 	
 	public void volverTopMunicipios() {
 
-		VentanaInicio3.switchPanel(9);
+		VentanaMain.switchPanel(9);
 
 	}
 }

@@ -15,15 +15,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
 import modelo.EspaciosNaturales;
 import modelo.Estaciones;
+import servidor.Consultas;
 
 import java.awt.SystemColor;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.MatteBorder;
+
+import cliente.VentanaMain;
+
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 
@@ -54,7 +56,7 @@ public class V_Espacios extends JPanel {
 				
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setIcon(new ImageIcon(V_Espacios.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(78, 11, 33, 32);
 		add(btnSalir);
 		
@@ -64,7 +66,7 @@ public class V_Espacios extends JPanel {
 				
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setIcon(new ImageIcon(V_Espacios.class.getResource("/imagenes/botonDesconectarse.jpg")));
 		btnDesconectarse.setBounds(591, 11, 33, 32);
 		add(btnDesconectarse);
 		
@@ -105,7 +107,7 @@ public class V_Espacios extends JPanel {
 		add(lblNewLabel_1_1_1);
 		
 		DefaultListModel model = new DefaultListModel();
-		espacios = Consultas.ConsultaEspaciosNaturales();
+		espacios = Consultas.getEspaciosNaturales();
 
 		for (int i = 0; i < espacios.size(); i++) {
 			model.addElement(espacios.get(i).getNombre()+"\n");
@@ -148,12 +150,12 @@ public class V_Espacios extends JPanel {
 	
 	public void volverMenuMunicipio() {
 
-		VentanaInicio3.switchPanel(3);
+		VentanaMain.switchPanel(3);
 
 	}
 	
 	public void verInfoEspacio() {
 		V_InfoEspacio.lblNombreEspacio.setText(list.getSelectedValue().toString());
-		VentanaInicio3.switchPanel(7);
+		VentanaMain.switchPanel(7);
 	}
 }

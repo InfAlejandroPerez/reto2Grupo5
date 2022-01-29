@@ -14,14 +14,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
 import modelo.Estaciones;
+import servidor.Consultas;
 
 import java.awt.SystemColor;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.MatteBorder;
+
+import cliente.VentanaMain;
+
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 
@@ -61,7 +63,7 @@ public class V_Estaciones extends JPanel {
 				
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setIcon(new ImageIcon(V_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(78, 11, 33, 32);
 		add(btnSalir);
 		
@@ -71,7 +73,7 @@ public class V_Estaciones extends JPanel {
 				
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setIcon(new ImageIcon(V_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
 		btnDesconectarse.setBounds(591, 11, 33, 32);
 		add(btnDesconectarse);
 		
@@ -112,7 +114,7 @@ public class V_Estaciones extends JPanel {
 		add(lblNewLabel_1_1_1);
 		
 		DefaultListModel model = new DefaultListModel();
-		estacionesMunicipio = Consultas.ConsultaEstacion(municipio);
+		estacionesMunicipio = Consultas.getEstacionesMunicipio(municipio);
 
 		for (int i = 0; i < estacionesMunicipio.size(); i++) {
 			model.addElement(estacionesMunicipio.get(i).getNombre()+"\n");
@@ -152,11 +154,11 @@ public class V_Estaciones extends JPanel {
 	
 	public void volverMenuMunicipio() {
 
-		VentanaInicio3.switchPanel(3);
+		VentanaMain.switchPanel(3);
 
 	}
 	
 	public void verInfoEstacion() {
-		VentanaInicio3.switchPanel(5);
+		VentanaMain.switchPanel(5);
 	}
 }

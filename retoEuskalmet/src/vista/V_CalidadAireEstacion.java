@@ -21,9 +21,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
+import cliente.VentanaMain;
 import modelo.DatosDiario;
+import servidor.Consultas;
 
 import javax.swing.JSeparator;
 
@@ -42,7 +42,7 @@ public class V_CalidadAireEstacion extends JPanel {
 		//estacion = Optional.ofNullable(V_Estaciones.list.getSelectedValue().toString()).orElse(V_InfoMunicipio.list.getSelectedValue().toString());
 		
 		
-		datosDiario = Consultas.consultaDatosDiarios(estacion);
+		datosDiario = Consultas.getDatosDiariosEstacion(estacion);
 		
 		//System.out.println(V_Estaciones.list.getSelectedValue().toString());
 		
@@ -83,7 +83,7 @@ public class V_CalidadAireEstacion extends JPanel {
 				
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setIcon(new ImageIcon(V_CalidadAireEstacion.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(78, 11, 33, 32);
 		add(btnSalir);
 		
@@ -93,7 +93,7 @@ public class V_CalidadAireEstacion extends JPanel {
 				
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setIcon(new ImageIcon(V_CalidadAireEstacion.class.getResource("/imagenes/botonDesconectarse.jpg")));
 		btnDesconectarse.setBounds(591, 11, 33, 32);
 		add(btnDesconectarse);
 		
@@ -261,7 +261,7 @@ public class V_CalidadAireEstacion extends JPanel {
 	}
 	public void volverMenu() {
 
-		VentanaInicio3.switchPanel(3);
+		VentanaMain.switchPanel(3);
 
 	}
 

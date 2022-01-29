@@ -3,6 +3,10 @@ package vista;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -10,18 +14,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-
-import controlador.Consultas;
-import cliente.VentanaInicio3;
 
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.SwingConstants;
 
+import cliente.VentanaMain;
+import servidor.Consultas;
+
 public class V_MenuMunicipio extends JPanel {
 
+	private ObjectInputStream entrada = null;
+	private ObjectOutputStream salida = null;
+	
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
+	
+	VentanaMain ventanaMain;
 	
 	public static JComboBox comboBoxMunicipio;
 	/**
@@ -48,22 +61,36 @@ public class V_MenuMunicipio extends JPanel {
 		comboBoxProvincia.setBounds(119, 136, 185, 22);
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				ArrayList<String> muni = new ArrayList<String>();
 				
-				System.out.println("Mensaje recibido: " + comboBoxProvincia.getSelectedItem().toString());
-				
-				muni = Consultas.ListaMuncipios(comboBoxProvincia.getSelectedItem().toString());
-				
+				try {
+					String provincia = comboBoxProvincia.getSelectedItem().toString();			
 
-				comboBoxMunicipio.removeAllItems();
-				
-				for (int i = 0; i < muni.size(); i++) {
+					comboBoxMunicipio.removeAllItems();
+					
 
-					comboBoxMunicipio.addItem(muni.get(i));
+						iniciar();
+						
+						String operacionParams = "listaMunicipios~"+provincia;
+						salida.writeObject(operacionParams);
+						salida.flush();
 
+						ArrayList<String> response = (ArrayList<String>) entrada.readObject();
+						
+						for (int i = 0; i < response.size(); i++) {
+
+							comboBoxMunicipio.addItem(response.get(i));
+
+						}
+
+						cliente.close();
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-
 			}
 		});
 		add(comboBoxProvincia);
@@ -91,7 +118,7 @@ public class V_MenuMunicipio extends JPanel {
 				
 				V_Estaciones.municipio = comboBoxMunicipio.getSelectedItem().toString();
 				
-				VentanaInicio3.switchPanel(4);
+				VentanaMain.switchPanel(4);
 
 			}
 		});
@@ -103,7 +130,7 @@ public class V_MenuMunicipio extends JPanel {
 		btnPlayas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				VentanaInicio3.switchPanel(6);
+				VentanaMain.switchPanel(6);
 			}
 		});
 		btnPlayas.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -115,7 +142,7 @@ public class V_MenuMunicipio extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V3_MenuMunicipio.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setIcon(new ImageIcon(V_MenuMunicipio.class.getResource("/imagenes/botonDesconectarse.jpg")));
 		btnDesconectarse.setBounds(593, 11, 33, 32);
 		add(btnDesconectarse);
 		
@@ -124,7 +151,7 @@ public class V_MenuMunicipio extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V3_MenuMunicipio.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setIcon(new ImageIcon(V_MenuMunicipio.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(80, 11, 33, 32);
 		add(btnSalir);
 		
@@ -167,7 +194,7 @@ public class V_MenuMunicipio extends JPanel {
 		JButton btntopMunicipios = new JButton("<html>TOP    5\r\nMunicipios<html>");
 		btntopMunicipios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaInicio3.switchPanel(9);
+				VentanaMain.switchPanel(9);
 			}
 		});
 		btntopMunicipios.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -178,4 +205,18 @@ public class V_MenuMunicipio extends JPanel {
 		add(btntopMunicipios);
 
 	}
+public void iniciar() {
+
+	try {
+
+		cliente = new Socket(IP, PUERTO);
+		System.out.println("Conexión establecida con el servidor");
+		salida = new ObjectOutputStream(cliente.getOutputStream());
+		entrada = new ObjectInputStream(cliente.getInputStream());
+
+	} catch (Exception e) {
+
+	}
+
+}
 }

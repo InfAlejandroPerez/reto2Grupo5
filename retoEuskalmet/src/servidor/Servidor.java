@@ -6,86 +6,99 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Servidor {
-	// las variables finales van en mayús.
-	private final int PUERTO = 5000;
-	private int clientes = 0;
-	private Socket cliente = null;
-	private ObjectInputStream entrada = null;
-	private ObjectOutputStream salida = null;
+import com.google.gson.Gson;
+import dto.DataTransferObject;
+
+
+class Servidor {
 
 	public void iniciar() {
-		// punto de comunicacion del servidor
+
+		final String LOGIN = "LOGIN";
+		final String REGISTER = "REGISTER";
+		final String MUNICIPIOS = "MUNICIPIOS";
+		final String PROVINCIA = "PROVINCIA";
+		final String MUNICIPIOCODPROV = "MUNICIPIOCODPROV";
+		final String ESTACIONESCODMUN = "ESTACIONESCODMUN";
+		final String DATOSESTACION = "DATOSESTACION";
+		final String INFOMUNICIPIO = "INFOMUNICIPIO";
+		final String ESPACIOSCODMUNI = "ESPACIOSCODMUNI";
+		final String ESPACIOS = "ESPACIOS";
+		
 		ServerSocket servidor = null;
-		try {
-			servidor = new ServerSocket(PUERTO);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		int puerto = 4444;
+		Socket cliente = null;
+		ObjectInputStream entrada = null;
+		ObjectOutputStream salida = null;
+		String message = "";
 
-		System.out.println("Servicio iniciado| Esperando clientes...");
+		String operacion = null;
+		String[] params = null;
 
 		try {
-			while (true) {
+
+			servidor = new ServerSocket(puerto);
+			System.out.println("Servidor iniciado");
+
+			while (!servidor.isClosed()) {
 
 				cliente = servidor.accept();
+
 				entrada = new ObjectInputStream(cliente.getInputStream());
-
 				salida = new ObjectOutputStream(cliente.getOutputStream());
+				System.out.println("Cliente conectado");
 
-				System.out.println("Esperando");
+				message = (String) entrada.readObject();
 
-				String lineaLeer = (String) entrada.readObject();
+				operacion = message.split("~")[0];
+				
+				if(message.split("~").length > 1) {
+					params = message.split("~")[1].split(",");
+				}
+				
 
-				String[] mensaje = lineaLeer.split("/");
+				switch (operacion) {
+				case "login":
+					salida.writeObject(ControladorServidor.checkLogin(params[0], params[1]));
+					break;
+				case "listaMunicipios":
+					salida.writeObject(ControladorServidor.getListaMuncipios(params[0]));
+					break;
 
-				accion(mensaje);
+				}
 
-				System.out.println("Mensaje recibido: " + lineaLeer);
-
-				salida.writeObject("Saludos desde el servidor al cliente nº" + clientes);
+				entrada.close();
+				salida.close();
+				cliente.close();
 
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
+			System.out.println("Error: " + e.getMessage());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error: " + e.getMessage());
+		} finally {
+			try {
+				if (servidor != null)
+					servidor.close();
+				if (cliente != null)
+					cliente.close();
+				if (entrada != null)
+					entrada.close();
+				if (salida != null)
+					salida.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 		}
-
-		// cuando manejamos ficheros y sockets es importante que nos cercioremos de que
-		// se cierra todo
-
-	}
-
-	private void accion(String[] mensaje) throws IOException {
-		switch (String.valueOf(mensaje[0])) {
-		case "1":
-			if (mensaje[1].equals("admin")) {
-				salida.writeObject("Bienvenido " + mensaje[1]);
-			} else
-				//salida.writeObject("Usuario no encontrado");
-			break;
-
-		default:
-			break;
-		}
-
 	}
 
 	public static void main(String[] args) {
 
-		Servidor servidor = new Servidor();
-		servidor.iniciar();
-
+		Servidor s = new Servidor();
+		s.iniciar();
+		
 	}
-
 }

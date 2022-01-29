@@ -23,16 +23,17 @@ import vista.V_Registro;
 import vista.V_TopMunicipios;
 import vista.V_TopMunicipiosProvincias;
 
-public class VentanaInicio3 extends JFrame {
+public class VentanaMain extends JFrame {
 
 	public static JPanel panelContenedorPrincipal;
 
 	// CLIENTE
-	public final int PUERTO = 5000;
-	public final String IP = "localhost";
-	public Socket cliente = null;
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
 	public static ObjectInputStream entrada;
 	public static ObjectOutputStream salida;
+	private Cliente c;
 
 	/**
 	 * Launch the application.
@@ -41,7 +42,7 @@ public class VentanaInicio3 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaInicio3 frame = new VentanaInicio3();
+					VentanaMain frame = new VentanaMain();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +54,9 @@ public class VentanaInicio3 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaInicio3() {
+	public VentanaMain() {
+
+		c = new Cliente();
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
@@ -163,5 +166,6 @@ public class VentanaInicio3 extends JFrame {
 	}panelContenedorPrincipal.add(panel);
 
 }
+	
 
 }

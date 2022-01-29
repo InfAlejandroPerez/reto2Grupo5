@@ -11,8 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
+import cliente.VentanaMain;
+import servidor.Consultas;
 
 public class V_Registro extends JPanel {
 
@@ -22,7 +22,7 @@ public class V_Registro extends JPanel {
 	private JTextField textFieldPassRepetidaRegistro;
 	private JLabel lblMensajeRegistro;
 
-	VentanaInicio3 ventanaInicio;
+	VentanaMain ventanaInicio;
 
 	/**
 	 * Create the panel.
@@ -37,7 +37,7 @@ public class V_Registro extends JPanel {
 		add(lblUser);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(V2_Registro.class.getResource("/Imagenes/euskalmet.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(V_Registro.class.getResource("/Imagenes/euskalmet.jpg")));
 		lblNewLabel.setBounds(101, 11, 273, 62);
 		add(lblNewLabel);
 
@@ -83,7 +83,7 @@ public class V_Registro extends JPanel {
 					if (comprobarRegistro == true) {
 
 						Consultas.insertarDatosRegistro(usuario, passRepetida);
-						VentanaInicio3.switchPanel(1);
+						VentanaMain.switchPanel(1);
 
 					} else {
 
@@ -93,7 +93,7 @@ public class V_Registro extends JPanel {
 					}
 
 					//VentanaInicio3.salida.writeObject();
-					System.out.println(VentanaInicio3.entrada.readObject());
+					System.out.println(VentanaMain.entrada.readObject());
 
 					//VentanaInicio3.switchPanel(1);
 					// show

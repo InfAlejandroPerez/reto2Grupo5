@@ -23,13 +23,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 import static javax.swing.ScrollPaneConstants.*;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
 import modelo.DatosDiario;
 import modelo.DatosHorario;
 import modelo.EspaciosNaturales;
 import modelo.Estaciones;
 import modelo.Municipios;
+import servidor.Consultas;
 
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -40,6 +39,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import antlr.StringUtils;
+import cliente.VentanaMain;
 
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
@@ -66,16 +66,16 @@ public class V_InfoMunicipio extends JPanel {
 	 * Create the panel.
 	 */
 	public V_InfoMunicipio() {
-		System.out.println(V_Espacios.list.getSelectedValue().toString());
+		System.out.println(nombreMunicipio);
 
-		municipio = (Consultas.ConsultaMunicipioEspacio(V_Espacios.list.getSelectedValue().toString()));
+		municipio = (Consultas.getMunicipioOfEspacio(V_Espacios.list.getSelectedValue().toString()));
 		for (int i = 0; i < municipio.size(); i++) {
 			nombreMunicipio = Optional.ofNullable(municipio.get(i).getNombre()).orElse("--");
 			descripcion = Optional.ofNullable(municipio.get(i).getDescripcion()).orElse("--");
 		}
 		
 
-		datosHorario = Consultas.consultaDatosHorarios();
+		datosHorario = Consultas.getDatosHorarios();
 		for (int i = 0; i < datosHorario.size(); i++) {
 
 			NO2ICA = Optional.ofNullable(datosHorario.get(i).getNo2ica()).orElse("--").replaceAll("\\ / .*", "");
@@ -91,7 +91,7 @@ public class V_InfoMunicipio extends JPanel {
 		setLayout(null);
 
 		// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
-		JLabel lblNombreMunicipio = new JLabel("");
+		JLabel lblNombreMunicipio = new JLabel(nombreMunicipio);
 		lblNombreMunicipio.setForeground(Color.WHITE);
 		lblNombreMunicipio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -111,7 +111,7 @@ public class V_InfoMunicipio extends JPanel {
 
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setIcon(new ImageIcon(V_InfoMunicipio.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(78, 11, 33, 32);
 		add(btnSalir);
 
@@ -121,7 +121,7 @@ public class V_InfoMunicipio extends JPanel {
 
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setIcon(new ImageIcon(V_InfoMunicipio.class.getResource("/imagenes/botonDesconectarse.jpg")));
 		btnDesconectarse.setBounds(591, 11, 33, 32);
 		add(btnDesconectarse);
 
@@ -193,7 +193,7 @@ public class V_InfoMunicipio extends JPanel {
 		add(scroll);
 		
 		DefaultListModel model = new DefaultListModel();
-		estacionesMunicipio = Consultas.ConsultaEstacion(nombreMunicipio);
+		estacionesMunicipio = Consultas.getEstacionesMunicipio(nombreMunicipio);
 
 		for (int i = 0; i < estacionesMunicipio.size(); i++) {
 			model.addElement(estacionesMunicipio.get(i).getNombre()+"\n");
@@ -241,7 +241,7 @@ public class V_InfoMunicipio extends JPanel {
 		
 		
 		DefaultListModel model2 = new DefaultListModel();
-		espacios = Consultas.ConsultaEspaciosNaturalesMunicipio(V_InfoEspacio.nombreMunicipio);
+		espacios = Consultas.getEspaciosNaturalesMunicipio(V_InfoEspacio.nombreMunicipio);
 
 		for (int i = 0; i < espacios.size(); i++) {
 			model2.addElement(espacios.get(i).getNombre()+"\n");
@@ -273,17 +273,17 @@ public class V_InfoMunicipio extends JPanel {
 
 	public void verInfoEspacio() {
 
-		VentanaInicio3.switchPanel(7);
+		VentanaMain.switchPanel(7);
 
 	}
 	public void verInfoEstacion() {
 
-		VentanaInicio3.switchPanel(5);
+		VentanaMain.switchPanel(5);
 
 	}
 	public void volverInfoEspacio() {
 
-		VentanaInicio3.switchPanel(7);
+		VentanaMain.switchPanel(7);
 
 	}
 }

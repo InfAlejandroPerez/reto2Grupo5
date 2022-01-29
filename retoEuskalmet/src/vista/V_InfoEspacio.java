@@ -23,12 +23,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 import static javax.swing.ScrollPaneConstants.*;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
 import modelo.DatosDiario;
 import modelo.DatosHorario;
 import modelo.EspaciosNaturales;
 import modelo.Municipios;
+import servidor.Consultas;
 
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -39,6 +38,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import antlr.StringUtils;
+import cliente.VentanaMain;
 
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
@@ -67,19 +67,19 @@ public class V_InfoEspacio extends JPanel {
 	public V_InfoEspacio() {
 		System.out.println(V_Espacios.list.getSelectedValue().toString());
 
-		municipio = (Consultas.ConsultaMunicipioEspacio(lblNombreEspacio.getText()));
+		municipio = (Consultas.getMunicipioOfEspacio(lblNombreEspacio.getText()));
 		for (int i = 0; i < municipio.size(); i++) {
 			nombreMunicipio = Optional.ofNullable(municipio.get(i).getNombre()).orElse("--");
 			descripcion = Optional.ofNullable(municipio.get(i).getDescripcion()).orElse("--");
 		}
 		
-		espacio = Consultas.ConsultaDatosEspacioNatural(lblNombreEspacio.getText());
+		espacio = Consultas.getDatosEspacioNatural(lblNombreEspacio.getText());
 		for (int i = 0; i < espacio.size(); i++) {
 			descripcion = Optional.ofNullable(espacio.get(i).getDescripcion()).orElse("--");
 		}
 		
 
-		datosHorario = Consultas.consultaDatosHorarios();
+		datosHorario = Consultas.getDatosHorarios();
 		for (int i = 0; i < datosHorario.size(); i++) {
 
 			NO2ICA = Optional.ofNullable(datosHorario.get(i).getNo2ica()).orElse("--").replaceAll("\\ / .*", "");
@@ -114,7 +114,7 @@ public class V_InfoEspacio extends JPanel {
 
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setIcon(new ImageIcon(V_InfoEspacio.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(78, 11, 33, 32);
 		add(btnSalir);
 
@@ -124,7 +124,7 @@ public class V_InfoEspacio extends JPanel {
 
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setIcon(new ImageIcon(V_InfoEspacio.class.getResource("/imagenes/botonDesconectarse.jpg")));
 		btnDesconectarse.setBounds(591, 11, 33, 32);
 		add(btnDesconectarse);
 
@@ -208,7 +208,7 @@ public class V_InfoEspacio extends JPanel {
 				
 				V_InfoMunicipio.nombreMunicipio = nombreMunicipio;
 			
-				VentanaInicio3.switchPanel(8);
+				VentanaMain.switchPanel(8);
 				
 			}
 		});
@@ -314,7 +314,7 @@ public class V_InfoEspacio extends JPanel {
 
 	public void volverEspacios() {
 
-		VentanaInicio3.switchPanel(6);
+		VentanaMain.switchPanel(6);
 
 	}
 }

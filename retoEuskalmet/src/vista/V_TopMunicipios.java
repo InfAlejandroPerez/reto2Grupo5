@@ -20,9 +20,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
-import cliente.VentanaInicio3;
-import controlador.Consultas;
+import cliente.VentanaMain;
 import modelo.Municipios;
+import servidor.Consultas;
+
 import javax.swing.AbstractListModel;
 import javax.swing.JSeparator;
 
@@ -53,7 +54,7 @@ public class V_TopMunicipios extends JPanel {
 				
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
+		btnSalir.setIcon(new ImageIcon(V_TopMunicipios.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(78, 11, 33, 32);
 		add(btnSalir);
 		
@@ -63,7 +64,7 @@ public class V_TopMunicipios extends JPanel {
 				
 			}
 		});
-		btnDesconectarse.setIcon(new ImageIcon(V5_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
+		btnDesconectarse.setIcon(new ImageIcon(V_TopMunicipios.class.getResource("/imagenes/botonDesconectarse.jpg")));
 		btnDesconectarse.setBounds(591, 11, 33, 32);
 		add(btnDesconectarse);
 		
@@ -104,7 +105,7 @@ public class V_TopMunicipios extends JPanel {
 		add(lblNewLabel_1_1_1);
 		
 		DefaultListModel model = new DefaultListModel();
-		topMunicipios = Consultas.ConsultaTopMunis();
+		topMunicipios = Consultas.getTopMunicipios();
 
 		for (int i = 0; i < topMunicipios.size(); i++) {
 			model.addElement((i+1)+". "+topMunicipios.get(i).getNombre()+"\n");
@@ -180,13 +181,13 @@ public class V_TopMunicipios extends JPanel {
 	
 	public void volverMenuMunicipio() {
 
-		VentanaInicio3.switchPanel(3);
+		VentanaMain.switchPanel(3);
 
 	}
 	
 	public void verTopMunicipiosProvincias() {
 
-		VentanaInicio3.switchPanel(10);
+		VentanaMain.switchPanel(10);
 
 	}
 }
