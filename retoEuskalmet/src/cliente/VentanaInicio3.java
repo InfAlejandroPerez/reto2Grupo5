@@ -21,6 +21,7 @@ import vista.V_Login;
 import vista.V_MenuMunicipio;
 import vista.V_Registro;
 import vista.V_TopMunicipios;
+import vista.V_TopMunicipiosProvincias;
 
 public class VentanaInicio3 extends JFrame {
 
@@ -147,6 +148,14 @@ public class VentanaInicio3 extends JFrame {
 			V_TopMunicipios panel9 = new V_TopMunicipios();
 			
 			panel = panel9;
+	
+	
+			break;
+		
+		case 10:
+			V_TopMunicipiosProvincias panel10 = new V_TopMunicipiosProvincias();
+			
+			panel = panel10;
 	
 	
 			break;

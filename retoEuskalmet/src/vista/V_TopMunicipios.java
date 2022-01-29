@@ -167,14 +167,26 @@ public class V_TopMunicipios extends JPanel {
 		add(separator_1_1);
 		
 		JButton btnPorProvincia = new JButton("Por Provincia");
+		btnPorProvincia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				verTopMunicipiosProvincias();
+				
+			}
+		});
 		btnPorProvincia.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnPorProvincia.setBounds(471, 363, 141, 29);
+		btnPorProvincia.setBounds(456, 363, 156, 29);
 		add(btnPorProvincia);
 	}
 	
 	public void volverMenuMunicipio() {
 
 		VentanaInicio3.switchPanel(3);
+
+	}
+	
+	public void verTopMunicipiosProvincias() {
+
+		VentanaInicio3.switchPanel(10);
 
 	}
 }
