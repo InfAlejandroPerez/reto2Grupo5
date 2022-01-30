@@ -116,7 +116,7 @@ public class V_MenuMunicipio extends JPanel {
 		btnEstaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				V_Estaciones.municipio = comboBoxMunicipio.getSelectedItem().toString();
+				V_Estaciones.nombreMunicipio = comboBoxMunicipio.getSelectedItem().toString();
 				
 				VentanaMain.switchPanel(4);
 

@@ -7,23 +7,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.google.gson.Gson;
-import dto.DataTransferObject;
 
 
 class Servidor {
 
 	public void iniciar() {
-
-		final String LOGIN = "LOGIN";
-		final String REGISTER = "REGISTER";
-		final String MUNICIPIOS = "MUNICIPIOS";
-		final String PROVINCIA = "PROVINCIA";
-		final String MUNICIPIOCODPROV = "MUNICIPIOCODPROV";
-		final String ESTACIONESCODMUN = "ESTACIONESCODMUN";
-		final String DATOSESTACION = "DATOSESTACION";
-		final String INFOMUNICIPIO = "INFOMUNICIPIO";
-		final String ESPACIOSCODMUNI = "ESPACIOSCODMUNI";
-		final String ESPACIOS = "ESPACIOS";
 		
 		ServerSocket servidor = null;
 		int puerto = 4444;
@@ -61,9 +49,41 @@ class Servidor {
 				case "login":
 					salida.writeObject(ControladorServidor.checkLogin(params[0], params[1]));
 					break;
+				case "datosMunicipio":
+					salida.writeObject(ControladorServidor.getDatosMunicipio(params[0]));
+					break;
+				case "datosEstacion":
+					salida.writeObject(ControladorServidor.getDatosDiariosEstacion(params[0]));
+					break;
+				case "datosEspacioNatural":
+					salida.writeObject(ControladorServidor.getDatosEspacioNatural(params[0]));
+					break;
+				case "datosHorarios":
+					salida.writeObject(ControladorServidor.getDatosHorarios());
+					break;
 				case "listaMunicipios":
 					salida.writeObject(ControladorServidor.getListaMuncipios(params[0]));
 					break;
+				case "listaEspacios":
+					salida.writeObject(ControladorServidor.getEspaciosNaturales());
+					break;
+				case "estacionesMunicipio":
+					salida.writeObject(ControladorServidor.getEstacionesMunicipio(params[0]));
+					break;
+				case "espaciosMunicipio":
+					salida.writeObject(ControladorServidor.getEspaciosNaturalesMunicipio(params[0]));
+					break;
+				case "municipioOfEspacio":
+					salida.writeObject(ControladorServidor.getMunicipioOfEspacio(params[0]));
+					break;
+				case "topMunicipios":
+					salida.writeObject(ControladorServidor.getTopMunicipios());
+					break;
+				case "topMunicipiosProvincia":
+					salida.writeObject(ControladorServidor.getTopMunicipiosProvincia(params[0]));
+					break;
+				
+				
 
 				}
 

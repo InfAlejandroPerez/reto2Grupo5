@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -30,11 +34,22 @@ import javax.swing.DefaultListModel;
 import java.awt.Cursor;
 
 public class V_Estaciones extends JPanel {
+	private ObjectInputStream entrada = null;
+	private ObjectOutputStream salida = null;
+	
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
+	
+	VentanaMain ventanaMain;
 
 	public ArrayList<Estaciones> estacionesMunicipio = new ArrayList<Estaciones>();
-	public static JList list;
 	
-	public static String municipio;
+	public static String nombreMunicipio; 
+	
+	public static JList list;
+	public DefaultListModel model = new DefaultListModel();
+	
 	/**
 	 * Create the panel.
 	 */
@@ -44,7 +59,7 @@ public class V_Estaciones extends JPanel {
 		setLayout(null);
 		
 		// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
-		JLabel lblNombreMunicipio = new JLabel(municipio);
+		JLabel lblNombreMunicipio = new JLabel(nombreMunicipio);
 		lblNombreMunicipio.setForeground(Color.WHITE);
 		lblNombreMunicipio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -113,14 +128,8 @@ public class V_Estaciones extends JPanel {
 		lblNewLabel_1_1_1.setBounds(66, 395, 572, 66);
 		add(lblNewLabel_1_1_1);
 		
-		DefaultListModel model = new DefaultListModel();
-		estacionesMunicipio = Consultas.getEstacionesMunicipio(municipio);
-
-		for (int i = 0; i < estacionesMunicipio.size(); i++) {
-			model.addElement(estacionesMunicipio.get(i).getNombre()+"\n");
-		}
-
-
+		
+		cargarEstacionMunicipio();
 		
 		list = new JList();
 		list.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -135,10 +144,8 @@ public class V_Estaciones extends JPanel {
 		        JList list = (JList)evt.getSource();
 		        if (evt.getClickCount() == 2) {
 		        	
-		        	V_CalidadAireEstacion.estacion = list.getSelectedValue().toString();
 		        	verInfoEstacion();
-		        	
-		        	
+
 		        }
 		    }
 		});
@@ -152,6 +159,36 @@ public class V_Estaciones extends JPanel {
 		add(lblNewLabel);
 	}
 	
+	private void  cargarEstacionMunicipio() {
+		try {	
+			
+
+				iniciar();
+				
+				String operacionParams = "estacionesMunicipio~"+nombreMunicipio;
+				salida.writeObject(operacionParams);
+				salida.flush();
+
+				ArrayList<Estaciones> response = (ArrayList<Estaciones>) entrada.readObject();
+				
+				for (int i = 0; i < response.size(); i++) {
+
+					model.addElement(response.get(i).getNombre());
+
+				}
+
+				cliente.close();
+				
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
 	public void volverMenuMunicipio() {
 
 		VentanaMain.switchPanel(3);
@@ -159,6 +196,22 @@ public class V_Estaciones extends JPanel {
 	}
 	
 	public void verInfoEstacion() {
+		V_CalidadAireEstacion.nombreEstacion = list.getSelectedValue().toString();
 		VentanaMain.switchPanel(5);
+	}
+	
+	public void iniciar() {
+
+		try {
+
+			cliente = new Socket(IP, PUERTO);
+			System.out.println("Conexión establecida con el servidor");
+			salida = new ObjectOutputStream(cliente.getOutputStream());
+			entrada = new ObjectInputStream(cliente.getInputStream());
+
+		} catch (Exception e) {
+
+		}
+
 	}
 }

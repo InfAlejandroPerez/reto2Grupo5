@@ -190,12 +190,10 @@ public class Consultas {
 		}
 	}
 
-	// sacamos las propiedades de la calidad del aire en base al municipio del
-	// espacio
+	// sacamos las propiedades de la calidad del aire horaria de la estacion 1 de forma predeterminada, ya que
+	// es la primera en insertarse a las BD
 
 	public static ArrayList<DatosHorario> getDatosHorarios() {
-		int random = (int) Math.floor(Math.random() * (11 - 1 + 1) + 1);
-		System.out.println(random);
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
 		String hql = "from DatosHorario where codEstacion=1 and fecha = '2021-12-31' and hora='00:00:00'";
@@ -205,10 +203,8 @@ public class Consultas {
 		datos = (ArrayList<DatosHorario>) q.list();
 		session.close();
 		if (!datos.isEmpty()) {
-			System.out.println("algo");
 			return (ArrayList<DatosHorario>) datos;
 		} else {
-			System.out.println("nada");
 			return null;
 
 		}

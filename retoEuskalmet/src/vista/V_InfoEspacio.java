@@ -26,6 +26,7 @@ import static javax.swing.ScrollPaneConstants.*;
 import modelo.DatosDiario;
 import modelo.DatosHorario;
 import modelo.EspaciosNaturales;
+import modelo.Estaciones;
 import modelo.Municipios;
 import servidor.Consultas;
 
@@ -33,6 +34,10 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import java.awt.event.MouseWheelListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.awt.event.MouseWheelEvent;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -45,41 +50,47 @@ import javax.swing.border.BevelBorder;
 import java.awt.Insets;
 
 public class V_InfoEspacio extends JPanel {
+	private ObjectInputStream entrada = null;
+	private ObjectOutputStream salida = null;
+
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
+
+	VentanaMain ventanaMain;
 
 	public ArrayList<DatosHorario> datosHorario = new ArrayList<DatosHorario>();
 	public ArrayList<Municipios> municipio = new ArrayList<Municipios>();
 	public ArrayList<EspaciosNaturales> espacio = new ArrayList<EspaciosNaturales>();
 
 	public static String nombreEspacio;
-	public static String nombreMunicipio;
+	public String nombreMunicipio;
 	public String descripcion;
 	public String NO2ICA;
 	public String PM10ICA;
 	public String PM25ICA;
 	public String SO2ICA;
 	public String ICAEstacion;
-	
-	public static JLabel lblNombreEspacio = new JLabel(nombreEspacio);
 
 	/**
 	 * Create the panel.
 	 */
 	public V_InfoEspacio() {
-		System.out.println(V_Espacios.list.getSelectedValue().toString());
+		System.out.println(nombreEspacio);
 
-		municipio = (Consultas.getMunicipioOfEspacio(lblNombreEspacio.getText()));
-		for (int i = 0; i < municipio.size(); i++) {
-			nombreMunicipio = Optional.ofNullable(municipio.get(i).getNombre()).orElse("--");
-			descripcion = Optional.ofNullable(municipio.get(i).getDescripcion()).orElse("--");
-		}
-		
-		espacio = Consultas.getDatosEspacioNatural(lblNombreEspacio.getText());
+		espacio = getInfoEspacio();
+
 		for (int i = 0; i < espacio.size(); i++) {
 			descripcion = Optional.ofNullable(espacio.get(i).getDescripcion()).orElse("--");
 		}
-		
 
-		datosHorario = Consultas.getDatosHorarios();
+		municipio = getInfoMunicipioOfEspacio();
+
+		for (int i = 0; i < municipio.size(); i++) {
+			nombreMunicipio = Optional.ofNullable(municipio.get(i).getNombre()).orElse("--");
+		}
+
+		datosHorario = getDatosHorarios();
 		for (int i = 0; i < datosHorario.size(); i++) {
 
 			NO2ICA = Optional.ofNullable(datosHorario.get(i).getNo2ica()).orElse("--").replaceAll("\\ / .*", "");
@@ -95,6 +106,7 @@ public class V_InfoEspacio extends JPanel {
 		setLayout(null);
 
 		// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
+		JLabel lblNombreEspacio = new JLabel(nombreEspacio);
 		lblNombreEspacio.setForeground(Color.WHITE);
 		lblNombreEspacio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombreEspacio.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -205,11 +217,9 @@ public class V_InfoEspacio extends JPanel {
 		JButton btnNombreMunicipio = new JButton("> " + nombreMunicipio + " <");
 		btnNombreMunicipio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				V_InfoMunicipio.nombreMunicipio = nombreMunicipio;
-			
-				VentanaMain.switchPanel(8);
-				
+
+				verInfoMunicipio();
+
 			}
 		});
 		btnNombreMunicipio.setBackground(Color.WHITE);
@@ -309,6 +319,100 @@ public class V_InfoEspacio extends JPanel {
 		lblFondoDatos.setBackground(Color.WHITE);
 		lblFondoDatos.setBounds(361, 322, 242, 66);
 		add(lblFondoDatos);
+
+	}
+
+	private ArrayList<EspaciosNaturales> getInfoEspacio() {
+		ArrayList<EspaciosNaturales> response = null;
+		try {
+
+			iniciar();
+
+			String operacionParams = "datosEspacioNatural~" + nombreEspacio;
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			response = (ArrayList<EspaciosNaturales>) entrada.readObject();
+
+			cliente.close();
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return response;
+	}
+
+	private ArrayList<Municipios> getInfoMunicipioOfEspacio() {
+		ArrayList<Municipios> response = null;
+		try {
+
+			iniciar();
+
+			String operacionParams = "municipioOfEspacio~" + nombreEspacio;
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			response = (ArrayList<Municipios>) entrada.readObject();
+
+			cliente.close();
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return response;
+	}
+
+	private ArrayList<DatosHorario> getDatosHorarios() {
+		ArrayList<DatosHorario> response = null;
+		try {
+
+			iniciar();
+
+			String operacionParams = "datosHorarios~";
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			response = (ArrayList<DatosHorario>) entrada.readObject();
+
+			cliente.close();
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return response;
+	}
+
+	public void iniciar() {
+
+		try {
+
+			cliente = new Socket(IP, PUERTO);
+			System.out.println("Conexión establecida con el servidor");
+			salida = new ObjectOutputStream(cliente.getOutputStream());
+			entrada = new ObjectInputStream(cliente.getInputStream());
+
+		} catch (Exception e) {
+
+		}
+
+	}
+
+	public void verInfoMunicipio() {
+		V_InfoMunicipio.nombreMunicipio = nombreMunicipio;
+
+		VentanaMain.switchPanel(8);
 
 	}
 

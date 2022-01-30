@@ -33,12 +33,12 @@ public class Cliente {
 		try {
 			 cliente = new Socket(IP,puerto);
 			
-			System.out.println("conexion establecida con el servidor");
+			System.out.println("Conexión establecida con el servidor");
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 			entrada = new ObjectInputStream(cliente.getInputStream());
-			salida.writeObject("hey mozo im cliente");
+			salida.writeObject("Hola, servidor");
 			String linea = (String) entrada.readObject();
-			System.out.println("recibido mike"+ linea);
+			System.out.println("Recibido: "+ linea);
 			
 		}catch(Exception e){
 			e.printStackTrace();

@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -23,28 +27,36 @@ import javax.swing.border.MatteBorder;
 
 import cliente.VentanaMain;
 import modelo.DatosDiario;
+import modelo.Estaciones;
 import servidor.Consultas;
 
 import javax.swing.JSeparator;
 
 public class V_CalidadAireEstacion extends JPanel {
+	private ObjectInputStream entrada = null;
+	private ObjectOutputStream salida = null;
+	
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
+	
+	VentanaMain ventanaMain;
 	
 	public ArrayList<DatosDiario> datosDiario = new ArrayList<DatosDiario>();
 	
 	public String cOmgm3, cO8hmgm3, nOgm3, nO2gm3, nOXgm3, pM10gm3, pM25gm3, sO2gm3;
 	
-	public static String estacion;
+	public static String nombreEstacion;
 
 	/**
 	 * Create the panel.
 	 */
 	public V_CalidadAireEstacion() {
-		//estacion = Optional.ofNullable(V_Estaciones.list.getSelectedValue().toString()).orElse(V_InfoMunicipio.list.getSelectedValue().toString());
 		
 		
-		datosDiario = Consultas.getDatosDiariosEstacion(estacion);
 		
-		//System.out.println(V_Estaciones.list.getSelectedValue().toString());
+		datosDiario = cargarDatosDiarioEstacion();
+		
 		
 		for (int i = 0; i < datosDiario.size(); i++) {
 			cOmgm3 = Optional.ofNullable(datosDiario.get(i).getComgm3()).orElse("--");
@@ -63,7 +75,7 @@ public class V_CalidadAireEstacion extends JPanel {
 		
 		
 		// MODIFICAMOS ESTE LABEL EN FUNCION DEL MUNICIPIO SELECCIONADO
-		JLabel lblNombreMunicipio = new JLabel(estacion);
+		JLabel lblNombreMunicipio = new JLabel(nombreEstacion);
 		lblNombreMunicipio.setForeground(Color.WHITE);
 		lblNombreMunicipio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombreMunicipio.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -259,9 +271,50 @@ public class V_CalidadAireEstacion extends JPanel {
 		add(lblNewLabel);
 		
 	}
+	private ArrayList<DatosDiario> cargarDatosDiarioEstacion() {
+		ArrayList<DatosDiario> response = new ArrayList<DatosDiario>();
+		try {	
+			
+
+			iniciar();
+			
+			String operacionParams = "datosEstacion~"+nombreEstacion;
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			response = (ArrayList<DatosDiario>) entrada.readObject();
+
+			cliente.close();
+			
+
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	} catch (ClassNotFoundException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+		return response;
+		
+	}
 	public void volverMenu() {
 
 		VentanaMain.switchPanel(3);
+
+	}
+	
+	public void iniciar() {
+
+		try {
+
+			cliente = new Socket(IP, PUERTO);
+			System.out.println("Conexión establecida con el servidor");
+			salida = new ObjectOutputStream(cliente.getOutputStream());
+			entrada = new ObjectInputStream(cliente.getInputStream());
+
+		} catch (Exception e) {
+
+		}
 
 	}
 

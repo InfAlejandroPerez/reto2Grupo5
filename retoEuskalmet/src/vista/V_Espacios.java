@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -32,9 +36,19 @@ import javax.swing.DefaultListModel;
 import java.awt.Cursor;
 
 public class V_Espacios extends JPanel {
+	private ObjectInputStream entrada = null;
+	private ObjectOutputStream salida = null;
+	
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
+	
+	VentanaMain ventanaMain;
 
 	public ArrayList<EspaciosNaturales> espacios = new ArrayList<EspaciosNaturales>();
 	public static JList list;
+	
+	public DefaultListModel model = new DefaultListModel();
 	/**
 	 * Create the panel.
 	 */
@@ -106,14 +120,8 @@ public class V_Espacios extends JPanel {
 		lblNewLabel_1_1_1.setBounds(66, 395, 572, 66);
 		add(lblNewLabel_1_1_1);
 		
-		DefaultListModel model = new DefaultListModel();
-		espacios = Consultas.getEspaciosNaturales();
-
-		for (int i = 0; i < espacios.size(); i++) {
-			model.addElement(espacios.get(i).getNombre()+"\n");
-		}
-
-
+		
+		cargarEspacios();
 		
 		list = new JList();
 		list.setVisibleRowCount(0);
@@ -148,6 +156,37 @@ public class V_Espacios extends JPanel {
 		add(lblNewLabel);
 	}
 	
+	private void cargarEspacios() {
+		try {	
+			
+
+			iniciar();
+			
+			String operacionParams = "listaEspacios~";
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			ArrayList<EspaciosNaturales> response = (ArrayList<EspaciosNaturales>) entrada.readObject();
+			
+			for (int i = 0; i < response.size(); i++) {
+
+				model.addElement(response.get(i).getNombre());
+
+			}
+
+			cliente.close();
+			
+
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	} catch (ClassNotFoundException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+		
+	}
+
 	public void volverMenuMunicipio() {
 
 		VentanaMain.switchPanel(3);
@@ -155,7 +194,21 @@ public class V_Espacios extends JPanel {
 	}
 	
 	public void verInfoEspacio() {
-		V_InfoEspacio.lblNombreEspacio.setText(list.getSelectedValue().toString());
+		V_InfoEspacio.nombreEspacio = list.getSelectedValue().toString();
 		VentanaMain.switchPanel(7);
+	}
+	public void iniciar() {
+
+		try {
+
+			cliente = new Socket(IP, PUERTO);
+			System.out.println("Conexión establecida con el servidor");
+			salida = new ObjectOutputStream(cliente.getOutputStream());
+			entrada = new ObjectInputStream(cliente.getInputStream());
+
+		} catch (Exception e) {
+
+		}
+
 	}
 }

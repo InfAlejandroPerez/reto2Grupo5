@@ -34,6 +34,10 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import java.awt.event.MouseWheelListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.awt.event.MouseWheelEvent;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -46,45 +50,36 @@ import javax.swing.border.BevelBorder;
 import java.awt.Insets;
 
 public class V_InfoMunicipio extends JPanel {
+	private ObjectInputStream entrada = null;
+	private ObjectOutputStream salida = null;
 
-	public ArrayList<DatosHorario> datosHorario = new ArrayList<DatosHorario>();
-	public ArrayList<Municipios> municipio = new ArrayList<Municipios>();
-	public ArrayList<EspaciosNaturales> espacios = new ArrayList<EspaciosNaturales>();
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
+
+	VentanaMain ventanaMain;
+
+	public Municipios municipio = new Municipios();
+	public ArrayList<EspaciosNaturales> espaciosMunicipio = new ArrayList<EspaciosNaturales>();
 	public ArrayList<Estaciones> estacionesMunicipio = new ArrayList<Estaciones>();
 
-	public String nombreEspacio;
 	public static String nombreMunicipio;
 	public String descripcion;
-	public String NO2ICA;
-	public String PM10ICA;
-	public String PM25ICA;
-	public String SO2ICA;
-	public String ICAEstacion;
+
+	public DefaultListModel model = new DefaultListModel();
+	public DefaultListModel model2 = new DefaultListModel();
+
 	public static JList list, list2;
 
 	/**
 	 * Create the panel.
 	 */
 	public V_InfoMunicipio() {
-		System.out.println(nombreMunicipio);
 
-		municipio = (Consultas.getMunicipioOfEspacio(V_Espacios.list.getSelectedValue().toString()));
-		for (int i = 0; i < municipio.size(); i++) {
-			nombreMunicipio = Optional.ofNullable(municipio.get(i).getNombre()).orElse("--");
-			descripcion = Optional.ofNullable(municipio.get(i).getDescripcion()).orElse("--");
-		}
-		
+		municipio = getInfoMunicipio();
 
-		datosHorario = Consultas.getDatosHorarios();
-		for (int i = 0; i < datosHorario.size(); i++) {
-
-			NO2ICA = Optional.ofNullable(datosHorario.get(i).getNo2ica()).orElse("--").replaceAll("\\ / .*", "");
-			PM10ICA = Optional.ofNullable(datosHorario.get(i).getPm10ica()).orElse("--").replaceAll("\\ / .*", "");
-			PM25ICA = Optional.ofNullable(datosHorario.get(i).getPm25ica()).orElse("--").replaceAll("\\ / .*", "");
-			SO2ICA = Optional.ofNullable(datosHorario.get(i).getSo2ica()).orElse("--").replaceAll("\\ / .*", "");
-			ICAEstacion = Optional.ofNullable(datosHorario.get(i).getIcaestacion()).orElse("--").replaceAll("\\ / .*",
-					"");
-		}
+		nombreMunicipio = Optional.ofNullable(municipio.getNombre()).orElse("--");
+		descripcion = Optional.ofNullable(municipio.getDescripcion()).orElse("--");
 
 		setBackground(SystemColor.textInactiveText);
 		setBounds(0, 0, 700, 460);
@@ -129,7 +124,7 @@ public class V_InfoMunicipio extends JPanel {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				volverInfoEspacio();
+				volverMenu();
 
 			}
 		});
@@ -191,13 +186,8 @@ public class V_InfoMunicipio extends JPanel {
 		scroll.setBounds(98, 195, 505, 100);
 		scroll.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
 		add(scroll);
-		
-		DefaultListModel model = new DefaultListModel();
-		estacionesMunicipio = Consultas.getEstacionesMunicipio(nombreMunicipio);
 
-		for (int i = 0; i < estacionesMunicipio.size(); i++) {
-			model.addElement(estacionesMunicipio.get(i).getNombre()+"\n");
-		}
+		getEstacionesMunicipio();
 
 		list = new JList();
 		list.setLayoutOrientation(JList.VERTICAL_WRAP);
@@ -211,19 +201,17 @@ public class V_InfoMunicipio extends JPanel {
 		list.setBackground(SystemColor.control);
 		list.setBounds(98, 320, 235, 66);
 		list.addMouseListener(new MouseAdapter() {
-		    public void mouseClicked(MouseEvent evt) {
-		        JList list1_ = (JList)evt.getSource();
-		        if (evt.getClickCount() == 2) {
-		        	
-		        	V_CalidadAireEstacion.estacion = list.getSelectedValue().toString();
-		        	verInfoEstacion();
-		        	
-		        	
-		        }
-		    }
+			public void mouseClicked(MouseEvent evt) {
+				JList list1_ = (JList) evt.getSource();
+				if (evt.getClickCount() == 2) {
+
+					verInfoEstacion();
+
+				}
+			}
 		});
 
-	    add(list);
+		add(list);
 
 		JLabel lblEspaciosNaturales = new JLabel("Espacios naturales");
 		lblEspaciosNaturales.setHorizontalAlignment(SwingConstants.LEFT);
@@ -231,22 +219,17 @@ public class V_InfoMunicipio extends JPanel {
 		lblEspaciosNaturales.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblEspaciosNaturales.setBounds(356, 300, 150, 20);
 		add(lblEspaciosNaturales);
-		
+
 		JLabel lblEstaciones = new JLabel("Estaciones");
 		lblEstaciones.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEstaciones.setForeground(Color.WHITE);
 		lblEstaciones.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblEstaciones.setBounds(98, 300, 118, 20);
 		add(lblEstaciones);
-		
-		
-		DefaultListModel model2 = new DefaultListModel();
-		espacios = Consultas.getEspaciosNaturalesMunicipio(V_InfoEspacio.nombreMunicipio);
 
-		for (int i = 0; i < espacios.size(); i++) {
-			model2.addElement(espacios.get(i).getNombre()+"\n");
-		}
-		JList list2 = new JList();
+		getEspaciosMunicipio();
+
+		list2 = new JList();
 		list2.setVisibleRowCount(0);
 		list2.setValueIsAdjusting(true);
 		list2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -257,33 +240,132 @@ public class V_InfoMunicipio extends JPanel {
 		list2.setBackground(SystemColor.menu);
 		list2.setBounds(356, 320, 247, 66);
 		list2.addMouseListener(new MouseAdapter() {
-		    public void mouseClicked(MouseEvent evt) {
-		        JList list2_ = (JList)evt.getSource();
-		        if (evt.getClickCount() == 2) {
-		        	V_InfoEspacio.lblNombreEspacio.setText(list2.getSelectedValue().toString());
-		        	verInfoEspacio();
-		        	
-		        	
-		        }
-		    }
+			public void mouseClicked(MouseEvent evt) {
+				JList list2_ = (JList) evt.getSource();
+				if (evt.getClickCount() == 2) {
+
+					verInfoEspacio();
+
+				}
+			}
 		});
 		add(list2);
 
 	}
 
-	public void verInfoEspacio() {
+	private Municipios getInfoMunicipio() {
+		Municipios response = null;
+		try {
 
+			iniciar();
+
+			String operacionParams = "datosMunicipio~" + nombreMunicipio;
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			response = (Municipios) entrada.readObject();
+
+			cliente.close();
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return response;
+	}
+
+	private void getEstacionesMunicipio() {
+		try {
+
+			iniciar();
+
+			String operacionParams = "estacionesMunicipio~" + nombreMunicipio;
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			ArrayList<Estaciones> response = (ArrayList<Estaciones>) entrada.readObject();
+
+			if (response != null) {
+				for (int i = 0; i < response.size(); i++) {
+
+					model.addElement(response.get(i).getNombre());
+
+				}
+			}
+			cliente.close();
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	private void getEspaciosMunicipio() {
+		try {
+
+			iniciar();
+
+			String operacionParams = "espaciosMunicipio~" + nombreMunicipio;
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			ArrayList<EspaciosNaturales> response = (ArrayList<EspaciosNaturales>) entrada.readObject();
+
+			if (response != null) {
+				for (int i = 0; i < response.size(); i++) {
+
+					model2.addElement(response.get(i).getNombre());
+
+				}
+			}
+
+			cliente.close();
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	public void verInfoEspacio() {
+		V_InfoEspacio.nombreEspacio = list2.getSelectedValue().toString();
 		VentanaMain.switchPanel(7);
 
 	}
-	public void verInfoEstacion() {
 
+	public void verInfoEstacion() {
+		V_CalidadAireEstacion.nombreEstacion = list.getSelectedValue().toString();
 		VentanaMain.switchPanel(5);
 
 	}
-	public void volverInfoEspacio() {
 
-		VentanaMain.switchPanel(7);
+	public void volverMenu() {
+
+		VentanaMain.switchPanel(3);
+
+	}
+
+	public void iniciar() {
+
+		try {
+
+			cliente = new Socket(IP, PUERTO);
+			System.out.println("Conexión establecida con el servidor");
+			salida = new ObjectOutputStream(cliente.getOutputStream());
+			entrada = new ObjectInputStream(cliente.getInputStream());
+
+		} catch (Exception e) {
+
+		}
 
 	}
 }
