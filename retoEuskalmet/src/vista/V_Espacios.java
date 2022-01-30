@@ -21,7 +21,6 @@ import javax.swing.SwingConstants;
 
 import modelo.EspaciosNaturales;
 import modelo.Estaciones;
-import servidor.Consultas;
 
 import java.awt.SystemColor;
 import javax.swing.JList;

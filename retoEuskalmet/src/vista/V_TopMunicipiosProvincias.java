@@ -26,7 +26,6 @@ import javax.swing.border.MatteBorder;
 
 import cliente.VentanaMain;
 import modelo.Municipios;
-import servidor.Consultas;
 
 import javax.swing.AbstractListModel;
 import javax.swing.JSeparator;

@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import modelo.Estaciones;
-import servidor.Consultas;
 
 import java.awt.SystemColor;
 import javax.swing.JList;

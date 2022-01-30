@@ -23,7 +23,6 @@ import java.awt.SystemColor;
 import javax.swing.SwingConstants;
 
 import cliente.VentanaMain;
-import servidor.Consultas;
 
 public class V_MenuMunicipio extends JPanel {
 

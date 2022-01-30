@@ -28,7 +28,6 @@ import modelo.DatosHorario;
 import modelo.EspaciosNaturales;
 import modelo.Estaciones;
 import modelo.Municipios;
-import servidor.Consultas;
 
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;

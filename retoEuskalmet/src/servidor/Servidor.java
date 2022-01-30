@@ -49,6 +49,12 @@ class Servidor {
 				case "login":
 					salida.writeObject(ControladorServidor.checkLogin(params[0], params[1]));
 					break;
+				case "registroComprobacion":
+					salida.writeObject(ControladorServidor.consultaRegistro(params[0], params[1]));
+					break;
+				case "registro":
+									ControladorServidor.insertarDatosRegistro(params[0], params[1]);
+					break;
 				case "datosMunicipio":
 					salida.writeObject(ControladorServidor.getDatosMunicipio(params[0]));
 					break;

@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import hibernateUtil.HibernateUtil;
 import modelo.DatosDiario;
@@ -13,6 +14,7 @@ import modelo.DatosHorario;
 import modelo.EspaciosNaturales;
 import modelo.Estaciones;
 import modelo.Municipios;
+import modelo.Usuarios;
 
 public class ControladorServidor {
 	
@@ -243,5 +245,98 @@ public class ControladorServidor {
 
 			}
 		}
+		
+		// Consulta de registro para saber si los
+		// datos introducidos coinciden con alguien ya registrado
+		public static void consultaRegistro2(String nombreUsuario, String password) {
+
+			SessionFactory sesion = HibernateUtil.getSessionFactory();
+			Session session = sesion.openSession();
+			String hql = "select nombre, contrasenia from Usuarios where nombre='" + nombreUsuario + "' AND contrasenia='"
+					+ password + "'";
+			System.out.println("COMPROBAR SI HAY USUARIOS CON LOS MISMOS DATOS: "+hql);
+			Query q = session.createQuery(hql);
+			session.close();
+
+			List list = q.list();
+
+			if ((list != null) && (list.size() == 0)) {
+				insertarDatosRegistro(nombreUsuario, password);
+			} else {
+				//HAY COINCIDENCIAS Y NO HACE NADA
+			}
+
+		}
+		
+		//OTRA OPCION:
+		
+		public static boolean consultaRegistro(String nombreUsuario, String password) {
+
+			SessionFactory sesion = HibernateUtil.getSessionFactory();
+			Session session = sesion.openSession();
+			String hql = "select nombre, contrasenia from Usuarios where nombre='" + nombreUsuario + "' AND contrasenia='"
+					+ password + "'";
+			System.out.println("COMPROBAR SI HAY USUARIOS CON LOS MISMOS DATOS: "+hql);
+			Query q = session.createQuery(hql);
+			session.close();
+
+			List list = q.list();
+
+			if ((list != null) && (list.size() == 0)) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+		
+		// en caso de no haber coincidencias de usuarios, se ejecutaría este método
+		public static void insertarDatosRegistro(String nombreUsuario, String password) {
+
+			Usuarios usuario = new Usuarios();
+			usuario.setNombre(nombreUsuario);
+			usuario.setContrasenia(password);
+			usuario.setCodUsuario(consultaMaxId());
+
+			Transaction tx;
+			SessionFactory sesion = HibernateUtil.getSessionFactory();
+			Session s = sesion.openSession();
+			try {
+
+				tx = s.beginTransaction();
+
+				// Guardar objeto en la base de datos
+				s.save(usuario);
+				System.out.println("NUEVO USUARIO REGISTRADO");
+				// Actualizar informaci�n en la base de datos
+				tx.commit();
+			} finally {
+				s.close();
+				
+			}
+		}
+
+		// consulta para obtener el maximo id +1 para el nuevo usuario que se va a crear
+		public static int consultaMaxId() {
+
+			SessionFactory sesion = HibernateUtil.getSessionFactory();
+			Session session = sesion.openSession();
+			String hql = "select id from Usuarios";
+			System.out.println("MAX ID USUARIOS: "+hql);
+			Query q = session.createQuery(hql);
+
+			ArrayList<Integer> ids = new ArrayList<Integer>();
+			ids = (ArrayList<Integer>) q.list();
+			int maxId = 0;
+
+			for (int j = 0; j < ids.size(); j++) {
+				if (ids.get(j).intValue() > maxId) {
+					maxId = ids.get(j).intValue();
+				}
+			}
+			session.close();
+			return maxId + 1;
+
+		}		
 	
 }

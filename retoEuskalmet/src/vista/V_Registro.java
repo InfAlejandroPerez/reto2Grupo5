@@ -4,17 +4,28 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import cliente.VentanaMain;
-import servidor.Consultas;
 
 public class V_Registro extends JPanel {
+	private ObjectInputStream entrada = null;
+	private ObjectOutputStream salida = null;
+	
+	private final int PUERTO = 4444;
+	private final String IP = "localhost";
+	private Socket cliente = null;
+	
+	VentanaMain ventanaMain;
 
 	// REGISTRO
 	private JTextField textFieldUserRegistro;
@@ -22,7 +33,6 @@ public class V_Registro extends JPanel {
 	private JTextField textFieldPassRepetidaRegistro;
 	private JLabel lblMensajeRegistro;
 
-	VentanaMain ventanaInicio;
 
 	/**
 	 * Create the panel.
@@ -69,44 +79,23 @@ public class V_Registro extends JPanel {
 		JButton btnRegistro = new JButton("Registro");
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				try {
-					System.out.println("click");
-					String usuario = textFieldUserRegistro.getText();
-					String pass = textFieldPassRegistro.getText();
-					String passRepetida = textFieldPassRepetidaRegistro.getText();
-
-					Consultas.insertarDatosRegistro(usuario, passRepetida);
-
-					boolean comprobarRegistro;
-					comprobarRegistro = Consultas.consultaRegistro(usuario, passRepetida);
-					if (comprobarRegistro == true) {
-
-						Consultas.insertarDatosRegistro(usuario, passRepetida);
-						VentanaMain.switchPanel(1);
-
-					} else {
-
-						lblMensajeRegistro.setText("El usuario y la contraseña introducidos ya existen");
-						lblMensajeRegistro.setVisible(true);
-
+				
+				if (textFieldUserRegistro.equals("") || textFieldPassRegistro.equals("") || textFieldPassRepetidaRegistro.equals("")) {
+					JOptionPane.showMessageDialog(null, "Rellena los campos", "Mensaje",
+							JOptionPane.WARNING_MESSAGE);
+				}else {
+					if (!textFieldPassRegistro.equals(textFieldPassRepetidaRegistro)) {
+						JOptionPane.showMessageDialog(null, "Los campos de contraseña deben de coincidir", "Mensaje",
+								JOptionPane.WARNING_MESSAGE);
+					}else {
+						comprobarCredencialesNoRepetidas();
 					}
-
-					//VentanaInicio3.salida.writeObject();
-					System.out.println(VentanaMain.entrada.readObject());
-
-					//VentanaInicio3.switchPanel(1);
-					// show
-
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 
+				
+
 			}
+
 		});
 		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnRegistro.setBounds(164, 206, 136, 29);
@@ -120,6 +109,64 @@ public class V_Registro extends JPanel {
 
 		setLocation(0, 0);
 		setLayout(null);
+	}
+
+	private void comprobarCredencialesNoRepetidas() {
+		try {
+			String usuario = textFieldUserRegistro.getText();
+			String pass = textFieldPassRegistro.getText();
+			
+
+			iniciar();
+			
+			String operacionParams = "registroComprobacion~"+usuario+","+pass;
+			salida.writeObject(operacionParams);
+			salida.flush();
+
+			boolean response = (boolean) entrada.readObject();
+
+			cliente.close();
+			
+			if (response == true) {
+				
+				iniciar();
+				
+				String operacionParams2 = "registro~"+usuario+","+pass;
+				salida.writeObject(operacionParams2);
+				salida.flush();
+
+				cliente.close();
+
+			} else {
+
+				lblMensajeRegistro.setText("El usuario y la contraseña introducidos ya existen");
+				lblMensajeRegistro.setVisible(true);
+
+			}
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	}
+	
+	public void iniciar() {
+
+		try {
+
+			cliente = new Socket(IP, PUERTO);
+			System.out.println("Conexión establecida con el servidor");
+			salida = new ObjectOutputStream(cliente.getOutputStream());
+			entrada = new ObjectInputStream(cliente.getInputStream());
+
+		} catch (Exception e) {
+
+		}
+
 	}
 
 }

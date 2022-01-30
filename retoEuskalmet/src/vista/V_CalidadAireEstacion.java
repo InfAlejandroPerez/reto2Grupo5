@@ -28,7 +28,6 @@ import javax.swing.border.MatteBorder;
 import cliente.VentanaMain;
 import modelo.DatosDiario;
 import modelo.Estaciones;
-import servidor.Consultas;
 
 import javax.swing.JSeparator;
 

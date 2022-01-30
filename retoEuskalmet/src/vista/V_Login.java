@@ -6,7 +6,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import cliente.VentanaMain;
-import servidor.Consultas;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -29,11 +28,6 @@ import java.awt.Component;
 import java.awt.SystemColor;
 
 public class V_Login extends JPanel {
-
-	private JTextField textFieldUser;
-	private JLabel lblMensaje;
-	private JPasswordField passwordField;
-	
 	private ObjectInputStream entrada = null;
 	private ObjectOutputStream salida = null;
 	
@@ -42,6 +36,12 @@ public class V_Login extends JPanel {
 	private Socket cliente = null;
 	
 	VentanaMain ventanaMain;
+
+	private JTextField textFieldUser;
+	private JLabel lblMensaje;
+	private JPasswordField passwordField;
+	
+
 	
 
 	/**
@@ -55,47 +55,9 @@ public class V_Login extends JPanel {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					String usuario = textFieldUser.getText();
-					String pass = new String (passwordField.getPassword());
-					
-					
-					if (usuario.equals("") || pass.equals("")) {
-						JOptionPane.showMessageDialog(null, "Usuario no encontrado", "Mensaje",
-								JOptionPane.WARNING_MESSAGE);
-					} else {
-					
-						iniciar();
-						
-						String operacionParams = "login~"+usuario+","+pass;
-						salida.writeObject(operacionParams);
-						salida.flush();
-
-						boolean response = (boolean) entrada.readObject();
-
-						cliente.close();
-
-					if (response == true) {
-
-						verMenu();
-
-					} else {
-
-						lblMensaje.setText("Usuario y contraseña incorrectos");
-						lblMensaje.setVisible(true);
-					}
-
-					//VentanaInicio3.salida.writeObject("1/" + usuario + "/" + pass);
-					//System.out.println(VentanaMain.entrada.readObject());
-					}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				login();
 			}
+
 		});
 		setLayout(null);
 		btnLogin.setBounds(295, 348, 115, 29);
@@ -168,6 +130,49 @@ public class V_Login extends JPanel {
 	
 	public void verMenu() {
 		ventanaMain.switchPanel(3);
+	}
+	
+	private void login() {
+		try {
+			String usuario = textFieldUser.getText();
+			String pass = new String (passwordField.getPassword());
+			
+			
+			if (usuario.equals("") || pass.equals("")) {
+				JOptionPane.showMessageDialog(null, "Usuario no encontrado", "Mensaje",
+						JOptionPane.WARNING_MESSAGE);
+			} else {
+			
+				iniciar();
+				
+				String operacionParams = "login~"+usuario+","+pass;
+				salida.writeObject(operacionParams);
+				salida.flush();
+
+				boolean response = (boolean) entrada.readObject();
+
+				cliente.close();
+
+			if (response == true) {
+
+				verMenu();
+
+			} else {
+
+				lblMensaje.setText("Usuario y contraseña incorrectos");
+				lblMensaje.setVisible(true);
+			}
+
+			//VentanaInicio3.salida.writeObject("1/" + usuario + "/" + pass);
+			//System.out.println(VentanaMain.entrada.readObject());
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 	public void iniciar() {
