@@ -75,21 +75,13 @@ public class V_Estaciones extends JPanel {
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				System.exit(0);
+				
 			}
 		});
 		btnSalir.setIcon(new ImageIcon(V_Estaciones.class.getResource("/imagenes/botonSalir.jpg")));
 		btnSalir.setBounds(78, 11, 33, 32);
 		add(btnSalir);
-		
-		JButton btnDesconectarse = new JButton("");
-		btnDesconectarse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		btnDesconectarse.setIcon(new ImageIcon(V_Estaciones.class.getResource("/imagenes/botonDesconectarse.jpg")));
-		btnDesconectarse.setBounds(591, 11, 33, 32);
-		add(btnDesconectarse);
 		
 		JButton btnVolver = new JButton("VOLVER");
 		btnVolver.addActionListener(new ActionListener() {

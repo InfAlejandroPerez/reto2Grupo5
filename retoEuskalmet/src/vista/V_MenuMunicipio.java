@@ -135,19 +135,13 @@ public class V_MenuMunicipio extends JPanel {
 		btnPlayas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnPlayas.setBounds(119, 321, 185, 40);
 		add(btnPlayas);
-		
-		JButton btnDesconectarse = new JButton("");
-		btnDesconectarse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnDesconectarse.setIcon(new ImageIcon(V_MenuMunicipio.class.getResource("/imagenes/botonDesconectarse.jpg")));
-		btnDesconectarse.setBounds(593, 11, 33, 32);
-		add(btnDesconectarse);
-		
+				
 		JButton btnSalir = new JButton("");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				System.exit(0);
+				
 			}
 		});
 		btnSalir.setIcon(new ImageIcon(V_MenuMunicipio.class.getResource("/imagenes/botonSalir.jpg")));
