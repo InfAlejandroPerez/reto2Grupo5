@@ -40,11 +40,6 @@ public class V_Registro extends JPanel {
 	private JTextField textFieldUserRegistro;
 	private JTextField textFieldPassRegistro;
 	private JTextField textFieldPassRepetidaRegistro;
-	private JLabel lblMensajeRegistro;
-	
-	
-
-	
 
 	/**
 	 * Create the panel.
@@ -130,11 +125,20 @@ public class V_Registro extends JPanel {
 					JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos.", "Mensaje",
 							JOptionPane.WARNING_MESSAGE);
 				}else {
-					if (!textFieldPassRegistro.equals(textFieldPassRepetidaRegistro)) {
+					if (textFieldPassRegistro.equals(textFieldPassRepetidaRegistro)) {
 						JOptionPane.showMessageDialog(null, "Los campos de contraseña deben de coincidir.", "Mensaje",
 								JOptionPane.WARNING_MESSAGE);
 					}else {
-						registro();
+						boolean checkin = comprobarCredenciales();
+						
+						if (checkin == true) {
+							registro();	
+						}else {
+							if (checkin == false) {
+								JOptionPane.showMessageDialog(null, "Las credenciales introducidas ya existen.", "Mensaje",
+										JOptionPane.INFORMATION_MESSAGE);
+							}
+						}
 					}
 				}
         	}
@@ -161,10 +165,11 @@ public class V_Registro extends JPanel {
 	}
 	
 	
-	private void registro() {
+	private boolean comprobarCredenciales() {
+		boolean response = false;
 		try {
-			String usuario = textFieldUserRegistro.getText();
-			String pass = textFieldPassRegistro.getText();
+			String usuario = textFieldUserRegistro.getText().toString();
+			String pass = textFieldPassRegistro.getText().toString();
 			
 
 			iniciar();
@@ -173,32 +178,9 @@ public class V_Registro extends JPanel {
 			salida.writeObject(operacionParams);
 			salida.flush();
 
-			boolean response = (boolean) entrada.readObject();
-
+			response = (boolean) entrada.readObject();
+		
 			cliente.close();
-			
-			if (response == true) {
-				
-				iniciar();
-				
-				String operacionParams2 = "registro~"+usuario+","+pass;
-				salida.writeObject(operacionParams2);
-				salida.flush();
-
-				cliente.close();
-				
-				JOptionPane.showMessageDialog(null, "Usuario creado con éxito", "Mensaje",
-						JOptionPane.INFORMATION_MESSAGE);
-				
-				volverLogin();
-
-			} else {
-
-				JOptionPane.showMessageDialog(null, "Las credenciales introducidas ya existen.", "Mensaje",
-						JOptionPane.INFORMATION_MESSAGE);
-
-			}
-
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -206,8 +188,33 @@ public class V_Registro extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+		return response;
 	}
+	
+	private void registro() {
+		
+		try {
+			
+		String usuario = textFieldUserRegistro.getText();
+		String pass = textFieldPassRegistro.getText();
+		
+		iniciar();
+		
+		String operacionParams2 = "registro~"+usuario+","+pass;
+		salida.writeObject(operacionParams2);
+		salida.flush();
+
+		cliente.close();
+		
+		JOptionPane.showMessageDialog(null, "Usuario creado con éxito", "Mensaje",
+				JOptionPane.INFORMATION_MESSAGE);
+		
+		volverLogin();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	} 
 	
 	public void iniciar() {
 

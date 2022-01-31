@@ -256,10 +256,10 @@ public class ControladorServidor {
 					+ password + "'";
 			System.out.println("COMPROBAR SI HAY USUARIOS CON LOS MISMOS DATOS: "+hql);
 			Query q = session.createQuery(hql);
-			session.close();
-
+			
 			List list = q.list();
-
+			
+			session.close();
 			if ((list != null) && (list.size() == 0)) {
 				insertarDatosRegistro(nombreUsuario, password);
 			} else {
@@ -278,10 +278,10 @@ public class ControladorServidor {
 					+ password + "'";
 			System.out.println("COMPROBAR SI HAY USUARIOS CON LOS MISMOS DATOS: "+hql);
 			Query q = session.createQuery(hql);
-			session.close();
 
 			List list = q.list();
-
+			
+			session.close();
 			if ((list != null) && (list.size() == 0)) {
 				return true;
 			} else {

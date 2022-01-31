@@ -130,6 +130,7 @@ public class V_Login extends JPanel {
         JButton btnRegistro = new JButton("Registro");
         btnRegistro.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		verRegistro();
         	}
         });
         btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
