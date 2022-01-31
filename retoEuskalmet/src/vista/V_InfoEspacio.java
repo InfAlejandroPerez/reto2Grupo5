@@ -75,7 +75,6 @@ public class V_InfoEspacio extends JPanel {
 	 * Create the panel.
 	 */
 	public V_InfoEspacio() {
-		System.out.println(nombreEspacio);
 
 		espacio = getInfoEspacio();
 

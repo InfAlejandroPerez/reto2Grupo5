@@ -88,9 +88,6 @@ class Servidor {
 				case "topMunicipiosProvincia":
 					salida.writeObject(ControladorServidor.getTopMunicipiosProvincia(params[0]));
 					break;
-				
-				
-
 				}
 
 				entrada.close();

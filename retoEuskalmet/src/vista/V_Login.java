@@ -60,7 +60,7 @@ public class V_Login extends JPanel {
 
 		});
 		setLayout(null);
-		btnLogin.setBounds(295, 348, 115, 29);
+		btnLogin.setBounds(295, 319, 115, 29);
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 16));
 		add(btnLogin);
 
@@ -126,10 +126,23 @@ public class V_Login extends JPanel {
 
 		setLocation(0, 0);
         setLayout(null);
+        
+        JButton btnRegistro = new JButton("Registro");
+        btnRegistro.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
+        btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnRegistro.setBounds(295, 355, 115, 29);
+        add(btnRegistro);
 	}
 	
 	public void verMenu() {
 		ventanaMain.switchPanel(3);
+	}
+	
+	private void verRegistro() {
+		ventanaMain.switchPanel(2);
 	}
 	
 	private void login() {

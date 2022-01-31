@@ -1,5 +1,13 @@
 package vista;
 
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import cliente.VentanaMain;
+
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,12 +18,14 @@ import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import cliente.VentanaMain;
+import java.awt.Rectangle;
+import javax.swing.JPasswordField;
+import java.awt.Component;
+import java.awt.SystemColor;
 
 public class V_Registro extends JPanel {
 	private ObjectInputStream entrada = null;
@@ -27,91 +37,131 @@ public class V_Registro extends JPanel {
 	
 	VentanaMain ventanaMain;
 
-	// REGISTRO
 	private JTextField textFieldUserRegistro;
 	private JTextField textFieldPassRegistro;
 	private JTextField textFieldPassRepetidaRegistro;
 	private JLabel lblMensajeRegistro;
+	
+	
 
+	
 
 	/**
 	 * Create the panel.
 	 */
 	public V_Registro() {
-		setBounds(0, 0, 700, 500);
-		setLayout(null);
+		setBackground(SystemColor.textInactiveText);
+		setBounds(0, 0, 700, 460);
+
+
 
 		JLabel lblUser = new JLabel("Usuario");
+		lblUser.setForeground(Color.WHITE);
 		lblUser.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblUser.setBounds(79, 96, 62, 20);
+		lblUser.setBounds(176, 190, 62, 20);
 		add(lblUser);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(V_Registro.class.getResource("/Imagenes/euskalmet.jpg")));
-		lblNewLabel.setBounds(101, 11, 273, 62);
+		lblNewLabel.setIcon(new ImageIcon(V_Registro.class.getResource("/imagenes/euskalmet.jpg")));
+		lblNewLabel.setBounds(206, 77, 273, 62);
 		add(lblNewLabel);
 
 		JLabel lblPass = new JLabel("Contrase\u00F1a");
+		lblPass.setForeground(Color.WHITE);
 		lblPass.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblPass.setBounds(79, 128, 93, 20);
+		lblPass.setBounds(176, 220, 93, 20);
 		add(lblPass);
 
 		JLabel lblPassRepetida = new JLabel("Repita la contrase\u00F1a");
+		lblPassRepetida.setForeground(Color.WHITE);
 		lblPassRepetida.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblPassRepetida.setBounds(79, 160, 169, 20);
+		lblPassRepetida.setBounds(176, 250, 169, 20);
 		add(lblPassRepetida);
 
-		JTextField textFieldUserRegistro = new JTextField();
+		textFieldUserRegistro = new JTextField();
 		textFieldUserRegistro.setColumns(10);
-		textFieldUserRegistro.setBounds(264, 96, 110, 20);
+		textFieldUserRegistro.setBounds(369, 190, 110, 20);
 		add(textFieldUserRegistro);
 
-		JTextField textFieldPassRegistro = new JTextField();
+		textFieldPassRegistro = new JTextField();
 		textFieldPassRegistro.setColumns(10);
-		textFieldPassRegistro.setBounds(264, 128, 110, 20);
+		textFieldPassRegistro.setBounds(369, 220, 110, 20);
 		add(textFieldPassRegistro);
 
-		JTextField textFieldPassRepetidaRegistro = new JTextField();
+		textFieldPassRepetidaRegistro = new JTextField();
 		textFieldPassRepetidaRegistro.setColumns(10);
-		textFieldPassRepetidaRegistro.setBounds(264, 159, 110, 20);
+		textFieldPassRepetidaRegistro.setBounds(369, 250, 110, 20);
 		add(textFieldPassRepetidaRegistro);
 
-		JButton btnRegistro = new JButton("Registro");
-		btnRegistro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if (textFieldUserRegistro.equals("") || textFieldPassRegistro.equals("") || textFieldPassRepetidaRegistro.equals("")) {
-					JOptionPane.showMessageDialog(null, "Rellena los campos", "Mensaje",
+
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setOpaque(true);
+		lblNewLabel_1.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1.setBounds(0, 0, 66, 461);
+		add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_2 = new JLabel("");
+		lblNewLabel_1_2.setOpaque(true);
+		lblNewLabel_1_2.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1_2.setBounds(634, 0, 66, 500);
+		add(lblNewLabel_1_2);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("");
+		lblNewLabel_1_1.setOpaque(true);
+		lblNewLabel_1_1.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1_1.setBounds(66, 0, 572, 66);
+		add(lblNewLabel_1_1);
+		
+		JLabel lblNewLabel_1_1_1 = new JLabel("");
+		lblNewLabel_1_1_1.setOpaque(true);
+		lblNewLabel_1_1_1.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1_1_1.setBounds(66, 395, 572, 66);
+		add(lblNewLabel_1_1_1);
+		
+
+		setLocation(0, 0);
+        setLayout(null);
+        
+        JButton btnRegistro = new JButton("REGISTRAR");
+        btnRegistro.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		if (textFieldUserRegistro.equals("") || textFieldPassRegistro.equals("") || textFieldPassRepetidaRegistro.equals("")) {
+					JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos.", "Mensaje",
 							JOptionPane.WARNING_MESSAGE);
 				}else {
 					if (!textFieldPassRegistro.equals(textFieldPassRepetidaRegistro)) {
-						JOptionPane.showMessageDialog(null, "Los campos de contraseña deben de coincidir", "Mensaje",
+						JOptionPane.showMessageDialog(null, "Los campos de contraseña deben de coincidir.", "Mensaje",
 								JOptionPane.WARNING_MESSAGE);
 					}else {
-						comprobarCredencialesNoRepetidas();
+						registro();
 					}
 				}
+        	}
+        });
+        btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnRegistro.setBounds(271, 293, 125, 30);
+        add(btnRegistro);
+        
+        JButton btnVolver = new JButton("VOLVER");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-				
+				volverLogin();
 
 			}
-
 		});
-		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnRegistro.setBounds(164, 206, 136, 29);
-		add(btnRegistro);
-
-		JLabel lblMensajeRegistro = new JLabel("");
-		lblMensajeRegistro.setVisible(false);
-		lblMensajeRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblMensajeRegistro.setBounds(303, 111, 0, 0);
-		add(lblMensajeRegistro);
-
-		setLocation(0, 0);
-		setLayout(null);
+		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnVolver.setBounds(71, 413, 118, 36);
+		add(btnVolver);
 	}
-
-	private void comprobarCredencialesNoRepetidas() {
+	
+	public void volverLogin() {
+		ventanaMain.switchPanel(1);
+	}
+	
+	
+	private void registro() {
 		try {
 			String usuario = textFieldUserRegistro.getText();
 			String pass = textFieldPassRegistro.getText();
@@ -136,11 +186,16 @@ public class V_Registro extends JPanel {
 				salida.flush();
 
 				cliente.close();
+				
+				JOptionPane.showMessageDialog(null, "Usuario creado con éxito", "Mensaje",
+						JOptionPane.INFORMATION_MESSAGE);
+				
+				volverLogin();
 
 			} else {
 
-				lblMensajeRegistro.setText("El usuario y la contraseña introducidos ya existen");
-				lblMensajeRegistro.setVisible(true);
+				JOptionPane.showMessageDialog(null, "Las credenciales introducidas ya existen.", "Mensaje",
+						JOptionPane.INFORMATION_MESSAGE);
 
 			}
 
@@ -151,7 +206,7 @@ public class V_Registro extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
+		
 	}
 	
 	public void iniciar() {
@@ -168,5 +223,4 @@ public class V_Registro extends JPanel {
 		}
 
 	}
-
 }
