@@ -108,12 +108,6 @@ public class V_Registro extends JPanel {
 		lblNewLabel_1_1.setBounds(66, 0, 572, 66);
 		add(lblNewLabel_1_1);
 		
-		JLabel lblNewLabel_1_1_1 = new JLabel("");
-		lblNewLabel_1_1_1.setOpaque(true);
-		lblNewLabel_1_1_1.setBackground(Color.DARK_GRAY);
-		lblNewLabel_1_1_1.setBounds(66, 395, 572, 66);
-		add(lblNewLabel_1_1_1);
-		
 
 		setLocation(0, 0);
         setLayout(null);
@@ -158,6 +152,12 @@ public class V_Registro extends JPanel {
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnVolver.setBounds(71, 413, 118, 36);
 		add(btnVolver);
+		
+		JLabel lblNewLabel_1_1_1 = new JLabel("");
+		lblNewLabel_1_1_1.setOpaque(true);
+		lblNewLabel_1_1_1.setBackground(Color.DARK_GRAY);
+		lblNewLabel_1_1_1.setBounds(66, 395, 572, 66);
+		add(lblNewLabel_1_1_1);
 	}
 	
 	public void volverLogin() {
