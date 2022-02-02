@@ -225,7 +225,7 @@ public class V_InfoMunicipio extends JPanel {
 		list2.setValueIsAdjusting(true);
 		list2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list2.setLayoutOrientation(JList.VERTICAL_WRAP);
-		list2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		list2.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		list2.setModel(model2);
 		list2.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
 		list2.setBackground(SystemColor.menu);
