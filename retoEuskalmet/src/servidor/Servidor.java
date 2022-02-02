@@ -44,7 +44,8 @@ class Servidor {
 					params = message.split("~")[1].split(",");
 				}
 				
-
+				System.out.println("--------------------");
+				System.out.println("OPERACIÓN:");
 				switch (operacion) {
 				case "login":
 					salida.writeObject(ControladorServidor.checkLogin(params[0], params[1]));

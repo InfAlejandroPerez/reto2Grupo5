@@ -27,13 +27,6 @@ public class VentanaMain extends JFrame {
 
 	public static JPanel panelContenedorPrincipal;
 
-	// CLIENTE
-	private final int PUERTO = 4444;
-	private final String IP = "localhost";
-	private Socket cliente = null;
-	public static ObjectInputStream entrada;
-	public static ObjectOutputStream salida;
-	private Cliente c;
 
 	/**
 	 * Launch the application.
@@ -56,7 +49,6 @@ public class VentanaMain extends JFrame {
 	 */
 	public VentanaMain() {
 
-		c = new Cliente();
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
